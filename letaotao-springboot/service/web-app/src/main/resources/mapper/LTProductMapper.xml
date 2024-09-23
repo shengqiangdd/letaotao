@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gxcy.letaotao.web.app.mapper.LTProductMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.gxcy.letaotao.web.app.vo.LTWechatProductVo">
+        <id column="id" property="id"/>
+        <result column="publisher_id" property="publisherId"/>
+        <result column="name" property="name"/>
+        <result column="category_id" property="categoryId"/>
+        <result column="description" property="description"/>
+        <result column="price" property="price"/>
+        <result column="publish_time" property="publishTime"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="status" property="status"/>
+        <result column="is_recommended" property="isRecommended"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id
+        , publisher_id, `name`, category_id, description, image_url, price, publish_time, status,is_recommended
+    </sql>
+
+    <select id="findListByPage" resultType="com.gxcy.letaotao.web.app.vo.LTWechatProductVo">
+        select p.`id`,
+        p.`publisher_id`,
+        p.`name`,
+        p.`category_id`,
+        p.`description`,
+        p.`condition`,
+        p.`price`,
+        p.`publish_time`,
+        p.`update_time`,
+        p.`status`,
+        p.`is_recommended`,
+        u.avatar,
+        u.`nick_name` as nickName,
+        c.`name` as categoryName
+        from lt_product p
+        left join lt_user as u on p.`publisher_id` = u.id
+        left join lt_category as c on p.`category_id` = c.id
+        <where>
+            p.`is_delete` = 0
+            <if test="ew.sqlSegment != null and ew.sqlSegment != ''">
+                and ${ew.sqlSegment}
+            </if>
+        </where>
+    </select>
+
+</mapper>

@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gxcy.letaotao.web.app.mapper.LTCollectionMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.gxcy.letaotao.web.app.vo.LTWechatCollectionVo">
+        <id column="c.id" property="id"/>
+        <result column="c.userId" property="userId"/>
+        <result column="target_id" property="targetId"/>
+        <result column="target_type" property="targetType"/>
+        <result column="c.createTime" property="createTime"/>
+        <result column="is_active" property="isActive"/>
+        <!-- 使用 association 映射一对一关系 -->
+        <association column="pd" property="product" resultMap="productResultMap"/>
+        <association column="pt" property="post" resultMap="postResultMap"/>
+    </resultMap>
+
+    <resultMap id="productResultMap" type="com.gxcy.letaotao.web.app.vo.LTWechatProductVo">
+        <id column="pd.id" property="id"/>
+        <result column="pd.name" property="name"/>
+        <result column="publisher_id" property="publisherId"/>
+        <result column="category_id" property="categoryId"/>
+        <result column="description" property="description"/>
+        <result column="price" property="price"/>
+        <result column="pd.publish_time" property="publishTime"/>
+        <result column="pd.update_time" property="updateTime"/>
+        <result column="pd.status" property="status"/>
+        <result column="is_recommended" property="isRecommended"/>
+        <result column="u.nickName" property="nickName"/>
+        <result column="u.avatar" property="avatar"/>
+    </resultMap>
+
+    <resultMap id="postResultMap" type="com.gxcy.letaotao.web.app.vo.LTWechatPostVo">
+        <id column="pt.id" property="id"/>
+        <result column="pt.userId" property="userId"/>
+        <result column="pt.title" property="title"/>
+        <result column="pt.content" property="content"/>
+        <result column="pt.postTime" property="postTime"/>
+        <result column="pt.updateTime" property="updateTime"/>
+        <result column="pt.status" property="status"/>
+        <result column="pt.commentCount" property="commentCount"/>
+        <result column="pt.likeCount" property="likeCount"/>
+        <result column="pt.collectCount" property="collectCount"/>
+        <result column="pt.isFavorite" property="isFavorite"/>
+        <result column="pt.isLiked" property="isLiked"/>
+        <result column="u.nickName" property="nickName"/>
+        <result column="u.avatar" property="avatar"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id
+        , user_id, target_id, target_type, collect_time, status
+    </sql>
+
+    <select id="findProductList" parameterType="com.gxcy.letaotao.web.app.vo.LTWechatCollectionQueryVo"
+            resultMap="BaseResultMap">
+        select
+        c.`id` as `c.id`, c.`user_id` as `c.userId`, c.`target_id`, c.`target_type`, c.`create_time` as `c.createTime`,
+        c.`is_active`,pd.`id` as `pd.id`, pd.`name` as `pd.name`, pd.`publisher_id`, pd.`category_id`, pd.`description`,
+        pd.`price`, pd.`publish_time`, pd.`update_time`, pd.`status`, pd.`is_recommended`,
+        u.`nick_name` as `u.nickName`, u.avatar as `u.avatar`
+        from lt_collection c
+        left join lt_product as pd on c.`target_id` = pd.`id`
+        left join lt_user as u on pd.`publisher_id` = u.`id`
+        <where>
+            c.is_active = 1 and c.`target_type` = 1
+            <if test="userId != null">
+                and c.`user_id` = #{userId}
+            </if>
+            <if test="label != null and label != ''">
+                and pd.`name` like concat('%',#{label},'%')
+            </if>
+        </where>
+    </select>
+
+    <select id="findPostList" parameterType="com.gxcy.letaotao.web.app.vo.LTWechatCollectionQueryVo"
+            resultMap="BaseResultMap">
+        select
+        c.`id` as `c.id`, c.`user_id` as `c.userId`, c.`target_id`, c.`target_type`, c.`create_time` as `c.createTime`,
+        c.`is_active`,u.nick_name AS `u.nickName`, u.avatar AS `u.avatar`,pt.`id` AS `pt.id`, pt.user_id AS `pt.userId`,
+        pt.`title` AS `pt.title`, pt.`content` AS `pt.content`, pt.`post_time` AS `pt.postTime`,
+        pt.`update_time` AS `pt.updateTime`, pt.`status` AS `pt.status`, pt.`comment_count` AS `pt.commentCount`,
+        (select count(ll.id) from lt_like ll where ll.`target_id` = pt.id and ll.`target_type` = 1 and ll.`is_active` =
+        1)
+        AS `pt.likeCount`,(select count(lc.id) from lt_collection lc where lc.`target_id` = pt.id and lc.`target_type` =
+        2
+        and lc.`is_active` = 1) AS `pt.collectCount`,exists(select 1 from lt_collection lc where lc.`target_id` = pt.id
+        and lc.`target_type` = 2 and lc.`user_id` = #{userId} and lc.`is_active` = 1) AS `pt.isFavorite`,
+        exists(select 1 from lt_like ll where ll.`target_id` = pt.id and ll.`target_type` = 1 and ll.`user_id` =
+        #{userId} and ll.`is_active` = 1) AS `pt.isLiked`
+        from lt_collection c
+        left join lt_post AS pt ON c.`target_id` = pt.id
+        left join lt_user AS u on pt.`user_id` = u.id
+        <where>
+            c.`target_type` = 2
+            <if test="userId != null">
+                and c.`user_id` = #{userId}
+            </if>
+            and c.`is_active` = 1
+            <if test="label != null and label != ''">
+                and pt.`title` like concat('%',#{label},'%')
+            </if>
+        </where>
+    </select>
+
+</mapper>

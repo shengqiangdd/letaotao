@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gxcy.letaotao.web.admin.mapper.LTCommentMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.gxcy.letaotao.common.entity.LTComment" autoMapping="true">
+        <id column="id" property="id"/>
+        <result column="user_id" property="userId"/>
+        <result column="reference_id" property="referenceId"/>
+        <result column="parent_id" property="parentId"/>
+        <result column="content" property="content"/>
+        <result column="comment_time" property="commentTime"/>
+        <result column="type" property="type"/>
+        <result column="like_count" property="likeCount"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, user_id, reference_id, parent_id, content, comment_time, `type`
+    </sql>
+
+    <select id="findListByPage" resultType="com.gxcy.letaotao.web.admin.vo.LTCommentVo">
+        select c.`id`,
+        c.`user_id`,
+        c.`type`,
+        c.`reference_id`,
+        c.`content`,
+        c.`comment_time`,
+        u.nick_name as nickName,
+        case
+        when c.`type` = 1 then p.`name`
+        when c.`type` = 2 then t.`title`
+        else null -- 如果 type 不为 1 或 2，则为 null
+        end as targetName
+        from lt_comment c
+        left join lt_user as u
+        on c.`user_id` = u.id
+        left join lt_product as p
+        on c.`type` = 1 and c.`reference_id` = p.id
+        left join lt_post as t
+        on c.`type` = 2 and c.`reference_id` = t.id
+        <where>
+            c.is_delete = 0
+            <if test="ew != null">
+                <if test="ew.nonEmptyOfWhere">
+                    and
+                </if>
+                ${ew.sqlSegment}
+            </if>
+        </where>
+    </select>
+
+</mapper>

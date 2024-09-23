@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gxcy.letaotao.web.app.mapper.LTCommentMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.gxcy.letaotao.web.app.vo.LTWechatCommentVo" autoMapping="true">
+        <id column="id" property="id"/>
+        <result column="user_id" property="userId"/>
+        <result column="reference_id" property="referenceId"/>
+        <result column="parent_id" property="parentId"/>
+        <result column="content" property="content"/>
+        <result column="comment_time" property="commentTime"/>
+        <result column="type" property="type"/>
+        <result column="like_count" property="likeCount"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id
+        , user_id, reference_id, parent_id, content, comment_time, `type`
+    </sql>
+
+    <select id="findList" resultType="com.gxcy.letaotao.web.app.vo.LTWechatCommentVo">
+        select c.`id`,c.user_id,c.reference_id,c.parent_id,c.content,c.comment_time,c.`type`,c.is_delete,
+        u.nick_name as nickName,u.avatar as avatar,
+        (select count(id) from lt_like where is_active = 1 and target_id = c.id and target_type = #{likeType.code}) as
+        likeCount,exists(select 1 from lt_like where is_active = 1 and target_id = c.id
+        and target_type = #{likeType.code} and user_id = #{userId}) as isLiked
+        from lt_comment c
+        left join lt_user as u on c.`user_id` = u.id
+        <where>
+            c.`is_delete` = 0
+            <if test="referenceId != null and referenceId != ''">
+                and c.`reference_id` = #{referenceId}
+            </if>
+            <if test="type != null and type.code > 0">
+                and c.`type` = #{type.code}
+            </if>
+        </where>
+        group by c.`id`, c.user_id, reference_id, parent_id, content,
+        comment_time, `type`, c.is_delete, u.nick_name, u.avatar
+    </select>
+
+</mapper>

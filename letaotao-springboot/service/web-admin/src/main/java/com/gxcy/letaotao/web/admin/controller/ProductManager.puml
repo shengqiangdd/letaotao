@@ -1,0 +1,38 @@
+
+@startuml
+actor 用户 as User
+participant 前端 as Frontend
+participant "商品控制器\nLTProductController" as Controller
+participant "商品服务\nLTProductService" as Service
+database 商品数据库 as Database
+
+User -> Frontend : 请求商品管理操作
+Frontend -> Controller : 发送请求 (/api/products/...)
+
+...
+
+Controller -> Service : getProductList(productQueryVo)
+Service -> Database : 查询数据库
+Database -> Service : 返回查询结果
+Service -> Controller : 返回商品列表
+Controller -> Frontend : 显示商品列表
+
+...
+
+...
+
+Controller -> Service : update(ltProduct)
+Service -> Database : 更新商品信息
+Database -> Service : 确认更新
+Service -> Controller : 返回更新结果
+Controller -> Frontend : 显示更新结果
+
+...
+
+Controller -> Service : delete(id)
+Service -> Database : 删除商品
+Database -> Service : 确认删除
+Service -> Controller : 返回删除结果
+Controller -> Frontend : 显示删除结果
+
+@enduml

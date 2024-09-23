@@ -1,0 +1,26 @@
+@startuml
+actor 用户 as User
+participant "前端界面" as Frontend
+participant "订单控制器\nLTOrderController" as Controller
+participant "订单服务\nLTOrderService" as Service
+database "订单数据库" as Database
+
+User -> Frontend : 请求订单管理操作
+Frontend -> Controller : 发送请求 (/api/orders/...)
+
+' 查询订单列表
+Controller -> Service : getOrderList(orderQueryVo)
+Service -> Database : 分页查询订单列表
+Database -> Service : 返回订单列表
+Service -> Controller : 提供订单列表
+Controller -> Frontend : 显示订单列表
+
+' 删除订单
+Frontend -> Controller : 发送请求 (/api/orders/delete/{id})
+Controller -> Service : delete(id)
+Service -> Database : 删除订单记录
+Database -> Service : 确认删除
+Service -> Controller : 返回删除结果
+Controller -> Frontend : 显示删除结果消息
+
+@enduml

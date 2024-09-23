@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gxcy.letaotao.web.admin.mapper.LTMessageMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.gxcy.letaotao.common.entity.LTMessage" autoMapping="true">
+        <id column="id" property="id"/>
+        <result column="content" property="content"/>
+        <result column="message_type" property="messageType"/>
+        <result column="sender_id" property="senderId"/>
+        <result column="receiver_id" property="receiverId"/>
+        <result column="send_time" property="sendTime"/>
+        <result column="relation_id" property="relationId"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id
+        , content, message_type, sender_id, receiver_id, send_time
+    </sql>
+
+    <select id="findListByPage" resultType="com.gxcy.letaotao.web.admin.vo.LTMessageVo">
+        select m.`id`,
+        m.`content`,
+        m.`message_type`,
+        m.`sender_id`,
+        m.`receiver_id`,
+        m.`send_time`,
+        m.`relation_id`,
+        su.nick_name as senderName,
+        ru.nick_name as receiverName
+        from lt_message m
+        left join lt_user su on m.`sender_id` = su.`id`
+        left join lt_user ru on m.`receiver_id` = ru.`id`
+        <where>
+            m.is_delete = 0
+            <if test="ew != null">
+                <if test="ew.nonEmptyOfWhere">
+                    and
+                </if>
+                ${ew.sqlSegment}
+            </if>
+        </where>
+    </select>
+
+</mapper>

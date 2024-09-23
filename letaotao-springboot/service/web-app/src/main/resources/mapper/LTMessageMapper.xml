@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gxcy.letaotao.web.app.mapper.LTMessageMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.gxcy.letaotao.web.app.vo.LTWechatMessageVo" autoMapping="true">
+        <id column="id" property="id"/>
+        <result column="content" property="content"/>
+        <result column="message_type" property="messageType"/>
+        <result column="sender_id" property="senderId"/>
+        <result column="receiver_id" property="receiverId"/>
+        <result column="send_time" property="sendTime"/>
+        <result column="relation_id" property="relationId"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id
+        , content, message_type, sender_id, receiver_id, send_time
+    </sql>
+
+
+</mapper>

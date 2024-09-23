@@ -1,0 +1,38 @@
+@startuml
+actor 客户端 as Client
+participant "StatisticsController" as Controller
+participant "StatisticsService" as Service
+participant "StatisticsOverviewVo" as OverviewVo
+participant "Result" as Result
+
+Client -> Controller: GET /api/statistics/overview/{year}/{month}
+activate Controller
+
+Controller -> Service: 获取年度统计数据(year)
+activate Service
+Service --> Controller: 年度数据
+deactivate Service
+
+Controller -> OverviewVo: 新建概览
+activate OverviewVo
+OverviewVo --> Controller: 概览实例
+deactivate OverviewVo
+
+Controller -> OverviewVo: setYearlyStats(年度数据)
+OverviewVo --> Controller: 年度统计设置完成
+
+Controller -> Service: 获取月度统计数据(year, month)
+activate Service
+Service --> Controller: 月度数据
+deactivate Service
+
+Controller -> OverviewVo: setMonthlyStats(月度数据)
+OverviewVo --> Controller: 月度统计设置完成
+
+Controller -> Result: ok(overview)
+activate Result
+Result --> Client: 返回结果
+deactivate Result
+
+deactivate Controller
+@enduml

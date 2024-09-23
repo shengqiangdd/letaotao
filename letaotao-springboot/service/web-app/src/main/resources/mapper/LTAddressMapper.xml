@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gxcy.letaotao.web.app.mapper.LTAddressMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.gxcy.letaotao.web.app.vo.LTWechatAddressVo">
+        <id column="id" property="id"/>
+        <result column="contact_person" property="contactPerson"/>
+        <result column="phone" property="phone"/>
+        <result column="region" property="region"/>
+        <result column="detail_address" property="detailAddress"/>
+        <result column="user_id" property="userId"/>
+        <result column="is_default" property="isDefault"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, contact_person, phone, region, detail_address, user_id
+    </sql>
+
+</mapper>

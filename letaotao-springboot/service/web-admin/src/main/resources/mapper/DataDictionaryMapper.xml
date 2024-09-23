@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gxcy.letaotao.web.admin.mapper.DataDictionaryMapper">
+
+    <resultMap id="BaseResultMap" type="com.gxcy.letaotao.web.admin.entity.DataDictionary">
+        <id property="id" column="id" jdbcType="BIGINT"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+        <result property="isDeleted" column="is_deleted" jdbcType="TINYINT"/>
+        <result property="parentId" column="parent_id" jdbcType="BIGINT"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="strValue" column="str_value" jdbcType="VARCHAR"/>
+        <result property="numValue" column="num_value" jdbcType="TINYINT"/>
+        <result property="dictCode" column="dict_code" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        d.id,d.create_time,d.update_time,
+        d.is_deleted,d.parent_id,d.name,
+        d.str_value,d.num_value,d.dict_code,
+        p.name as parent_name
+    </sql>
+
+    <select id="selectByDictCode" resultType="com.gxcy.letaotao.web.admin.vo.DataDictionaryVo">
+        select d.`id`, d.parent_id, d.`name`, d.str_value, d.num_value, d.dict_code
+        from data_dictionary d
+        where d.dict_code = #{dictCode}
+          and d.is_deleted = 0
+    </select>
+
+    <select id="findDictList" resultType="com.gxcy.letaotao.web.admin.vo.DataDictionaryVo">
+        select
+        <include refid="Base_Column_List"/>
+        from data_dictionary d
+        left join data_dictionary p on d.parent_id = p.id and p.is_deleted = 0
+        <where>
+            d.is_deleted = 0
+            <if test="ew != null">
+                <if test="ew.nonEmptyOfWhere">
+                    and
+                </if>
+                ${ew.sqlSegment}
+            </if>
+        </where>
+    </select>
+</mapper>
