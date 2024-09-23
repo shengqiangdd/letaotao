@@ -1,12 +1,12 @@
 package com.gxcy.letaotao.web.app.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.gxcy.letaotao.common.enums.LTPostStatus;
 import com.gxcy.letaotao.web.app.vo.LTImagesVo;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -32,6 +32,6 @@ public class LTWeChatPostDTO {
     private LTPostStatus status;
     private List<LTImagesVo> newImages;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime postTime;
 }
