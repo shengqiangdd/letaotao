@@ -71,7 +71,7 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
         // 删除该角色对应的权限信息
         deleteRolePermission(roleId);
         // 保存角色权限
-        if(baseMapper.saveRolePermission(roleId, permissionIds) > 0) {
+        if (baseMapper.saveRolePermission(roleId, permissionIds) > 0) {
             for (Long permissionId : permissionIds) {
                 Objects.requireNonNull(cacheManager.getCache(CacheKeyConstants.PERMISSION)).evict(permissionId);
             }
@@ -128,7 +128,7 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
     @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean add(Role role) {
-        if(this.save(role)) {
+        if (this.save(role)) {
             this.cacheRoleById(role.getId());
             return true;
         }

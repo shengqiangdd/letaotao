@@ -6,6 +6,7 @@ import com.gxcy.letaotao.common.enums.LTCommentType;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -16,6 +17,7 @@ import java.util.List;
  * @Date 2024/9/9 23:05
  */
 @Data
+@NoArgsConstructor
 public class LTCommentVo implements Serializable {
 
     /**

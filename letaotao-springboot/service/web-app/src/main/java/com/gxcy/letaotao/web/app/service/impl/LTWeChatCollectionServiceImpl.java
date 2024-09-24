@@ -127,7 +127,7 @@ public class LTWeChatCollectionServiceImpl extends BaseServiceImpl<LTCollectionM
     @Transactional(rollbackFor = Exception.class)
     public boolean add(LTWechatCollectionVo collectionVo) {
         LTCollection ltCollection = this.convert(collectionVo);
-        if(this.save(ltCollection)) {
+        if (this.save(ltCollection)) {
             this.cacheCollectionById(ltCollection.getId());
             return true;
         }
@@ -151,7 +151,7 @@ public class LTWeChatCollectionServiceImpl extends BaseServiceImpl<LTCollectionM
     @Transactional(rollbackFor = Exception.class)
     public boolean deleteById(Integer id) {
         LTCollection ltCollection = this.getById(id);
-        if(this.removeById(id)) {
+        if (this.removeById(id)) {
             deleteCacheCollectionByUserIdAndTargetIdAndTargetType(ltCollection.getUserId(),
                     ltCollection.getTargetId(), ltCollection.getTargetType());
             return true;
@@ -163,10 +163,10 @@ public class LTWeChatCollectionServiceImpl extends BaseServiceImpl<LTCollectionM
     @Transactional(rollbackFor = Exception.class)
     public void deleteByIds(List<Integer> ids) {
         if (ids.isEmpty()) {
-           throw  new LTException("请选择要取消收藏的数据");
+            throw new LTException("请选择要取消收藏的数据");
         }
         List<LTCollection> ltCollections = baseMapper.selectBatchIds(ids);
-        if(this.removeByIds(ids)) {
+        if (this.removeByIds(ids)) {
             ltCollections.forEach(ltCollection -> deleteCacheCollectionByUserIdAndTargetIdAndTargetType(ltCollection.getUserId(),
                     ltCollection.getTargetId(), ltCollection.getTargetType()));
         }

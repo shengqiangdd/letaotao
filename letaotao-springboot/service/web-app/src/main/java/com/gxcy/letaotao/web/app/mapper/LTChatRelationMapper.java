@@ -18,14 +18,14 @@ public interface LTChatRelationMapper extends BaseMapper<LTChatRelation> {
             "from lt_message where relation_id = #{relationId}")
     List<LTWechatMessageVo> selectMessagesByRelationId(Integer relationId); // 通过关系id查询消息列表
 
-    @Select("select id,buyer_id,seller_id,product_id,create_time from lt_chat_relation " +
+    @Select("select `id`,buyer_id,seller_id,product_id,create_time from lt_chat_relation " +
             "where buyer_id = #{userId} or seller_id = #{userId}")
     List<LTChatRelationVo> findRelationListByUserId(Long userId); // 通过用户id查询聊天关系列表
 
-    @Select("select relation_id from lt_chat_relation where product_id = #{productId}")
-    int selectRelationIdByProductId(Integer productId); // 通过商品id查询聊天关系id
+    @Select("select `id` from lt_chat_relation where product_id = #{productId}")
+    Integer selectRelationIdByProductId(Integer productId); // 通过商品id查询聊天关系id
 
-    @Select("select id,buyer_id,seller_id,product_id,create_time from lt_chat_relation " +
+    @Select("select `id`,buyer_id,seller_id,product_id,create_time from lt_chat_relation " +
             "where buyer_id = #{buyerId} and seller_id = #{sellerId} and product_id = #{productId}")
     LTChatRelationVo findRelation(Long buyerId, Long sellerId, Integer productId); // 通过用户id查询聊天关系
 

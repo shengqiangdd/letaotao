@@ -27,6 +27,7 @@ public class LTWechatImagesController {
      * @return
      */
     @PostMapping("/upload")
+    @Operation(summary = "文件上传")
     public Result<?> upload(LTImagesDTO ltImagesDTO) {
         LTImagesVo imagesVo = ltImagesService.upload(ltImagesDTO);
         if (imagesVo != null) {

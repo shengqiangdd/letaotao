@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.gxcy.letaotao.common.enums.BooleanStatus;
 import com.gxcy.letaotao.common.enums.LTProductStatus;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
@@ -17,6 +18,7 @@ import java.util.List;
  * @Date 2024/9/9 23:10
  */
 @Data
+@NoArgsConstructor
 public class LTWechatProductVo implements Serializable {
 
     /**

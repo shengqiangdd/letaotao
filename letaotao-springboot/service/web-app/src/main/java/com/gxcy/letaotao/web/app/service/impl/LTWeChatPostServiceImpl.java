@@ -18,6 +18,7 @@ import com.gxcy.letaotao.web.app.vo.LTWechatPostVo;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
+import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
@@ -26,6 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @Slf4j
@@ -43,6 +45,8 @@ public class LTWeChatPostServiceImpl extends BaseServiceImpl<LTPostMapper, LTPos
     private LTWeChatUserFollowService ltUserFollowService;
     @Resource
     private WeChatUserService userService;
+    @Resource
+    private CacheManager cacheManager;
 
     @Override
     public IPage<LTWechatPostVo> findListByPage(IPage<LTWechatPostVo> page, LTWechatPostQueryVo postVO) {
@@ -177,8 +181,12 @@ public class LTWeChatPostServiceImpl extends BaseServiceImpl<LTPostMapper, LTPos
     public boolean deleteById(Integer id) {
         if (this.removeById(id)) {
             // 从数据库中查询帖子关联的所有图片
+            Objects.requireNonNull(cacheManager.getCache(CacheKeyConstants.IMAGES))
+                    .evictIfPresent(String.valueOf(id) + '_' + LTImagesType.POST.getCode());
             List<LTImagesVo> ltImages = ltImagesService.getImagesList(id, LTImagesType.POST);
-            ltImagesService.batchDelete(ltImages);
+            if (ltImages != null && !ltImages.isEmpty()) {
+                ltImagesService.batchDelete(ltImages);
+            }
             // 删除帖子关联的收藏、点赞、评论
             ltCollectionService.deleteByTargetIdAndType(id, LTCollectionTargetType.POST);
             ltLikeService.deleteByTargetId(id, LTLikeTargetType.POST);
@@ -260,6 +268,7 @@ public class LTWeChatPostServiceImpl extends BaseServiceImpl<LTPostMapper, LTPos
                     images.forEach(image -> image.setRelatedId(ltPost.getId()));
                     ltImagesService.batchUpdate(images);
                 }
+                Objects.requireNonNull(cacheManager.getCache(CacheKeyConstants.POST)).evict(ltPost.getId());
             }
 
             return insert ? ltPost.getId() : 0;

@@ -2,6 +2,7 @@ package com.gxcy.letaotao.web.admin.vo;
 
 import com.gxcy.letaotao.common.enums.LTImagesType;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
@@ -10,6 +11,7 @@ import java.io.Serializable;
  * @Date 2024/9/13 22:53
  */
 @Data
+@NoArgsConstructor
 public class LTImagesVo implements Serializable {
     /**
      * 图片唯一标识

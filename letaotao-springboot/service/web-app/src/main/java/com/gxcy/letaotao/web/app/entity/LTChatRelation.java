@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -14,6 +15,7 @@ import java.time.LocalDateTime;
  */
 @Data
 @TableName("lt_chat_relation")
+@NoArgsConstructor
 public class LTChatRelation implements Serializable {
 
     @Serial

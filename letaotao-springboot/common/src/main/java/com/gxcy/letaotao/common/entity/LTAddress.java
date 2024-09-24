@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.gxcy.letaotao.common.enums.BooleanStatus;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -14,6 +15,7 @@ import java.io.Serializable;
  */
 @Data
 @TableName("lt_address")
+@NoArgsConstructor
 public class LTAddress implements Serializable {
 
     @Serial

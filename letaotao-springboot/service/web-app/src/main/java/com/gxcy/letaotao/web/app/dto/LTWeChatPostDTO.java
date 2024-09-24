@@ -7,6 +7,7 @@ import com.gxcy.letaotao.web.app.vo.LTImagesVo;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -16,6 +17,7 @@ import java.util.List;
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Data
+@NoArgsConstructor
 public class LTWeChatPostDTO {
     private Integer id;
 

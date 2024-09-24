@@ -39,9 +39,9 @@ public class LTWeChatPostController {
         return Result.ok(page);
     }
 
-    @GetMapping("/list/user/page")
+    @GetMapping("/list/{user}/page")
     @Operation(summary = "分页查询用户的帖子列表")
-    public Result<?> getPostListByUserId(LTWechatPostQueryVo postVO) {
+    public Result<?> getPostListByUserId(@PathVariable String user, LTWechatPostQueryVo postVO) {
         // 创建分页对象
         IPage<LTWechatPostVo> page = new Page<>(postVO.getPageNo(), postVO.getPageSize());
         // 调用分页查询帖子列表方法

@@ -2,6 +2,7 @@ package com.gxcy.letaotao.web.admin.vo;
 
 import com.gxcy.letaotao.common.enums.BooleanStatus;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
@@ -10,6 +11,7 @@ import java.io.Serializable;
  * @Date 2024/9/10 9:55
  */
 @Data
+@NoArgsConstructor
 public class LTCategoryVo implements Serializable {
     /**
      * 分类唯一标识

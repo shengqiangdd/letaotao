@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.gxcy.letaotao.common.enums.LTUserFollowStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -18,6 +19,7 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 @TableName("lt_user_follow")
+@NoArgsConstructor
 public class LTUserFollow implements Serializable {
 
     @Serial

@@ -1,6 +1,7 @@
 package com.gxcy.letaotao.web.app.vo;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -10,6 +11,7 @@ import java.time.LocalDateTime;
  * @Date 2024/9/9 22:58
  */
 @Data
+@NoArgsConstructor
 public class LTChatRelationVo implements Serializable {
 
     /**

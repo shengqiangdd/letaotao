@@ -39,9 +39,9 @@ public class LTWeChatProductController {
         return Result.ok(page);
     }
 
-    @GetMapping("/list/user/page")
+    @GetMapping("/list/{user}/page")
     @Operation(summary = "分页查询用户的商品列表")
-    public Result<?> getProductListByUserId(LTWechatProductQueryVo productQueryVo) {
+    public Result<?> getProductListByUserId(@PathVariable String user, LTWechatProductQueryVo productQueryVo) {
         // 创建分页对象
         IPage<LTWechatProductVo> page = new Page<>(productQueryVo.getPageNo(), productQueryVo.getPageSize());
         // 调用分页查询帖子列表方法

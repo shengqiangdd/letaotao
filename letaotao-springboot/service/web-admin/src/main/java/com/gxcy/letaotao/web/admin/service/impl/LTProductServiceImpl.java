@@ -116,7 +116,7 @@ public class LTProductServiceImpl extends ServiceImpl<LTProductMapper, LTProduct
     @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean batchUpdate(List<LTProductVo> ltProductVos) {
-        if(this.updateBatchById(this.convert(ltProductVos))) {
+        if (this.updateBatchById(this.convert(ltProductVos))) {
             ltProductVos.forEach(ltProduct -> {
                 Objects.requireNonNull(cacheManager.getCache(CacheKeyConstants.PRODUCT)).evictIfPresent(ltProduct.getId());
             });

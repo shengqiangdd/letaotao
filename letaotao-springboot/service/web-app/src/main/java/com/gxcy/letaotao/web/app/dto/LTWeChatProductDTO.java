@@ -8,6 +8,7 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -18,6 +19,7 @@ import java.util.List;
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Data
+@NoArgsConstructor
 public class LTWeChatProductDTO {
     private Integer id;
 

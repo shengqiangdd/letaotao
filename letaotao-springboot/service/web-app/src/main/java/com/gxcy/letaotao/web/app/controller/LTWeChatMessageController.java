@@ -3,6 +3,7 @@ package com.gxcy.letaotao.web.app.controller;
 import com.gxcy.letaotao.common.utils.Result;
 import com.gxcy.letaotao.web.app.service.LTWeChatMessageService;
 import com.gxcy.letaotao.web.app.vo.LTChatRelationVo;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,6 +26,7 @@ public class LTWeChatMessageController {
      * @return
      */
     @GetMapping("/list")
+    @Operation(summary = "获取聊天列表")
     public Result<?> getChatMessages() {
         List<LTChatRelationVo> messageList = ltMessageService.getChatMessageList();
         return Result.ok(messageList);

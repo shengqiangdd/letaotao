@@ -2,8 +2,10 @@ package com.gxcy.letaotao.web.admin.vo;
 
 import com.alibaba.excel.annotation.ExcelProperty;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 public class DictEeVo {
 
     @ExcelProperty(value = "id", index = 0)

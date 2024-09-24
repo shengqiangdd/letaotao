@@ -61,14 +61,15 @@ public class LTWeChatChatRelationServiceImpl extends ServiceImpl<LTChatRelationM
 
     @Override
     public int selectRelationIdByProductId(Integer productId) {
-        return baseMapper.selectRelationIdByProductId(productId);
+        Integer id = baseMapper.selectRelationIdByProductId(productId);
+        return id == null ? 0 : id;
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean add(LTChatRelationVo chatRelationVo) {
         LTChatRelation chatRelation = this.convert(chatRelationVo);
-        if(this.save(chatRelation)) {
+        if (this.save(chatRelation)) {
             this.cacheChatRelationById(chatRelation.getId());
             return true;
         }
@@ -93,8 +94,10 @@ public class LTWeChatChatRelationServiceImpl extends ServiceImpl<LTChatRelationM
     public void deleteByProductId(Integer productId) {
         // 获取关联关系ID
         int relationId = this.selectRelationIdByProductId(productId);
-        // 删除关联关系
-        messageMapper.deleteByRelationId(relationId);
+        if (relationId > 0) {
+            // 删除关联关系
+            messageMapper.deleteByRelationId(relationId);
+        }
         this.deleteCatchById(relationId);
     }
 

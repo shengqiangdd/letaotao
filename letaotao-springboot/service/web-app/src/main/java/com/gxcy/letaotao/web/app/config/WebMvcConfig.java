@@ -32,12 +32,10 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 "/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**",
                 "/doc.html", "/ws/**", "/webjars/**", "/api/wx_user/login",
                 "/api/wx_categories/tree",
-                "/api/wx_posts/list/**", "/api/wx_posts/*",
-                "/api/wx_comments/list",
-                "/api/wx_products/*", "/api/wx_products/list/**",
-                "/api/wx_user/list/**", "/api/wx_user/*", "/api/wx_user/logout",
-                "/api/wx_evaluates/list/user/*",
-                "/api/wx_orders/*"
+                "/api/wx_posts/list/page", "/api/wx_comments/list",
+                "/api/wx_products/list/page",
+                "/api/wx_user/list/**",
+                "/api/wx_evaluates/list/**"
         };
         registry.addInterceptor(this.authenticationInterceptor).addPathPatterns("/api/**").excludePathPatterns(paths);
     }

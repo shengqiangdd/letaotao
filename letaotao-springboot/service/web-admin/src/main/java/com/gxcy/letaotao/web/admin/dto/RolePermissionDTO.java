@@ -2,6 +2,7 @@ package com.gxcy.letaotao.web.admin.dto;
 
 import io.swagger.v3.oas.annotations.Parameter;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
@@ -9,6 +10,7 @@ import java.util.List;
  * 用于给角色分配权限时保存 选中的权限数据
  */
 @Data
+@NoArgsConstructor
 public class RolePermissionDTO {
     @Parameter(name = "角色编号")
     private Long roleId;//角色编号

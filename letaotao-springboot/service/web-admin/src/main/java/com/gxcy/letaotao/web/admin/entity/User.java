@@ -7,6 +7,7 @@ import com.gxcy.letaotao.web.admin.config.validator.UniqueUser;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -15,6 +16,7 @@ import java.time.LocalDateTime;
 @Data
 @TableName("sys_user")
 @Tag(name = "User对象", description = "")
+@NoArgsConstructor
 public class User implements Serializable {
 
     @Serial

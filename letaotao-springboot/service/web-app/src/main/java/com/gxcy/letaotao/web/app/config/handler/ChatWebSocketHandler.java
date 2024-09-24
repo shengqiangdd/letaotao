@@ -6,13 +6,15 @@ import com.gxcy.letaotao.common.entity.LTOrder;
 import com.gxcy.letaotao.common.enums.*;
 import com.gxcy.letaotao.web.app.service.LTWeChatMessageService;
 import com.gxcy.letaotao.web.app.service.LTWeChatOrderService;
+import com.gxcy.letaotao.web.app.utils.LoginUser;
+import com.gxcy.letaotao.web.app.utils.LoginUserHolder;
 import com.gxcy.letaotao.web.app.vo.LTWechatMessageVo;
 import com.gxcy.letaotao.web.app.vo.MessageResponse;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.ObjectUtils;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
@@ -20,10 +22,7 @@ import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
@@ -44,6 +43,7 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
     private static final String RECEIVER_ID = "receiverId";
     private static final String IS_IMAGE = "isImage";
     private static final String CONTENT = "content";
+    private static final String USER_ID = "userId";
 
     @Resource
     private LTWeChatMessageService ltWeChatMessageService;
@@ -75,6 +75,11 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
         String sessionId = session.getId();
         // 将 chatId 存储在 session 的属性中
         session.getAttributes().put(CHAT_ID, chatId);
+        // 将 userId 存储在 session 的属性中
+        LoginUser loginUser = LoginUserHolder.getLoginUser();
+        if (ObjectUtils.isNotEmpty(loginUser)) {
+            session.getAttributes().put(USER_ID, loginUser.getUserId());
+        }
 
         // 初始化存储当前 chatId 的 session 列表
         sessions.putIfAbsent(chatId, new ArrayList<>());
@@ -109,7 +114,7 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
                 });
 
         String messageType = (String) messageMap.get(MESSAGE_TYPE);
-        if (!ObjectUtils.isEmpty(messageType)) {
+        if (ObjectUtils.isNotEmpty(messageType)) {
             // 根据消息类型解析出枚举值
             LTChatType ltChatType = LTChatType.valueOf(messageType.toUpperCase());
             messageMap.put(MESSAGE_TYPE, ltChatType);
@@ -137,14 +142,15 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
         Integer chatId = (Integer) session.getAttributes().get(CHAT_ID);
         // 从messageMap解析出订单ID和状态
         Integer orderId = (Integer) messageMap.get(ORDER_ID);
-        LTOrderMessageStatus newStatus = (LTOrderMessageStatus) messageMap.get(NEW_STATUS);
+        Integer newStatus = (Integer) messageMap.get(NEW_STATUS);
+        LTOrderMessageStatus orderMessageStatus = LTOrderMessageStatus.fromCode(newStatus);
         LTWechatMessageVo ltMessage = new LTWechatMessageVo();
         ltMessage.setIsOrder(BooleanStatus.TRUE);
         ltMessage.setOrderId(orderId);
         // 根据订单ID获取订单信息
         LTOrder ltOrder = ltWeChatOrderService.getById(orderId);
         // 根据订单状态获取对应的消息标题和内容
-        switch (newStatus) {
+        switch (orderMessageStatus) {
             case AlreadyBuy:
                 ltMessage.setTitle(LTOrderMessageStatus.AlreadyBuy.getTitle());
                 ltMessage.setContent(LTOrderMessageStatus.AlreadyBuy.getContent());
@@ -179,14 +185,17 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
         ltMessage.setMessageType(LTMessageType.MESSAGE);
         // 保存消息到数据库
         LTWechatMessageVo messageVo = ltWeChatMessageService.add(ltMessage);
+
+        read(messageVo, chatId);
+
         // 封装消息响应对象
         MessageResponse messageResponse = new MessageResponse();
         messageResponse.setMessageType((LTChatType) messageMap.get(MESSAGE_TYPE));
         messageResponse.setMessage(messageVo);
         messageResponse.setOrder(ltOrder);
-        if (newStatus.getCode() > LTOrderStatus.STATUS_UNKNOWN.getCode() &&
-                newStatus.getCode() < LTOrderStatus.STATUS_CANCELLED.getCode()) {
-            messageResponse.setNewStatus(newStatus);
+        if (orderMessageStatus.getCode() > LTOrderStatus.STATUS_UNKNOWN.getCode() &&
+                orderMessageStatus.getCode() <= LTOrderStatus.STATUS_CANCELLED.getCode()) {
+            messageResponse.setNewStatus(orderMessageStatus);
         }
         // 序列化消息为JSON字符串并发送
         String jsonMessage = objectMapper.writeValueAsString(messageResponse);
@@ -240,6 +249,8 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
         // 保存消息到数据库
         LTWechatMessageVo messageVo = ltWeChatMessageService.add(ltMessage);
 
+        read(messageVo, chatId);
+
         MessageResponse messageResponse = new MessageResponse();
         messageResponse.setMessage(messageVo);
         messageResponse.setMessageType((LTChatType) messageMap.get(MESSAGE_TYPE));
@@ -271,6 +282,23 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
     @Override
     public void handleTransportError(WebSocketSession session, Throwable ex) throws Exception {
         log.error("WebSocket transport error: session={}", session, ex);
+    }
+
+    private void read(LTWechatMessageVo messageVo, Integer chatId) {
+        if (ObjectUtils.isNotEmpty(messageVo)) {
+            // 找到该chatId对应的sessions，对sessions进行遍历，判断messageMap中receiverId是否等于当前用户Id，如果是则对当前未读的消息则进行已读操作
+            for (WebSocketSession webSocketSession : sessions.get(chatId)) {
+                if (webSocketSession.isOpen()) {
+                    Long userId = (Long) webSocketSession.getAttributes().get(USER_ID);
+                    if (ObjectUtils.isNotEmpty(userId) && userId.equals(messageVo.getReceiverId())) { // 如果receiverId等于当前用户Id，则调用批量更新未读消息为已读的方法
+                        boolean read = ltWeChatMessageService.batchRead(Collections.singletonList(messageVo.getId()));
+                        if (read) { // 如果更新成功，则将messageVo的isRead设置为true
+                            messageVo.setIsRead(BooleanStatus.TRUE);
+                        }
+                    }
+                }
+            }
+        }
     }
 
 }

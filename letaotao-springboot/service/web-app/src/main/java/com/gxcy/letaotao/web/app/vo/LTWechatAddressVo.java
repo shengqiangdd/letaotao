@@ -3,6 +3,7 @@ package com.gxcy.letaotao.web.app.vo;
 import com.gxcy.letaotao.common.enums.BooleanStatus;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 
 import java.io.Serializable;
@@ -12,6 +13,7 @@ import java.io.Serializable;
  * @Date 2024/9/10 11:29
  */
 @Data
+@NoArgsConstructor
 public class LTWechatAddressVo implements Serializable {
     /**
      * 地址唯一标识

@@ -6,12 +6,15 @@ import com.gxcy.letaotao.common.enums.BooleanStatus;
 import com.gxcy.letaotao.common.enums.LTCommentType;
 import com.gxcy.letaotao.common.enums.LTLikeTargetType;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
+@NoArgsConstructor
 public class LTWechatCommentVo implements Serializable {
 
     /**
@@ -42,6 +45,7 @@ public class LTWechatCommentVo implements Serializable {
     /**
      * 留言/评论时间
      */
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime commentTime;
 

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.Parameter;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -11,6 +12,7 @@ import java.util.List;
 
 @Data
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
+@NoArgsConstructor
 public class RouterVo implements Serializable {
     @Parameter(name = "路由地址")
     private String path; // 路由地址

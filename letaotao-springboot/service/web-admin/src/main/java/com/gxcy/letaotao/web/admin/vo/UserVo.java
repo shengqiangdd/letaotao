@@ -6,6 +6,7 @@ import com.gxcy.letaotao.common.enums.GenderType;
 import com.gxcy.letaotao.web.admin.config.validator.UniqueUser;
 import io.swagger.v3.oas.annotations.Parameter;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -18,6 +19,7 @@ import java.util.List;
  * @Date 2024/9/14 17:56
  */
 @Data
+@NoArgsConstructor
 public class UserVo implements UserDetails, BaseUser {
     @Parameter(name = "用户编号")
     private Long id;

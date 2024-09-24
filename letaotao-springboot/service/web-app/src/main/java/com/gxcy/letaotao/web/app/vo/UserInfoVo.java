@@ -2,10 +2,12 @@ package com.gxcy.letaotao.web.app.vo;
 
 import com.gxcy.letaotao.common.enums.GenderType;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
 @Data
+@NoArgsConstructor
 public class UserInfoVo implements Serializable {
 
     private Long id;

@@ -26,6 +26,6 @@ public interface LTWeChatChatRelationService extends IService<LTChatRelation> {
 
     void deleteCatchById(Integer id);
 
-    public void deleteByProductId(Integer productId);
+    void deleteByProductId(Integer productId);
 
 }

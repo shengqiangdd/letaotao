@@ -4,7 +4,6 @@ package com.gxcy.letaotao.web.app.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.core.toolkit.ObjectUtils;
 import com.gxcy.letaotao.common.config.redis.CacheKeyConstants;
 import com.gxcy.letaotao.common.config.redis.RedisService;
 import com.gxcy.letaotao.common.entity.LTOrder;
@@ -19,6 +18,7 @@ import com.gxcy.letaotao.web.app.service.*;
 import com.gxcy.letaotao.web.app.vo.*;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
@@ -127,24 +127,26 @@ public class LTWeChatOrderServiceImpl extends BaseServiceImpl<LTOrderMapper, LTO
             }
 
             ltWeChatOrderVO.setStatus(LTOrderStatus.STATUS_PENDING_PAYMENT); // 待付款
+            ltWeChatOrderVO.setOrderNum(generateOrderNum(ltWeChatOrderVO)); // 生成订单号
 
             ltWechatProductVo.setIsLock(BooleanStatus.TRUE); // 锁定
             ltWechatProductVo.setLockBy(currentUser.getNickName());
             if (ltWeChatProductService.update(ltWechatProductVo)) { // 更新商品状态
-                if (this.add(ltWeChatOrderVO)) { // 创建订单
-                    log.info("用户{} 创建订单：{}", currentUser.getNickName()+currentUser.getOpenId() , ltWeChatOrderVO);
+                LTWeChatOrderVo orderVo = this.add(ltWeChatOrderVO); // 创建订单
+                if (ObjectUtils.isNotEmpty(orderVo)) {
+                    log.info("用户{} 创建订单：{}", currentUser.getNickName() + currentUser.getOpenId(), orderVo);
                     // 默认超时时间设置为30分钟
                     LocalDateTime timeout = LocalDateTime.now().plusMinutes(30);
                     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
                     String timeoutString = timeout.format(formatter);
-                    ltWeChatOrderVO.setTimeout(timeoutString);
-                    redisService.set(ltWeChatOrderVO.getBuyerId() + ":"
-                            + ltWeChatOrderVO.getOrderNum(), timeoutString, (long) (30 * 60));
-                    redisService.set(ltWeChatOrderVO.getBuyerId() + ":" + ltWeChatOrderVO.getProductId(),
-                            ltWeChatOrderVO.getOrderNum(), (long) (30 * 60));
+                    orderVo.setTimeout(timeoutString);
+                    redisService.set(orderVo.getBuyerId() + ":"
+                            + orderVo.getOrderNum(), timeoutString, (long) (30 * 60));
+                    redisService.set(orderVo.getBuyerId() + ":" + orderVo.getProductId(),
+                            orderVo.getOrderNum(), (long) (30 * 60));
                     // 启动订单取消任务
                     orderCancellationTaskManager.startCancellationTask();
-                    return ltWeChatOrderVO;
+                    return orderVo;
                 }
             }
         }
@@ -169,13 +171,13 @@ public class LTWeChatOrderServiceImpl extends BaseServiceImpl<LTOrderMapper, LTO
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean add(LTWeChatOrderVo orderVo) {
+    public LTWeChatOrderVo add(LTWeChatOrderVo orderVo) {
         LTOrder order = this.convert(orderVo);
         if (this.save(order)) {
             this.cacheOrderById(order.getId());
-            return true;
+            return this.convert(order);
         }
-        return false;
+        return null;
     }
 
     @Override
@@ -199,6 +201,11 @@ public class LTWeChatOrderServiceImpl extends BaseServiceImpl<LTOrderMapper, LTO
             throw new LTException("该状态的订单不能被删除");
         }
         if (this.removeById(id)) { // 删除订单
+            // 释放商品锁定状态
+            LTProduct ltProduct = ltWeChatProductService.getById(order.getProductId());
+            ltProduct.setLockBy("");
+            ltProduct.setIsLock(BooleanStatus.FALSE);
+            ltWeChatProductService.updateById(ltProduct);
             log.info("订单删除成功，订单号：{}", order.getOrderNum());
             return true;
         }
@@ -211,7 +218,7 @@ public class LTWeChatOrderServiceImpl extends BaseServiceImpl<LTOrderMapper, LTO
         // 通过id查询订单
         LTWeChatOrderVo ltOrder = baseMapper.getOrderById(id);
         if (ObjectUtils.isEmpty(ltOrder)) {
-           throw new LTException("订单不存在");
+            throw new LTException("订单不存在");
         }
         // 通过商品id查询商品
         LTWechatProductVo ltProduct = ltWeChatProductService.getProductRelationImagesById(ltOrder.getProductId());
@@ -263,7 +270,12 @@ public class LTWeChatOrderServiceImpl extends BaseServiceImpl<LTOrderMapper, LTO
         if (updatedOrder != null) {
             log.info("订单支付成功，订单号：{}", updatedOrder.getOrderNum());
             ltProduct.setStatus(LTProductStatus.STATUS_SOLD_OUT); // 更新商品状态
-            ltWeChatProductService.update(ltProduct);
+            boolean update = ltWeChatProductService.update(ltProduct);
+            if (update) {
+                redisService.del(updatedOrder.getBuyerId() + ":"
+                        + updatedOrder.getOrderNum());
+                redisService.del(updatedOrder.getBuyerId() + ":" + updatedOrder.getProductId());
+            }
             return true;
         } else {
             log.info("订单支付失败，订单号：{}", ltWeChatOrderVO.getOrderNum());
@@ -330,14 +342,19 @@ public class LTWeChatOrderServiceImpl extends BaseServiceImpl<LTOrderMapper, LTO
         };
         LTWeChatOrderVo updatedOrder = this.update(ltWeChatOrderVO);
         if (updatedOrder != null) {
-            log.info("订单{}成功，订单号：{}", desc ,updatedOrder.getOrderNum());
-            if(updatedOrder.getStatus().equals(LTOrderStatus.STATUS_COMPLETED)
+            log.info("订单{}成功，订单号：{}", desc, updatedOrder.getOrderNum());
+            if (updatedOrder.getStatus().equals(LTOrderStatus.STATUS_COMPLETED)
                     || updatedOrder.getStatus().equals(LTOrderStatus.STATUS_CANCELLED)) { // 订单完成或取消
                 // 解锁商品
                 LTProduct ltProduct = ltWeChatProductService.getById(updatedOrder.getProductId());
                 ltProduct.setIsLock(BooleanStatus.FALSE);
                 ltProduct.setLockBy(null);
-                ltWeChatProductService.update(ltProduct);
+                boolean update = ltWeChatProductService.update(ltProduct);
+                if (update && updatedOrder.getStatus().equals(LTOrderStatus.STATUS_CANCELLED)) {
+                    redisService.del(updatedOrder.getBuyerId() + ":"
+                            + updatedOrder.getOrderNum());
+                    redisService.del(updatedOrder.getBuyerId() + ":" + updatedOrder.getProductId());
+                }
                 log.info("商品解锁成功，商品id：{}", ltProduct.getId());
             }
             return ltWeChatOrderVO;

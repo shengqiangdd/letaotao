@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.gxcy.letaotao.common.enums.BooleanStatus;
 import com.gxcy.letaotao.common.enums.LTCollectionTargetType;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serial;
@@ -16,6 +17,7 @@ import java.sql.Timestamp;
  */
 @Data
 @TableName("lt_collection")
+@NoArgsConstructor
 public class LTCollection implements Serializable {
 
     @Serial

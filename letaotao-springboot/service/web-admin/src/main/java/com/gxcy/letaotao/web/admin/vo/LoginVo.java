@@ -4,9 +4,11 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
+@NoArgsConstructor
 public class LoginVo {
     @Parameter(name = "用户名")
     @NotEmpty(message = "用户名不能为空")

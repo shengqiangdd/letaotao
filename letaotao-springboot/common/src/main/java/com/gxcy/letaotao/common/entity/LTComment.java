@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.gxcy.letaotao.common.enums.BooleanStatus;
 import com.gxcy.letaotao.common.enums.LTCommentType;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -15,6 +16,7 @@ import java.time.LocalDateTime;
  */
 @Data
 @TableName("lt_comment")
+@NoArgsConstructor
 public class LTComment implements Serializable {
 
     @Serial

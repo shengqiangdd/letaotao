@@ -136,7 +136,7 @@ public class LTWeChatProductServiceImpl extends BaseServiceImpl<LTProductMapper,
     @Override
     @Transactional(rollbackFor = Exception.class)
     public int save(LTWeChatProductDTO productDTO) {
-       return this.handleProductOperation(productDTO, LTProductStatus.STATUS_DRAFT);
+        return this.handleProductOperation(productDTO, LTProductStatus.STATUS_DRAFT);
     }
 
     @Override
@@ -214,7 +214,7 @@ public class LTWeChatProductServiceImpl extends BaseServiceImpl<LTProductMapper,
     @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean add(LTWeChatProductDTO productDTO) {
-        if(this.save(this.convert(productDTO))) {
+        if (this.save(this.convert(productDTO))) {
             this.cacheProductById(productDTO.getId());
             return true;
         }
@@ -258,8 +258,12 @@ public class LTWeChatProductServiceImpl extends BaseServiceImpl<LTProductMapper,
     public boolean deleteById(Integer id) {
         if (this.removeById(id)) {
             // 从数据库中查询商品关联的所有图片
+            Objects.requireNonNull(cacheManager.getCache(CacheKeyConstants.IMAGES))
+                    .evictIfPresent(String.valueOf(id) + '_' + LTImagesType.PRODUCT.getCode());
             List<LTImagesVo> ltImages = ltImagesService.getImagesList(id, LTImagesType.PRODUCT);
-            ltImagesService.batchDelete(ltImages);
+            if (ltImages != null && !ltImages.isEmpty()) {
+                ltImagesService.batchDelete(ltImages);
+            }
             // 删除商品关联的留言、留言点赞、聊天消息
             ltCommentService.deleteByReferenceIdAndType(id, LTCommentType.LEAVE_MESSAGE);
             chatRelationService.deleteByProductId(id);
@@ -311,6 +315,7 @@ public class LTWeChatProductServiceImpl extends BaseServiceImpl<LTProductMapper,
                     image.setRelatedId(ltProduct.getId());
                 }
                 ltImagesService.batchUpdate(images);
+                Objects.requireNonNull(cacheManager.getCache(CacheKeyConstants.PRODUCT)).evict(ltProduct.getId());
             }
             return insert ? ltProduct.getId() : 0;
         } catch (IllegalArgumentException e) {
@@ -325,7 +330,8 @@ public class LTWeChatProductServiceImpl extends BaseServiceImpl<LTProductMapper,
             productVo.setStatus(status); // 设置商品状态
             boolean update = this.update(productVo);
             log.info("商品编号：{} 更新商品状态为：{}", productVo.getStatus(), productVo.getId());
-            Objects.requireNonNull(cacheManager.getCache(CacheKeyConstants.PRODUCT)).evict(productVo.getId());;
+            Objects.requireNonNull(cacheManager.getCache(CacheKeyConstants.PRODUCT)).evict(productVo.getId());
+            ;
             return update;
         }
         return false;

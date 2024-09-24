@@ -57,6 +57,7 @@ public class LTWeChatCollectionController {
     }
 
     @DeleteMapping("/cancel")
+    @Operation(summary = "批量取消收藏")
     public Result<?> batchCancel(@RequestBody List<Integer> ids) {
         ltCollectionService.deleteByIds(ids);
         return Result.ok().message("取消收藏成功");

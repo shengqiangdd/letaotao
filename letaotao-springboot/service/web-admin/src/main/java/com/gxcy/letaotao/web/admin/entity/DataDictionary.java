@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.*;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -15,6 +16,7 @@ import java.util.Date;
 @TableName(value = "data_dictionary")
 @Schema(description = "数据字典实体")
 @Data
+@NoArgsConstructor
 public class DataDictionary implements Serializable {
 
     @Serial

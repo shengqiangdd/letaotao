@@ -98,7 +98,7 @@ public class LTUserServiceImpl extends ServiceImpl<LTUserMapper, LTUser> impleme
             // 判断有无头像，有则删除
             if (user != null && !ObjectUtils.isEmpty(user.getAvatar())) {
                 List<LTImagesVo> imagesList = ltImagesService.getImagesList(Math.toIntExact(user.getId()), LTImagesType.USER);
-                for(LTImagesVo imagesVo : imagesList) {
+                for (LTImagesVo imagesVo : imagesList) {
                     ltImagesService.deleteById(imagesVo.getId());
                 }
             }

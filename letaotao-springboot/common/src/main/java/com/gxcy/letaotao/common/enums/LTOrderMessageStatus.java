@@ -3,6 +3,8 @@ package com.gxcy.letaotao.common.enums;
 import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.Getter;
 
+import java.util.Objects;
+
 /**
  * @Author csq
  * @Date 2024/9/10 10:27
@@ -26,6 +28,15 @@ public enum LTOrderMessageStatus implements BaseEnum {
         this.code = code;
         this.title = title;
         this.content = content;
+    }
+
+    public static LTOrderMessageStatus fromCode(Integer code) {
+        for (LTOrderMessageStatus status : values()) {
+            if (Objects.equals(status.getCode(), code)) {
+                return status;
+            }
+        }
+        throw new IllegalArgumentException("无效的状态码: " + code);
     }
 
     @Override

@@ -46,7 +46,8 @@ public class LTImagesServiceImpl extends ServiceImpl<LTImagesMapper, LTImages> i
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    @CachePut(value = CacheKeyConstants.IMAGES, key = "#result.relatedId+'_'+#result.type.code", unless = "#result == null")
+    @CachePut(value = CacheKeyConstants.IMAGES, key = "#result.relatedId+'_'+#result.type.code",
+            unless = "#result == null || #result.relatedId == null")
     public LTImagesVo upload(LTImagesDTO ltImagesDTO) {
         // 返回上传到oss的路径
         String url = fileService.upload(ltImagesDTO.getFile(),
@@ -75,7 +76,7 @@ public class LTImagesServiceImpl extends ServiceImpl<LTImagesMapper, LTImages> i
     public boolean update(LTImagesVo ltImagesVo) {
         if (this.updateById(this.convert(ltImagesVo))) {
             Objects.requireNonNull(cacheManager.getCache(CacheKeyConstants.IMAGES))
-                    .evictIfPresent(ltImagesVo.getRelatedId() +'_'+ltImagesVo.getType().getCode());
+                    .evictIfPresent(String.valueOf(ltImagesVo.getRelatedId()) + '_' + ltImagesVo.getType().getCode());
             return true;
         }
         return false;
@@ -86,11 +87,11 @@ public class LTImagesServiceImpl extends ServiceImpl<LTImagesMapper, LTImages> i
     public boolean batchUpdate(List<LTImagesVo> ltImagesVos) {
         List<LTImages> ltImages = this.convert(ltImagesVos);
         boolean updated = this.updateBatchById(ltImages);
-        if(updated) {
+        if (updated) {
             ltImagesVos.forEach(ltImagesVo -> {
                 Objects.requireNonNull(cacheManager.getCache(CacheKeyConstants.IMAGES)).evictIfPresent(ltImagesVo.getId());
                 Objects.requireNonNull(cacheManager.getCache(CacheKeyConstants.IMAGES))
-                        .evictIfPresent(ltImagesVo.getRelatedId()+'_'+ltImagesVo.getType().getCode());
+                        .evictIfPresent(String.valueOf(ltImagesVo.getRelatedId()) + '_' + ltImagesVo.getType().getCode());
             });
         }
         return false;
@@ -100,14 +101,13 @@ public class LTImagesServiceImpl extends ServiceImpl<LTImagesMapper, LTImages> i
     @Transactional(rollbackFor = Exception.class)
     public boolean batchDelete(List<LTImagesVo> ltImagesVos) {
         List<LTImages> ltImages = this.convert(ltImagesVos);
-        if(this.removeBatchByIds(ltImages)) {
+        if (this.removeBatchByIds(ltImages)) {
             ltImages.forEach(images -> {
                 Objects.requireNonNull(cacheManager.getCache(CacheKeyConstants.IMAGES)).evictIfPresent(images.getId());
                 Objects.requireNonNull(cacheManager.getCache(CacheKeyConstants.IMAGES))
-                        .evictIfPresent(images.getRelatedId()+'_'+images.getType().getCode());
+                        .evictIfPresent(String.valueOf(images.getRelatedId()) + '_' + images.getType().getCode());
                 // 删除文件
                 fileService.delete(images.getUrl());
-                log.info("图片删除成功，文件路径：{}", images.getUrl());
             });
             return true;
         }
@@ -123,8 +123,8 @@ public class LTImagesServiceImpl extends ServiceImpl<LTImagesMapper, LTImages> i
             // 删除文件
             fileService.delete(images.getUrl());
             Objects.requireNonNull(cacheManager.getCache(CacheKeyConstants.IMAGES))
-                    .evictIfPresent(images.getRelatedId()+'_'+images.getType().getCode());
-            log.info("图片删除成功，文件路径：{}", images.getUrl());
+                    .evictIfPresent(String.valueOf(images.getRelatedId()) + '_' + images.getType().getCode());
+
             // 删除图片
             return this.removeById(id);
         }

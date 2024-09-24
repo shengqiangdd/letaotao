@@ -14,6 +14,7 @@ import com.gxcy.letaotao.web.app.vo.LTWechatUserFollowVo;
 import com.gxcy.letaotao.web.app.vo.UserInfoVo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.annotation.Nonnull;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -90,7 +91,7 @@ public class WeChatUserController {
 
     @GetMapping("/followCount/{userId}")
     @Operation(summary = "获取用户关注数")
-    public Result<?> getUserFollowCount(@PathVariable Long userId) {
+    public Result<?> getUserFollowCount(@PathVariable @Nonnull Long userId) {
         UserInfoVo userInfoVo = weChatUserService.findUserFollowCount(userId);
         return Result.ok(userInfoVo);
     }

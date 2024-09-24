@@ -17,7 +17,7 @@ public interface LTWeChatOrderService extends BaseService<LTOrder> {
 
     LTWeChatOrderVo getOrderById(Integer id);
 
-    boolean add(LTWeChatOrderVo orderVo);
+    LTWeChatOrderVo add(LTWeChatOrderVo orderVo);
 
     LTWeChatOrderVo update(LTWeChatOrderVo orderVo);
 

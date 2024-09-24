@@ -30,7 +30,7 @@ public class LTWeChatAddressServiceImpl extends ServiceImpl<LTAddressMapper, LTA
     private CacheManager cacheManager;
 
     @Override
-    @Cacheable(value = CacheKeyConstants.ADDRESS, key = "#result.id", unless = "#result == null")
+    @Cacheable(value = CacheKeyConstants.ADDRESS, key = "#userId", unless = "#result == null")
     public LTWechatAddressVo findDefaultAddress(Long userId) {
         return baseMapper.findDefaultAddress(userId);
     }
@@ -42,7 +42,7 @@ public class LTWeChatAddressServiceImpl extends ServiceImpl<LTAddressMapper, LTA
     }
 
     @Override
-    @Cacheable(value = CacheKeyConstants.ADDRESS, key = "'list_'+userId", unless = "#result == null")
+    @Cacheable(value = CacheKeyConstants.ADDRESS, key = "'list_'+#userId", unless = "#result == null")
     public List<LTWechatAddressVo> findAddressList(Long userId) {
         LambdaQueryWrapper<LTAddress> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(userId != null && userId > 0, LTAddress::getUserId, userId);
@@ -62,7 +62,7 @@ public class LTWeChatAddressServiceImpl extends ServiceImpl<LTAddressMapper, LTA
             addressVo.setIsDefault(BooleanStatus.TRUE);
         }
         LTAddress ltAddress = this.convert(addressVo);
-        if(this.save(ltAddress)) {
+        if (this.save(ltAddress)) {
             this.cacheAddressById(ltAddress.getId());
             return true;
         }
@@ -81,9 +81,9 @@ public class LTWeChatAddressServiceImpl extends ServiceImpl<LTAddressMapper, LTA
     @CacheEvict(value = CacheKeyConstants.ADDRESS, key = "#id")
     public boolean deleteById(Integer id) {
         LTAddress ltAddress = this.getById(id);
-        if(this.removeById(id)) {
+        if (this.removeById(id)) {
             Objects.requireNonNull(cacheManager
-                    .getCache(CacheKeyConstants.ADDRESS)).evict("list_"+ltAddress.getUserId());
+                    .getCache(CacheKeyConstants.ADDRESS)).evict("list_" + ltAddress.getUserId());
             return true;
         }
         return false;

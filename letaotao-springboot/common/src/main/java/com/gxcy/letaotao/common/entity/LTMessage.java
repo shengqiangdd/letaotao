@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.gxcy.letaotao.common.enums.BooleanStatus;
 import com.gxcy.letaotao.common.enums.LTMessageType;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serial;
@@ -16,6 +17,7 @@ import java.time.LocalDateTime;
  */
 @Data
 @TableName("lt_message")
+@NoArgsConstructor
 public class LTMessage implements Serializable {
 
     @Serial

@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.*;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.gxcy.letaotao.common.enums.LTImagesType;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -15,6 +16,7 @@ import java.sql.Timestamp;
  */
 @Data
 @TableName("lt_images")
+@NoArgsConstructor
 public class LTImages implements Serializable {
 
     @Serial

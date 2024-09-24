@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.gxcy.letaotao.common.enums.BooleanStatus;
 import com.gxcy.letaotao.common.enums.LTMessageType;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
@@ -14,6 +15,7 @@ import java.time.LocalDateTime;
  * @Date 2024/9/9 23:06
  */
 @Data
+@NoArgsConstructor
 public class LTWechatMessageVo implements Serializable {
 
     /**
@@ -57,7 +59,7 @@ public class LTWechatMessageVo implements Serializable {
 
     private BooleanStatus isImage;
 
-    private BooleanStatus isRead;
+    private BooleanStatus isRead = BooleanStatus.FALSE;
 
     private BooleanStatus isOrder;
 

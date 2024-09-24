@@ -3,11 +3,13 @@ package com.gxcy.letaotao.web.app.dto;
 import com.gxcy.letaotao.common.enums.LTMessageType;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * 微信消息传输对象
  */
 @Data
+@NoArgsConstructor
 public class LTWeChatMessageDTO {
 
     @NotEmpty(message = "内容不能为空")

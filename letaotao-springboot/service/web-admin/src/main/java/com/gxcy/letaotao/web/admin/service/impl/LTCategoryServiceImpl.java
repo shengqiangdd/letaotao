@@ -101,7 +101,7 @@ public class LTCategoryServiceImpl extends ServiceImpl<LTCategoryMapper, LTCateg
         LTCategory ltCategory = convert(categoryVo);
         boolean save = save(ltCategory);
 
-        if(save) {
+        if (save) {
             this.cacheCategoryById(ltCategory.getId());
         }
         return save;

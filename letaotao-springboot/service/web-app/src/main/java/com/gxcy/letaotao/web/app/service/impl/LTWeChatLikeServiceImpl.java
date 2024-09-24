@@ -3,15 +3,16 @@ package com.gxcy.letaotao.web.app.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.gxcy.letaotao.common.config.redis.CacheKeyConstants;
+import com.gxcy.letaotao.common.entity.LTComment;
 import com.gxcy.letaotao.common.entity.LTLike;
 import com.gxcy.letaotao.common.enums.BooleanStatus;
 import com.gxcy.letaotao.common.enums.LTCommentType;
 import com.gxcy.letaotao.common.enums.LTLikeTargetType;
 import com.gxcy.letaotao.web.app.dto.LTLikeDTO;
+import com.gxcy.letaotao.web.app.mapper.LTCommentMapper;
 import com.gxcy.letaotao.web.app.mapper.LTLikeMapper;
 import com.gxcy.letaotao.web.app.service.LTWeChatLikeService;
 import com.gxcy.letaotao.web.app.service.WeChatUserService;
-import com.gxcy.letaotao.web.app.vo.LTUserVo;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -33,6 +34,8 @@ public class LTWeChatLikeServiceImpl extends ServiceImpl<LTLikeMapper, LTLike> i
     private CacheManager cacheManager;
     @Resource
     private WeChatUserService wechatUserService;
+    @Resource
+    private LTCommentMapper commentMapper;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -93,15 +96,16 @@ public class LTWeChatLikeServiceImpl extends ServiceImpl<LTLikeMapper, LTLike> i
     private void deleteCache(Integer targetId, LTLikeTargetType targetType) {
         Long userId = wechatUserService.getCurrentUser().getId();
         Objects.requireNonNull(cacheManager.getCache(CacheKeyConstants.LIKE))
-                .evict("count_" +targetId + "_" + targetType.getCode());
+                .evict("count_" + targetId + "_" + targetType.getCode());
         Objects.requireNonNull(cacheManager.getCache(CacheKeyConstants.LIKE))
-                .evict("bool_" +userId +"_" +targetId + "_" + targetType.getCode());
+                .evict("bool_" + userId + "_" + targetId + "_" + targetType.getCode());
         Objects.requireNonNull(cacheManager.getCache(CacheKeyConstants.POST)).evict(targetId); // 清除帖子缓存
 
-        String commentCountCacheKey = "count_" + targetId + "_" + LTCommentType.COMMENT.getCode();
-        String commentListCacheKey = targetId + "_" + LTCommentType.COMMENT.getCode();
-        String leaveMessageCountCacheKey = "count_" + targetId + "_" + LTCommentType.LEAVE_MESSAGE.getCode();
-        String leaveMessageListCacheKey = targetId + "_" + LTCommentType.LEAVE_MESSAGE.getCode();
+        LTComment comment = commentMapper.selectById(targetId);
+        String commentCountCacheKey = "count_" + comment.getReferenceId() + "_" + LTCommentType.COMMENT.getCode();
+        String commentListCacheKey = comment.getReferenceId() + "_" + LTCommentType.COMMENT.getCode();
+        String leaveMessageCountCacheKey = "count_" + comment.getReferenceId() + "_" + LTCommentType.LEAVE_MESSAGE.getCode();
+        String leaveMessageListCacheKey = comment.getReferenceId() + "_" + LTCommentType.LEAVE_MESSAGE.getCode();
         Objects.requireNonNull(cacheManager.getCache(CacheKeyConstants.COMMENT)).evict(commentCountCacheKey); // 清除评论数量缓存
         Objects.requireNonNull(cacheManager.getCache(CacheKeyConstants.COMMENT)).evict(commentListCacheKey); // 清除评论列表缓存
         Objects.requireNonNull(cacheManager.getCache(CacheKeyConstants.COMMENT)).evict(leaveMessageCountCacheKey); // 清除留言数量缓存

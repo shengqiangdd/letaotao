@@ -114,6 +114,9 @@ public class LTWeChatCommentServiceImpl extends ServiceImpl<LTCommentMapper, LTC
     @Override
     @Transactional(rollbackFor = Exception.class)
     public LTWechatCommentVo add(LTWechatCommentVo commentVo) {
+        if (commentVo.getContent().isEmpty()) {
+            return null;
+        }
         commentVo.setCommentTime(LocalDateTime.now());
         LTComment comment = this.convert(commentVo);
         if (this.save(comment)) {
@@ -144,7 +147,7 @@ public class LTWeChatCommentServiceImpl extends ServiceImpl<LTCommentMapper, LTC
     @Transactional(rollbackFor = Exception.class)
     public boolean deleteById(Integer id) {
         boolean delete = this.removeById(id);
-        if(delete) {
+        if (delete) {
             LTComment ltComment = this.getById(id);
             this.deleteByReferenceIdAndType(ltComment.getReferenceId(), ltComment.getType());
         }

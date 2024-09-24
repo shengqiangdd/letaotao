@@ -19,10 +19,8 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 /**
  * 评价表 服务实现类
@@ -45,17 +43,32 @@ public class LTWeChatEvaluateServiceImpl extends ServiceImpl<LTEvaluateMapper, L
     @Override
     @Cacheable(value = CacheKeyConstants.EVALUATE, key = "'list_'+#userId", unless = "#result == null")
     public List<LTWechatEvaluateVo> getEvaluateListByUserId(Long userId) {
-        // 通过用户ID查询评价列表
+        // 通过用户ID查询评价列表 查询用户已买卖的订单
         LambdaQueryWrapper<LTEvaluate> queryWrapper = new LambdaQueryWrapper<>();
         LambdaQueryWrapper<LTOrder> orderQueryWrapper = new LambdaQueryWrapper<>();
-        orderQueryWrapper.ne(LTOrder::getStatus, LTOrderStatus.STATUS_CANCELLED);
-        orderQueryWrapper.eq(!ObjectUtils.isEmpty(userId),
-                LTOrder::getSellerId, userId); // 查询买家订单
-        ArrayList<Integer> orderIds = ltOrderMapper.selectList(orderQueryWrapper)
-                .stream().map(LTOrder::getId).collect(Collectors.toCollection(ArrayList::new));
+        orderQueryWrapper.and(o -> o.eq(LTOrder::getSellerId, userId).or(o1 -> o1.eq(LTOrder::getBuyerId, userId))); // 卖家ID或买家ID
+        orderQueryWrapper.and(o -> o.eq(LTOrder::getStatus, LTOrderStatus.STATUS_COMPLETED)
+                .notIn(LTOrder::getStatus, LTOrderStatus.STATUS_CANCELLED, LTOrderStatus.STATUS_PENDING_PAYMENT));
+        List<LTOrder> ltOrders = ltOrderMapper.selectList(orderQueryWrapper);
+        // 订单列表卖家ID
+        List<Long> sellerOrders = ltOrders.stream().map(LTOrder::getSellerId).toList();
+        // 订单列表买家ID
+        List<Long> buyerOrders = ltOrders.stream().map(LTOrder::getBuyerId).toList();
 
-        queryWrapper.in(LTEvaluate::getOrderId, orderIds);
-        return getEvaluateList(queryWrapper);
+//        ArrayList<Integer> orderIds = ltOrders
+//                .stream().map(LTOrder::getId).collect(Collectors.toCollection(ArrayList::new));
+
+        queryWrapper.in(LTEvaluate::getOrderId, ltOrders.stream().map(LTOrder::getId).toList());
+        List<LTWechatEvaluateVo> evaluateList = getEvaluateList(queryWrapper);
+        // 遍历评价列表 根据用户ID设置卖家或买家
+        evaluateList.forEach(e -> {
+            if (sellerOrders.contains(e.getUserId())) {
+                e.setTag("卖家");
+            } else if (buyerOrders.contains(e.getUserId())) {
+                e.setTag("买家");
+            }
+        });
+        return evaluateList;
     }
 
     @Override
@@ -81,8 +94,7 @@ public class LTWeChatEvaluateServiceImpl extends ServiceImpl<LTEvaluateMapper, L
         LTEvaluate evaluate = convert(evaluateVo);
         if (this.save(evaluate)) {
             this.deleteCacheEvaluate(evaluateVo);
-            evaluateVo.setId(evaluate.getId());
-            return evaluateVo;
+            return this.convert(evaluate);
         }
         return null;
     }
@@ -90,6 +102,8 @@ public class LTWeChatEvaluateServiceImpl extends ServiceImpl<LTEvaluateMapper, L
     public void deleteCacheEvaluate(LTWechatEvaluateVo evaluateVo) {
         Objects.requireNonNull(cacheManager.getCache(CacheKeyConstants.EVALUATE)).evict("list_" + evaluateVo.getOrderId());
         Objects.requireNonNull(cacheManager.getCache(CacheKeyConstants.EVALUATE)).evict("list_" + evaluateVo.getUserId());
+        Objects.requireNonNull(cacheManager.getCache(CacheKeyConstants.EVALUATE))
+                .evictIfPresent("bool_" + evaluateVo.getOrderId() + '_' + evaluateVo.getUserId());
     }
 
     private LTEvaluate convert(LTWechatEvaluateVo evaluateVo) {

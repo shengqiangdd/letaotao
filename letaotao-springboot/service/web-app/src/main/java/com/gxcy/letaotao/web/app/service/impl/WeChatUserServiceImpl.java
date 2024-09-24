@@ -1,6 +1,6 @@
 package com.gxcy.letaotao.web.app.service.impl;
 
-import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson2.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.ObjectUtils;
@@ -205,7 +205,10 @@ public class WeChatUserServiceImpl extends BaseServiceImpl<LTUserMapper, LTUser>
     @Override
     public void logout(HttpServletRequest request, HttpServletResponse response) {
         // 获取token
-        String token = request.getParameter(LTConstants.TOKEN);
+        String token = request.getHeader(LTConstants.TOKEN);
+        if (ObjectUtils.isEmpty(token)) {
+            token = request.getParameter(LTConstants.TOKEN);
+        }
         // 从ThreadLocal中获取用户信息
         LoginUser loginUser = LoginUserHolder.getLoginUser();
 
@@ -218,7 +221,9 @@ public class WeChatUserServiceImpl extends BaseServiceImpl<LTUserMapper, LTUser>
 
     @Override
     public LTUserVo getCurrentUser() {
-        return baseMapper.findUserById(LoginUserHolder.getLoginUser().getUserId());
+        LoginUser loginUser = LoginUserHolder.getLoginUser();
+        Long userId = LoginUserHolder.getLoginUser().getUserId();
+        return baseMapper.findUserById(userId);
     }
 
     @Override
@@ -259,7 +264,7 @@ public class WeChatUserServiceImpl extends BaseServiceImpl<LTUserMapper, LTUser>
             // 判断有无头像，有则删除
             if (user != null && !ObjectUtils.isEmpty(user.getAvatar())) {
                 List<LTImagesVo> imagesList = ltImagesService.getImagesList(Math.toIntExact(user.getId()), LTImagesType.USER);
-                for(LTImagesVo imagesVo : imagesList) {
+                for (LTImagesVo imagesVo : imagesList) {
                     ltImagesService.deleteById(imagesVo.getId());
                 }
             }

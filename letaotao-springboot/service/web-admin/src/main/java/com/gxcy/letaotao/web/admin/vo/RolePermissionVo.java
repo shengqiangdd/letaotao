@@ -2,11 +2,13 @@ package com.gxcy.letaotao.web.admin.vo;
 
 import io.swagger.v3.oas.annotations.Parameter;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Data
+@NoArgsConstructor
 public class RolePermissionVo {
     @Parameter(name = "菜单数据")
     private List<PermissionVo> permissionList = new ArrayList<>();

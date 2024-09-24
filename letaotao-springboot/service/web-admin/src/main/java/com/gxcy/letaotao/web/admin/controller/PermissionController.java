@@ -72,7 +72,7 @@ public class PermissionController {
     @PreAuthorize("hasAuthority('sys:menu:add')")
     public Result<?> add(@RequestBody PermissionVo permissionVo) {
         boolean add = permissionService.add(permissionVo);
-        return  add ? Result.ok().message("菜单添加成功") : Result.error().message("菜单添加失败");
+        return add ? Result.ok().message("菜单添加成功") : Result.error().message("菜单添加失败");
     }
 
     /**

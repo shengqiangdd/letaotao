@@ -2,20 +2,20 @@ package com.gxcy.letaotao.web.app.vo;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.gxcy.letaotao.common.enums.LTOrderStatus;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 @Data
+@NoArgsConstructor
 public class LTWeChatOrderVo implements Serializable {
     private Integer id; // 订单id
 
-    @NotEmpty(message = "订单编号不能为空")
     private String orderNum; // 订单编号
 
     @NotNull(message = "买家id不能为空")

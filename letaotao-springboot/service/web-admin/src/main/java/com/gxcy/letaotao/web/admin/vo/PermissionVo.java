@@ -5,6 +5,7 @@ import com.gxcy.letaotao.common.enums.BooleanStatus;
 import com.gxcy.letaotao.common.enums.PermissionType;
 import io.swagger.v3.oas.annotations.Parameter;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ import java.util.List;
  * @Date 2024/9/14 18:04
  */
 @Data
+@NoArgsConstructor
 public class PermissionVo implements Serializable {
     @Parameter(name = "权限编号")
     private Long id;

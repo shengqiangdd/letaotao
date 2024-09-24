@@ -2,12 +2,14 @@ package com.gxcy.letaotao.web.app.dto;
 
 import com.gxcy.letaotao.common.enums.LTLikeTargetType;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * @Author csq
  * @Date 2024/9/14 11:09
  */
 @Data
+@NoArgsConstructor
 public class LTLikeDTO {
     /**
      * 点赞用户ID

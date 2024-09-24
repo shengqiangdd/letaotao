@@ -13,7 +13,7 @@ import java.util.List;
  */
 public interface LTImagesMapper extends BaseMapper<LTImages> {
 
-    @Select("select i.id,i.url from lt_images i where i.related_id = #{relatedId} and i.type = #{type.code}")
+    @Select("select i.id,i.related_id,i.url,i.`type` from lt_images i where i.related_id = #{relatedId} and i.type = #{type.code}")
     List<LTImagesVo> getImagesList(Integer relatedId, LTImagesType type); // 获取图片列表
 
 }

@@ -6,6 +6,7 @@ import com.gxcy.letaotao.common.enums.PermissionType;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -14,6 +15,7 @@ import java.util.Date;
 @Data
 @TableName("sys_permission")
 @Tag(name = "Permission对象", description = "")
+@NoArgsConstructor
 public class Permission implements Serializable {
 
     @Serial

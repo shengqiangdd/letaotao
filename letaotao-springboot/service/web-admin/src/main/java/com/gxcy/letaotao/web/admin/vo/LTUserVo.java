@@ -6,6 +6,7 @@ import com.gxcy.letaotao.common.enums.BooleanStatus;
 import com.gxcy.letaotao.common.enums.GenderType;
 import io.swagger.v3.oas.annotations.Parameter;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -15,6 +16,7 @@ import java.time.LocalDateTime;
  * @Date 2024/9/13 20:55
  */
 @Data
+@NoArgsConstructor
 public class LTUserVo implements Serializable, BaseUser {
     @Parameter(name = "用户编号")
     private Long id;

@@ -5,6 +5,7 @@ import com.gxcy.letaotao.common.enums.BooleanStatus;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
@@ -15,6 +16,7 @@ import java.sql.Timestamp;
  * @Date 2024/9/9 23:05
  */
 @Data
+@NoArgsConstructor
 public class LTWechatEvaluateVo implements Serializable {
 
     /**
@@ -57,4 +59,6 @@ public class LTWechatEvaluateVo implements Serializable {
 
 
     private String avatar;
+
+    private String tag;
 }

@@ -5,6 +5,7 @@ import com.gxcy.letaotao.common.enums.BooleanStatus;
 import com.gxcy.letaotao.common.enums.LTOrderStatus;
 import com.gxcy.letaotao.web.admin.entity.User;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -15,6 +16,7 @@ import java.sql.Timestamp;
  * @Date 2024/9/9 23:07
  */
 @Data
+@NoArgsConstructor
 public class LTOrderVo implements Serializable {
 
     /**

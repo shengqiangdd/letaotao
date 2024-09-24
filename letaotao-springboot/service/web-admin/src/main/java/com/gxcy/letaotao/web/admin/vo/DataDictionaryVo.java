@@ -2,6 +2,7 @@ package com.gxcy.letaotao.web.admin.vo;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -12,6 +13,7 @@ import java.util.List;
  * @Date 2024/9/15 13:55
  */
 @Data
+@NoArgsConstructor
 public class DataDictionaryVo implements Serializable {
     /**
      * ID

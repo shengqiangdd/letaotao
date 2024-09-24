@@ -146,7 +146,7 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
         // 删除该用户对应的角色信息
         baseMapper.deleteUserRole(userId);
         // 保存用户角色信息
-        if(baseMapper.saveUserRole(userId, roleIds) > 0) {
+        if (baseMapper.saveUserRole(userId, roleIds) > 0) {
             Objects.requireNonNull(cacheManager.getCache(CacheKeyConstants.ADMIN_USER)).evict(userId);
             return true;
         }
@@ -178,7 +178,7 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
     public boolean update(UserVo userVo) {
         // 查询用户
         LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(StringUtils.isNotEmpty(userVo.getUsername()),User::getUsername, userVo.getUsername());
+        queryWrapper.eq(StringUtils.isNotEmpty(userVo.getUsername()), User::getUsername, userVo.getUsername());
         UserVo item = this.convert(this.getOne(queryWrapper));
         // 判断对象是否为空，且查询到的用户ID不等于当前编辑的用户ID，表示该名称被占用
         if (!Objects.equals(item.getId(), userVo.getId())) {
