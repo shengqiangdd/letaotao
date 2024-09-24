@@ -1,0 +1,59 @@
+<!--pages/order-detail/order-detail.wxml-->
+<view class="order-detail-page">
+
+  <t-steps theme="dot" current="{{order.status - 1}}" >
+    <t-step-item wx:for="{{steps}}" wx:key="status" title="{{item.content}}" />
+  </t-steps>
+   
+  <!-- 订单信息卡片 -->
+  <view class="card">
+    <!-- 商品信息 -->
+    <view class="card-section" bind:tap="goToProductDetail" data-productid="{{order.product.id}}">
+      <image class="product-image" src="{{order.product.image.url}}" />
+      <view class="product-info">
+        <view class="product-desc">{{order.product.name}}</view>
+        <view class="product-price">￥{{order.product.price}}</view>
+      </view>
+    </view>
+
+    <!-- 订单详情 -->
+    <view class="card-section">
+      <view class="section-label">订单编号</view>
+      <view class="section-content">{{order.orderNum}}</view>
+    </view>
+    <view class="card-section">
+      <view class="section-label">收货地址</view>
+      <view class="section-content">{{order.addressName}}</view>
+    </view>
+    <view class="card-section">
+      <view class="section-label">{{userId === order.sellerId ? '卖家昵称' : '买家昵称'}}</view>
+      <view class="section-content">{{userId === order.sellerId ? order.seller.nickName : order.buyer.nickName}}</view>
+    </view>
+    <view class="card-section" wx:if="{{order.status === 1}}">
+      <view class="section-label">下单时间</view>
+      <view class="section-content">{{order.createTime}}</view>
+    </view>
+    <view class="card-section" wx:if="{{order.status === 2}}">
+      <view class="section-label">付款时间</view>
+      <view class="section-content">{{order.payTime}}</view>
+    </view>
+    <view class="card-section" wx:if="{{order.status === 3}}">
+      <view class="section-label">发货时间</view>
+      <view class="section-content">{{order.shipTime}}</view>
+    </view>
+    <view class="card-section" wx:if="{{order.status === 4}}">
+      <view class="section-label">成交时间</view>
+      <view class="section-content">{{order.finishTime}}</view>
+    </view>
+
+    <!-- 底部按钮区域 -->
+    <view class="card-footer">
+      <view class="button contact-button" bind:tap="contactSellerOrBuyer">
+        <t-icon name="comment" size="45rpx" prefix="icon" data-name="comment" data-type="prefix" />
+        <view>{{userId === order.sellerId ? '联系买家' : '联系卖家'}}</view>
+      </view>
+      <view class="button delete-button" bind:tap="showDeleteModal" data-orderid="{{order.id}}">删除订单</view>
+      <view class="button review-button" wx:if="{{order.isEvaluate}}" bind:tap="goToEvaluatePage" data-orderid="{{order.id}}">查看评价</view>
+    </view>
+  </view>
+</view>

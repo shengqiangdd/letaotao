@@ -1,0 +1,90 @@
+/* pages/message/message.wxss */
+.message-container {
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 50px;
+    /* 调整底部padding以避免被tabbar遮挡 */
+    height: 100vh;
+}
+
+.message-list {
+    flex: 1;
+    padding: 10px 0;
+}
+
+.message {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    /* 对齐到顶部 */
+    padding: 15px 10px;
+    /* 增大纵向padding以增加高度 */
+    background-color: #ffffff;
+    position: relative;
+    /* 用于定位 :after 伪元素 */
+}
+
+/* 在消息盒子底部添加横线 */
+.message:after {
+    content: '';
+    position: absolute;
+    left: 70px;
+    /* 假设头像和边距的宽度是70px */
+    right: 10px;
+    /* 根据页面右侧的空白调整 */
+    bottom: 0;
+    border-bottom: 0.5px solid #e6e6e6;
+    width: calc(100% - 80px);
+    /* 减去头像的宽度和一些额外的边距 */
+}
+
+.left-section {
+    display: flex;
+    align-items: flex-start;
+    /* 对齐到顶部 */
+}
+
+.avatar {
+    width: 60px;
+    /* 头像大小 */
+    height: 60px;
+    border-radius: 30px;
+    margin-right: 10px;
+}
+
+.info {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    /* 保证 .info 横向填满剩余空间 */
+}
+
+.nickname {
+    color: #333333;
+    font-weight: bold;
+    margin-bottom: 6px;
+}
+
+.content {
+    color: #666666;
+    font-size: 14px;
+    margin-bottom: 6px;
+}
+
+.datetime {
+    color: #999999;
+    font-size: 12px;
+    margin-bottom: 6px;
+}
+
+.right-section {
+    width: 80px;
+    /* 增大商品图片的尺寸 */
+    height: 80px;
+}
+
+.product-image {
+    width: 100%;
+    height: 100%;
+    border-radius: 4px;
+}

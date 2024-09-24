@@ -1,0 +1,24 @@
+<!--pages/message/message.wxml-->
+<view class="message-container">
+  <scroll-view scroll-y="true" class="message-list">
+    <block wx:for="{{messages}}" wx:key="id">
+      <view class="message" wx:if="{{item.message != null}}" data-item="{{item}}" bindtap="goToChatPage">
+        <view class="left-section">
+          <image class="avatar" src="{{item.message.avatar}}" />
+          <view class="info">
+            <view class="nickname">{{item.message.nickName}}</view>
+            <view class="content">{{item.message.content}}</view>
+            <view class="datetime">{{item.message.sendTime}}</view>
+          </view>
+        </view>
+        <view class="right-section">
+          <image class="product-image" src="{{item.product.images[0].url}}" />
+        </view>
+      </view>
+    </block>
+  </scroll-view>
+</view>
+
+<!-- <custom-tab-bar /> -->
+
+<t-message id="t-message" />

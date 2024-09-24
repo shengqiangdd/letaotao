@@ -1,0 +1,60 @@
+<!--pages/evaluate/evaluate.wxml-->
+<!-- 评价页面布局 -->
+<view class="evaluate-container">
+    <view class="header">{{ isEvaluate ? '评价详情' : '订单评价' }}</view>
+
+    <!-- 订单信息 -->
+    <view class="order-info">
+        <image src="{{order.product.image.url}}" class="product-image" />
+        <view class="order-details">
+            <view class="product-name">{{order.product.name}}</view>
+            <view class="order-time">
+                交易成功时间：{{order.finishTime}}
+            </view>
+        </view>
+    </view>
+
+    <!-- 评价列表 -->
+    <view class="evaluation-list">
+        <block wx:for="{{evaluations}}" wx:key="id">
+            <view class="evaluation-item">
+                <view class="user-info">
+                    <image src="{{item.avatar}}" class="user-avatar" />
+                    <view class="user-name">{{item.nickName}}</view>
+                    <view class="user-role me" wx:if="{{item.isMe}}">{{item.role}}我的评价</view>
+                    <view class="user-role other" wx:else>{{item.role}}的评价</view>
+                    <view class="evaluation-type {{item.isFavor ? 'good' : 'bad'}}">{{item.isFavor === 1 ? '好评' : '差评'}}</view>
+                </view>
+                <view class="evaluation-content">{{item.content}}</view>
+                <view class="evaluation-time">{{item.createTime}}</view>
+            </view>
+        </block>
+    </view>
+
+    <!-- 评价按钮 -->
+    <view wx:if="{{isMe && order && (userId === order.buyerId || userId === order.sellerId) && !isEvaluate}}">
+        <button class="evaluate-button" bind:tap="showPopup">发表评价</button>
+    </view>
+</view>
+
+<!-- 评价弹出层 -->
+<t-popup visible="{{visible}}" bind:visible-change="onVisibleChange" placement="bottom" t-class="popup">
+    <view class="header">
+        <view class="btn btn--cancel" bind:tap="closePopup">取消</view>
+        <view class="title">发表评价</view>
+        <view class="btn btn--confirm" bind:tap="submitEvaluation">发布</view>
+    </view>
+    <view class="popup-content">
+        <textarea class="evaluation-input" placeholder="请输入评价内容" bindinput="inputChange"></textarea>
+        <view class="evaluation-type-selector">
+            <radio-group bindchange="radioChange">
+                <label>
+                    <radio value="1" checked="{{isFavor === 1}}" />好评
+                </label>
+                <label>
+                    <radio value="0" checked="{{isFavor === 0}}" />差评
+                </label>
+            </radio-group>
+        </view>
+    </view>
+</t-popup>

@@ -1,0 +1,66 @@
+/* pages/myProduct/myProduct.wxss */
+.tab-container {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 15rpx;
+    margin-bottom: 15rpx;
+}
+
+.tab.active {
+    border-bottom: 2px solid orange;
+}
+
+.product-item {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+}
+
+.product-info {
+    display: flex;
+}
+
+.product-image {
+    width: 80px;
+    height: 80px;
+    margin-right: 10px;
+}
+
+.product-info1 {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.product-title {
+    font-weight: bold;
+}
+
+.product-description {
+    margin-top: 5px;
+    color: #666;
+}
+
+.product-price {
+    margin-top: 5px;
+    color: #e64340;
+}
+
+.product-actions {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.action-btn {
+    display: inline-block;
+    width: 100px;
+    height: 30px;
+    line-height: 30px;
+    margin-left: 10px;
+    background-color: #f0f0f0;
+    border-radius: 20px;
+}
+
+.no-more-data{
+    text-align: center;
+}

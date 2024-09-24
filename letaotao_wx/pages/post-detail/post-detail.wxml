@@ -1,0 +1,81 @@
+<!--pages/post-detail/post-detail.wxml-->
+<view class="post-detail">
+
+    <!-- 帖子头部 -->
+    <view class="post-header">
+        <!-- 用户信息 -->
+        <view class="user-info" bindtap="goToPersonalHomePage">
+            <image class="avatar" src="{{post.avatar}}" />
+            <text class="nickname">{{post.nickName}}</text>
+        </view>
+        <view class="follow-button" wx:if="{{userId !== post.userId}}">
+            <!-- 关注按钮 -->
+            <view wx:if="{{post.isFollowed !== 1}}" class="follow" bindtap="followUser">
+                <t-icon name="jia" size="30rpx" prefix="icon" data-name="jia" data-type="prefix" class="plus-icon" />
+                <text>关注</text>
+            </view>
+            <text wx:else class="follow" bindtap="followUser">已关注</text>
+        </view>
+    </view>
+
+    <!-- 图片轮播 -->
+    <swiper class="post-images-swiper" indicator-dots="true" autoplay="true" interval="5000" circular="true">
+        <swiper-item wx:for="{{post.images}}" wx:key="index">
+            <image src="{{item.url}}" class="swiper-image" mode="aspectFill" />
+        </swiper-item>
+    </swiper>
+
+    <!-- 帖子内容 -->
+    <view class="post-content">
+        <view class="post-title">{{post.title}}</view>
+        <view class="post-text">{{post.content}}</view>
+        <view class="post-time">{{post.postTime}}</view>
+    </view>
+
+    <!-- 评论 -->
+    <view class="comments-section">
+        <view class="comment-count">{{ post.commentCount }}条评论</view>
+        <scroll-view class="scroll-view" scroll-y enable-flex="true">
+            <comment-list class="all-comments" userId="{{userId}}" commentType="{{2}}" post="{{post}}" bind:commentcountchange="onCommentCountChange" />
+        </scroll-view>
+    </view>
+
+    <!-- 底部固定操作区 -->
+    <view class="bottom-fixed-operate">
+        <!-- 输入框、笔图标 -->
+        <view class="input-box" bind:tap="replyComment">
+            <t-icon name="edit-2" size="35rpx" class="pencil-icon" />
+            <input placeholder="写评论..." />
+        </view>
+        <!-- 操作区 -->
+        <view class="actions">
+            <!-- 收藏 -->
+            <view class="action" bindtap="toggleFavorite">
+                <t-icon wx:if="{{post.isFavorite === 1}}" name="star-fill" color="#f5ba18" size="45rpx" prefix="icon" data-type="prefix" class="action-icon" />
+                <t-icon wx:else name="shoucang" size="45rpx" prefix="icon" data-type="prefix" class="action-icon" />
+                <text>{{post.collectCount}}</text>
+            </view>
+            <!-- 评论图标和数量 -->
+            <view class="action" bindtap="showAllCommentsPopup">
+                <t-icon name="pinglun" size="45rpx" prefix="icon" data-type="prefix" class="action-icon" />
+                <text>{{post.commentCount}}</text>
+            </view>
+            <!-- 点赞 -->
+            <view class="action" bindtap="toggleLikePost">
+                <t-icon wx:if="{{post.isLiked === 1}}" name="like-fill" color="#e851b3" size="45rpx" prefix="icon" data-type="prefix" class="action-icon" />
+                <t-icon wx:else name="dianzan_2" size="45rpx" prefix="icon" data-type="prefix" class="action-icon" />
+                <text>{{post.likeCount}}</text>
+            </view>
+        </view>
+    </view>
+
+    <!-- 弹出输入框的popup -->
+    <t-popup id="commentPopup" visible="{{ popupVisible }}" placement="bottom" bind:visible-change="onInputVisibleChange">
+        <view class="popup-input-container">
+            <input type="text" value="{{newCommentContent}}" focus="{{ inputFocus }}" placeholder="{{ placeholderText }}" confirm-type="send" bindinput="handleInput" bindconfirm="addComment" />
+        </view>
+    </t-popup>
+
+</view>
+
+<t-message id="t-message" />

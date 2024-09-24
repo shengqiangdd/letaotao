@@ -1,0 +1,22 @@
+<!--pages/post-publish/post-publish.wxml-->
+<view class="top-bar">
+    <view class="publish-btn">
+        <view bindtap="save" class="save-btn" wx:if="{{!isEdit}}">存草稿</view>
+        <view bindtap="publish" class="publish-btn">发布</view>
+    </view>
+</view>
+<view class="post-container">
+    <view class="post-content">
+        <!-- 帖子标题 -->
+        <t-input label="帖子标题" value="{{postInfo.title}}" layout="vertical" placeholder="请输入帖子标题" bind:change="onInputTitleChange">
+        </t-input>
+        <!-- 帖子内容 -->
+        <t-textarea label="帖子内容" value="{{postInfo.content}}" t-class="external-class" placeholder="请输入帖子内容" bind:change="onInputContentChange">
+        </t-textarea>
+        <!-- 图片上传 -->
+        <t-upload media-type="{{['image']}}" files="{{fileList}}" gridConfig="{{gridConfig}}" bind:success="handleImageSuccess" bind:remove="handleImageRemove" bind:click="handleImageClick" bind:drop="handleImageDrop" max="9">
+        </t-upload>
+    </view>
+</view>
+
+<t-message id="t-message" />

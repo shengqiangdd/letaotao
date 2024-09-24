@@ -1,0 +1,15 @@
+<!--pages/pay/pay.wxml-->
+<view class="pay-container">
+    <view class="price-row">
+        <text>价格:</text>
+        <text>￥{{order.price}}</text>
+    </view>
+    <view class="remaining-time-row">
+        <text>剩余时间:</text>
+        <text>{{remainingTime}}</text>
+    </view>
+    <view class="action-buttons">
+        <button bindtap="onPay">支付</button>
+        <button bindtap="onCancelOrder">取消订单</button>
+    </view>
+</view>

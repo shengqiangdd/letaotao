@@ -1,0 +1,44 @@
+/* pages/follow-list/follow-list.wxss */
+.user-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #eee;
+    padding: 10px;
+}
+
+.avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+
+.user-info {
+    flex: 1;
+    margin-left: 10px;
+}
+
+.nickname {
+    font-size: 16px;
+    margin-bottom: 5px;
+}
+
+.follow-count {
+    color: #999;
+}
+
+.follow-btn {
+    display: flex;
+    align-items: center;
+    padding: 5px 10px;
+    border-radius: 15px;
+    background-color: #f0f0f0;
+}
+
+.followed-text {
+    color: #999;
+}
+
+.no-follows{
+    text-align: center;
+}

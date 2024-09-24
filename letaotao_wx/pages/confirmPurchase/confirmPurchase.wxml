@@ -1,0 +1,32 @@
+<!--pages/confirmPurchase/confirmPurchase.wxml-->
+<view class="confirm-purchase-container">
+    <!-- 收货地址卡片 -->
+    <navigator url="../address/address?from=confirmPurchase" class="address-card">
+        <t-cell title="{{address.region}} {{address.detailAddress}}" 
+                description="{{address.contactPerson}} {{address.phone}}" 
+                hover 
+                arrow />
+    </navigator>
+
+    <!-- 商品信息卡片 -->
+    <view class="product-card">
+        <view class="title">商品信息</view>
+        <view class="product-info">
+            <image class="product-image" src="{{product.image.url}}"></image>
+            <text class="product-name">{{product.name}}</text>
+        </view>
+        <view class="price-info">
+            <text>小计</text>
+            <text>￥{{product.price}}</text>
+        </view>
+    </view>
+
+    <!-- 底部价格和确认购买按钮 -->
+    <view class="bottom-bar">
+        <view class="total-price">
+            <text>合计：</text>
+            <text>￥{{product.price}}</text>
+        </view>
+        <button class="confirm-btn" bindtap="onConfirmPurchase">确认购买</button>
+    </view>
+</view>

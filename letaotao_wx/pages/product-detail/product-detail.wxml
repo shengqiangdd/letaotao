@@ -1,0 +1,80 @@
+<!-- pages/product-detail/product-detail.wxml -->
+<view class="product-detail">
+
+    <view class="seller-info-box">
+        <view class="seller-info" bindtap="goToPersonalHomePage">
+            <image class="seller-avatar" src="{{product.avatar}}" />
+            <text class="seller-nickname">{{product.nickName}}</text>
+        </view>
+        <view class="follow-button" wx:if="{{userId !== product.publisherId}}">
+            <view wx:if="{{product.isFollowed != 1}}" class="follow" bindtap="followUser">
+                <t-icon name="jia" size="30rpx" prefix="icon" data-name="jia" data-type="prefix" />
+                <text>关注</text>
+            </view>
+            <text wx:else class="follow" bindtap="followUser">已关注</text>
+        </view>
+    </view>
+
+    <view class="product-info">
+        <view class="price-content">
+            <text class="price-symbol">￥</text>
+            <text class="price-text">{{product.price}}</text>
+        </view>
+        <text class="condition">{{product.condition}}</text>
+    </view>
+
+    <view class="description">{{product.description}}</view>
+
+    <scroll-view scroll-y class="product-images">
+        <view wx:for="{{ product.images }}" wx:key="id" class="product-image-container">
+            <image class="product-image" data-index="{{index}}" data-images="{{product.images}}" mode="aspectFit" src="{{item.url}}" bindtap="onImageClick" />
+        </view>
+    </scroll-view>
+
+    <!-- 留言 -->
+    <view class="comments-section">
+        <view class="comments-header">
+            <text class="comment-count">{{ product.commentCount }}条留言</text>
+            <view class="comment-input-container" wx:if="{{product.status !== 4}}">
+                <image class="buyer-avatar" wx:if="{{ userInfo.avatar }}" src="{{ userInfo.avatar }}" />
+                <image class="buyer-avatar" wx:else src="../../images/default-avatar.png" />
+                <!-- 点击留言区域弹出回复框 -->
+                <view class="comment-input" bindtap="replyComment">
+                    <text>留言...</text>
+                </view>
+            </view>
+        </view>
+
+        <scroll-view class="scroll-view" scroll-y enable-flex="true">
+            <comment-list class="all-comments" userId="{{userId}}" commentType="{{1}}" product="{{product}}" bind:commentcountchange="onCommentCountChange" />
+        </scroll-view>
+    </view>
+
+    <!-- 底部操作栏 -->
+    <view class="footer-bar" wx:if="{{product.status !== 4}}">
+        <view class="action-item" bindtap="toggleFavorite">
+            <t-icon name="{{product.isFavorite == 1 ? 'star-fill' : 'star'}}" color="{{product.isFavorite == 1 ? '#f5ba18' : ''}}" size="55rpx" prefix="icon" data-type="prefix"></t-icon>
+            <text>{{product.collectCount}}</text>
+        </view>
+        <view class="action-item" bindtap="showAllCommentsPopup">
+            <t-icon name="message" size="55rpx" prefix="icon" data-type="prefix"></t-icon>
+            <text>{{product.commentCount}}</text>
+        </view>
+        <view class="interaction" wx:if="{{product.publisherId !== userId}}" bind:tap="contactSeller">
+            <t-icon name="comment" size="45rpx" prefix="icon" data-type="prefix"></t-icon>
+            <text>联系卖家</text>
+        </view>
+    </view>
+
+    <t-image-viewer visible="{{viewerVisible}}" showIndex="{{showViewerIndex}}" images="{{viewerImages}}" initial-index="{{viewerInitialIndex}}" bindclose="onViewerClose"></t-image-viewer>
+
+    <!-- 弹出输入框的popup -->
+    <t-popup id="commentPopup" visible="{{ popupVisible }}" placement="bottom" bind:visible-change="onInputVisibleChange">
+        <view class="popup-input-container">
+            <input type="text" value="{{newCommentContent}}" focus="{{ inputFocus }}" placeholder="{{ placeholderText }}" confirm-type="send" bindinput="handleInput" bindconfirm="addComment" />
+        </view>
+    </t-popup>
+
+</view>
+
+<t-message id="t-message" />

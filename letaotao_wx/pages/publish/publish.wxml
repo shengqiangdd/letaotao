@@ -1,0 +1,80 @@
+<!--pages/publish/publish.wxml-->
+<view class="top-bar">
+    <view class="publish-btn">
+        <view class="save" bindtap="save" wx:if="{{!isEdit}}">存草稿</view>
+        <view class="publish" bindtap="publish">发布</view>
+    </view>
+</view>
+<view class="product-container">
+    <view class="product-content">
+
+        <!-- 商品标题 -->
+        <t-input label="商品标题" value="{{productInfo.name ? productInfo.name : ''}}" layout="vertical" placeholder="请输入商品标题" bind:blur="onInputTitleChange">
+        </t-input>
+
+        <!-- 商品内容描述 -->
+        <t-textarea label="商品内容描述" value="{{productInfo.description ?productInfo.description : ''}}" t-class="external-class" placeholder="请输入商品内容描述" bind:blur="onInputDescriptionChange">
+        </t-textarea>
+
+        <!-- 图片上传 -->
+        <view class="wrapper">
+            <t-upload media-type="{{['image']}}" files="{{fileList}}" gridConfig="{{gridConfig}}" bind:success="handleImageSuccess" bind:remove="handleImageRemove" bind:click="handleImageClick" bind:drop="handleImageDrop" max="{{9}}">
+            </t-upload>
+        </view>
+
+        <!-- 分类选择 -->
+        <t-cell title="分类" arrow note="{{productInfo.id > 0 ? productInfo.categoryName : (selectedCategory.label || '请选择分类')}}" bind:click="togglePopup">
+        </t-cell>
+
+        <!-- 成色选择 -->
+        <t-cell title="成色" arrow hover note="{{productInfo.id > 0 ? productInfo.condition : conditionText}}" bind:click="onConditionPicker" />
+
+        <!-- 成色选择弹窗 -->
+        <t-picker visible="{{conditionVisible}}" value="{{productInfo.id > 0 ? [productInfo.condition] : conditionValue}}" data-key="condition" title="选择成色" cancelBtn="取消" confirmBtn="确认" bindchange="onConditionChange" bindcancel="onConditionCancel">
+            <t-picker-item options="{{conditions}}" />
+        </t-picker>
+
+        <!-- 价格选择 -->
+        <t-cell title="价格" arrow note="{{productInfo.id > 0 ? productInfo.price : price}}" bind:click="openPricePopup">
+        </t-cell>
+
+        <!-- 分类选择弹窗 -->
+        <t-popup visible="{{showCategoryPopup}}" placement="bottom" bind:visible-change="onCategoryVisibleChange">
+            <view class="category-popup">
+                <view class="category-list">
+                    <view wx:for="{{currentCategories}}" wx:key="id" class="category-item" bindtap="enterSubCategories" data-id="{{item.id}}">
+                        {{item.label}}
+                        <!-- 如果有子分类，就显示可展开的指示符 -->
+                        <text wx:if="{{item.children && item.children.length > 0}}">></text>
+                    </view>
+                </view>
+            </view>
+        </t-popup>
+
+        <!-- 价格输入弹窗 -->
+        <t-popup visible="{{showPricePopup}}" placement="bottom" bind:visible-change="onPriceVisibleChange">
+            <view class="price-popup">
+                <!-- 顶部价格输入框 -->
+                <input class="price-input" type="text" placeholder="0.00" value="{{price}}" disabled />
+
+                <!-- 数字键盘区域 -->
+                <view class="keyboard-container">
+                    <!-- 数字键盘 -->
+                    <view class="number-keyboard">
+                        <view class="key" wx:for="{{keys}}" wx:key="index" bindtap="onKeyPress" data-key="{{item}}">
+                            {{item}}
+                        </view>
+                    </view>
+
+                    <!-- 操作键盘 -->
+                    <view class="operation-keyboard">
+                        <view class="key delete-key" bindtap="onDeleteKeyPress">x</view>
+                        <view class="key confirm-key" bindtap="onConfirmKeyPress">确定</view>
+                    </view>
+                </view>
+            </view>
+        </t-popup>
+    </view>
+</view>
+
+<t-message id="t-message" />

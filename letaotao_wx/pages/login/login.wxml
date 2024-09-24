@@ -1,0 +1,23 @@
+<!--pages/login/login.wxml-->
+<view class="login-container">
+    <button class="login-btn" bindtap="onLogin">
+        微信登录
+    </button>
+</view>
+
+<!-- 自定义信息的对话框 -->
+<t-dialog visible="{{showCustomDialog}}" title="设置你的个人信息" confirm-btn="确定" cancel-btn="取消" bind:confirm="confirmCustomization" bind:cancel="closeDialog">
+    <!-- 昵称和头像的输入框 -->
+    <view slot="content" class="content">
+        <!-- 头像选择 -->
+        <view class="avatar-section">
+            <button class="avatar-button" open-type="chooseAvatar" bindchooseavatar="onChooseAvatar">
+                <image class="avatar" src="{{avatarUrl}}"></image>
+            </button>
+        </view>
+        <!-- 昵称输入框 -->
+        <view class="nickname-section">
+            <input type="nickname" class="nickname-input" placeholder="请输入昵称" bindblur="onNicknameInput" />
+        </view>
+    </view>
+</t-dialog>

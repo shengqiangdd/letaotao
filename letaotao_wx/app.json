@@ -1,0 +1,63 @@
+{
+    "pages": [
+        "pages/index/index",
+        "pages/community/community",
+        "pages/publish/publish",
+        "pages/message/message",
+        "pages/profile/profile",
+        "pages/login/login",
+        "pages/post-publish/post-publish",
+        "pages/post-detail/post-detail",
+        "pages/product-detail/product-detail",
+        "pages/category/category",
+        "pages/search/search",
+        "pages/show-list/show-list",
+        "pages/follow-list/follow-list",
+        "pages/chat/chat",
+        "pages/settings/settings",
+        "pages/address/address",
+        "pages/editAddress/editAddress",
+        "pages/confirmPurchase/confirmPurchase",
+        "pages/pay/pay",
+        "pages/myCollection/myCollection",
+        "pages/myBrowse/myBrowse",
+        "pages/myPost/myPost",
+        "pages/myProduct/myProduct",
+        "pages/myOrder/myOrder",
+        "pages/personalHome/personalHome",
+        "pages/evaluate/evaluate",
+        "pages/order-detail/order-detail",
+        "pages/personalDetail/personalDetail"
+    ],
+    "requiredPrivateInfos": [
+        "chooseAddress"
+    ],
+    "window": {
+        "navigationBarTextStyle": "black",
+        "navigationBarTitleText": "乐淘淘",
+        "navigationBarBackgroundColor": "#ffffff",
+        "backgroundColor": "#eeeeee",
+        "backgroundTextStyle": "light"
+    },
+    "tabBar": {
+        "custom": true,
+        "color": "#6C757D",
+        "selectedColor": "#FD7E14",
+        "list": [{
+            "pagePath": "pages/index/index",
+            "text": "首页"
+        }, {
+            "pagePath": "pages/community/community",
+            "text": "社区"
+        }, {
+            "pagePath": "pages/message/message",
+            "text": "消息"
+        }, {
+            "pagePath": "pages/profile/profile",
+            "text": "我的"
+        }]
+    },
+    "componentFramework": "glass-easel",
+    "sitemapLocation": "sitemap.json",
+    "lazyCodeLoading": "requiredComponents"
+}

@@ -1,0 +1,63 @@
+<!--pages/chat/chat.wxml-->
+<view class="chat-container">
+    <!-- 聊天头部信息，包括对方昵称和商品信息 -->
+    <view class="chat-header">
+        <view class="product-group">
+            <view class="nickname">
+                <text>{{otherName}}</text>
+            </view>
+            <view class="product-info-group">
+                <view class="product-info">
+                    <image class="product-image" src="{{product.image.url}}" bindtap="goToProductDetail" data-id="{{product.id}}"></image>
+                    <text class="product-price">￥{{product.price}}</text>
+                </view>
+                <view class="action-buttons">
+                    <button class="btn" bindtap="onBuy" wx:if="{{!order && userId != seller.id}}">立即购买</button>
+                    <button class="btn" bindtap="showDeliveryDialog" wx:if="{{order && order.status === 2 && userId === order.sellerId}}">立即送货</button>
+                    <button class="btn" bindtap="showReceiveDialog" wx:elif="{{order && order.status === 3 && userId === order.buyerId}}">立即收货</button>
+                    <button class="btn" bindtap="goToEvaluate" wx:elif="{{order && order.status === 4 && !order.isEvaluate}}">去评价</button>
+                    <button class="btn" bindtap="goToEvaluate" wx:elif="{{order && order.status === 4 && order.isEvaluate}}">查看评价</button>
+                </view>
+            </view>
+        </view>
+    </view>
+
+    <!-- 聊天内容列表 -->
+    <view class="chat-messages">
+        <scroll-view scroll-y="true" scroll-with-animation="{{true}}" scroll-into-view="{{toView}}" class="scroll-view">
+            <block wx:for="{{messages}}" wx:key="id">
+                <view class="message">
+                    <view class="message-time">{{item.sendTime}}</view>
+                    <view class="message-content {{item.senderId !== userId ? 'left' : 'right'}}">
+                        <image class="avatar" src="{{item.senderId !== userId ? otherAvatar : userInfo.avatar}}" bindtap="goToUserPersonalHome" data-id="{{item.senderId === otherId ? otherId : userId}}"></image>
+                        <view class="message-text {{item.isOrder === 1 ? 'order' : 'normal'}}" wx:if="{{item.isImage !== 1}}">
+                            <view wx:if="{{item.isOrder === 1}}" class="">
+                                <view class="title">{{item.title}}</view>
+                                <view class="content">{{item.content}}</view>
+                            </view>
+                            <text wx:else="">{{item.content}}</text>
+                        </view>
+                        <image class="message-image" wx:else src="{{item.content}}" mode="aspectFill" bind:tap="onImageClick" data-image="{{item.content}}" />
+                        <view wx:if="{{item.senderId === userId}}" class="read-flag {{item.isRead === 1 ? 'yes' : 'no'}}">{{item.isRead === 1 ? '已读' : '未读'}}</view>
+                    </view>
+                </view>
+            </block>
+            <!-- 在最后一条消息中设置滚动的目标id -->
+            <view id="bottom"></view>
+        </scroll-view>
+    </view>
+
+    <!-- 输入区域 -->
+    <view class="input-area">
+        <input class="message-input" value="{{messageInput}}" placeholder="输入信息..." confirm-type="send" bindinput="onInput" bindconfirm="sendMessage" />
+        <t-icon name="image" size="24" bindtap="onChooseImage"></t-icon>
+        <view class="send-btn" wx:if="{{messageInput.length > 0}}" bindtap="sendMessage">发送</view>
+    </view>
+</view>
+
+<!-- Dialogs -->
+<t-dialog visible="{{showDeliveryConfirm}}" title="确认发货" content="您是否准备好商品准备送货？" confirm-btn="确定" cancel-btn="取消" bind:confirm="handleDeliveryConfirm" bind:cancel="hideDeliveryDialog" />
+
+<t-dialog visible="{{showReceiveConfirm}}" title="确认收货" content="您是否已经收到商品？" confirm-btn="确定" cancel-btn="取消" bind:confirm="handleReceiveConfirm" bind:cancel="hideReceiveDialog" />
+
+<t-image-viewer visible="{{viewerVisible}}" images="{{viewerImages}}" bind:close="onViewerClose"></t-image-viewer>

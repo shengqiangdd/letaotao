@@ -1,0 +1,67 @@
+<!--components/commentList.wxml-->
+<wxs src="../../utils/format.wxs" module="format" />
+<view class="comment-list">
+    <view wx:for="{{comments}}" wx:key="id" class="comment">
+        <view class="comment-body">
+            <view class="comment-content">
+                <image class="avatar" src="{{item.avatar}}" />
+                <view class="comment-info" data-item="{{item}}" bindtap="replyComment">
+                    <view class="nickname-and-seller">
+                        <text class="nickname">{{item.nickName}}</text>
+                        <text wx:if="{{commentType === 1 && item.isSeller}}" class="seller-tag">卖家</text>
+                    </view>
+                    <text class="comment-text">{{item.content}}</text>
+                    <text class="comment-time">{{item.commentTime}}</text>
+                </view>
+                <view class="like-info">
+                    <t-icon name="{{item.isLiked === 1 ? 'like-fill' : 'like'}}" color="{{item.isLiked === 1 ? '#e851b3' : ''}}" size="33rpx" prefix="icon" class="like-icon" data-commentId="{{item.id}}" bindtap="likeComment" />
+                    <text wx:if="{{item.likeCount > 0}}">{{item.likeCount}}</text>
+                </view>
+            </view>
+
+            <!-- 留言下的回复列表，初始化显示一条，如果有回复的话 -->
+            <view wx:if="{{item.child && item.child.length > 0}}" class="child-comments">
+                <view wx:if="{{item.expand}}">
+                    <comment-list is-child="{{true}}" show-all="{{false}}" child="{{item.child}}" userId="{{userId}}" commentType="{{commentType}}" product="{{product}}" post="{{post}}" bind:commentcountchange="onCommentCountChange"></comment-list>
+                </view>
+                <view wx:else>
+                    <comment-list is-child="{{true}}" show-all="{{false}}" child="{{format.formatChild(item)}}" userId="{{userId}}" commentType="{{commentType}}" product="{{product}}" post="{{post}}" bind:commentcountchange="onCommentCountChange"></comment-list>
+                </view>
+            </view>
+
+            <!-- 查看全部回复按钮 -->
+            <view bindtap="toggleReplies" data-id="{{item.id}}" wx:if="{{item.child && item.child.length > 1}}" class="view-all-replies">
+                {{item.expand ? '收起回复' : '查看' + item.child.length + '条回复'}}
+            </view>
+        </view>
+    </view>
+
+    <!-- 查看全部留言按钮 -->
+    <view wx:if="{{!isChild && showAll && comments.length > 0}}" bindtap="showAllCommentsPopup" class="view-all-comments">
+        {{commentType === 1 ? '查看全部留言' : '查看全部评论'}}
+    </view>
+</view>
+
+<!-- 弹出输入框的popup -->
+<t-popup id="commentPopup" visible="{{commentPopupVisible}}" placement="bottom" bind:visible-change="onCommentPopupVisibleChange">
+    <view class="popup-input-container">
+        <input type="text" value="{{newCommentContent}}" focus="{{inputFocus}}" placeholder="{{placeholderText}}" confirm-type="send" bindinput="onCommentInput" bindconfirm="addComment" />
+    </view>
+</t-popup>
+
+<!-- 全部留言的popup -->
+<t-popup wx:if="{{!isChild && showAll}}" visible="{{allCommentsPopupVisible}}" placement="bottom" t-class-content="popup-comments-container" bind:visible-change="onAllCommentsPopupVisibleChange">
+    <view wx:if="{{allCommentsPopupVisible}}">
+        <view class="all-comments">
+            <scroll-view scroll-y="true" enable-flex="true" scroll-with-animation="{{true}}" scroll-into-view="{{toView}}" class="popup-scroll-view">
+                <comment-list is-child="{{false}}" show-all="{{false}}" userId="{{userId}}" commentType="{{commentType}}" product="{{product}}" post="{{post}}" class="popup-comments" bind:commentcountchange="onCommentCountChange" bind:scrollToBottom="onScrollToBottom"></comment-list>
+                <!-- 在最后一条消息中设置滚动的目标id -->
+                <view id="bottom"></view>
+            </scroll-view>
+        </view>
+        <view class="comment-input-container">
+            <input class="comment-input" confirm-type="send" value="{{inputContent}}" bindinput="onInputChange" placeholder="{{commentType === 1 ? '留言...' : '评论...'}}" />
+            <view class="send-btn" wx:if="{{inputContent}}" bindtap="sendComment">发送</view>
+        </view>
+    </view>
+</t-popup>

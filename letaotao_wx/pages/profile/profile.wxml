@@ -1,0 +1,63 @@
+<!--pages/profile/profile.wxml-->
+<view class="profile-container">
+    <view class="profile-setting" bind:tap="goSetting">
+        <t-icon name="setting" size="48rpx" />
+        <text>设置</text>
+    </view>
+    <view class="profile-header" bindtap="goToPersonalHomePage">
+        <view class="profile-avatar">
+            <image class="avatar-image" wx:if="{{userInfo.avatar != ''}}" src="{{userInfo.avatar}}"></image>
+            <image class="avatar-image" wx:else src="../../images/default-avatar.png"></image>
+        </view>
+        <view class="profile-info">
+            <view class="nickname" bind:tap="goLogin">{{userInfo.nickName}}</view>
+            <view class="follow-info">
+                <view class="followers">{{userInfo.followingCount}}关注</view>
+                <view class="following">{{userInfo.followerCount}}粉丝</view>
+            </view>
+        </view>
+        <view class="profile-right">
+            <t-icon name="chevron-right" />
+        </view>
+    </view>
+
+    <view class="grid-section">
+        <view class="grid-title">我的近期</view>
+        <view class="grid-content">
+            <view class="grid-item" bindtap="goToMyCollectionPage">
+                <t-icon name="shoucang_2" size="48rpx" prefix="icon" data-name="shoucang_2" data-type="prefix" />
+                <text>我的收藏</text>
+            </view>
+            <view class="grid-item" bindtap="goToMyBrowsePage">
+                <t-icon name="liulan" size="48rpx" prefix="icon" data-name="liulan" data-type="prefix" />
+                <text>我的浏览</text>
+            </view>
+            <view class="grid-item" bindtap="goToMyPostPage">
+                <t-icon name="line-discusstaolun" size="48rpx" prefix="icon" data-name="line-discusstaolun" data-type="prefix" />
+                <text>我的帖子</text>
+            </view>
+        </view>
+    </view>
+
+    <view class="grid-section">
+        <view class="grid-title">我的交易</view>
+        <view class="grid-content">
+            <view class="grid-item" bindtap="goToMyProductPage">
+                <t-icon name="mall-bag" size="48rpx" prefix="icon" data-name="mall-bag" data-type="prefix" />
+                <text>我发布的</text>
+            </view>
+            <view class="grid-item" bindtap="goToMyOrderPage" data-isBuy="{{false}}">
+                <t-icon name="finance" size="48rpx" prefix="icon" data-name="finance" data-type="prefix" />
+                <text>我卖出的</text>
+            </view>
+            <view class="grid-item" bindtap="goToMyOrderPage" data-isBuy="{{true}}">
+                <t-icon name="shopping" size="48rpx" prefix="icon" data-name="shopping" data-type="prefix" />
+                <text>我买到的</text>
+            </view>
+        </view>
+    </view>
+
+    <!-- <custom-tab-bar /> -->
+</view>
+
+<t-message id="t-message" />

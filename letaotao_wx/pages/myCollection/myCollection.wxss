@@ -1,0 +1,107 @@
+/* pages/myCollection/myCollection.wxss */
+/* 头部样式 */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background-color: #f8f8f8;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+}
+
+.header-right {
+    color: #576b95;
+}
+
+/* 通用列表样式 */
+.scroll-view {
+    height: 100%;
+}
+
+.product-item, .post-item {
+    display: flex;
+    border-bottom: 1px solid #eaeaea;
+    align-items: center;
+    padding: 10px;
+}
+
+.product-image, .post-image {
+    width: 60px;
+    height: 60px;
+    margin-right: 15px;
+}
+
+.product-info,.post-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.product-title, .post-title {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.product-price {
+    color: red;
+    font-weight: 500;
+}
+
+.product-bottom-info, .post-footer {
+    display: flex;
+    align-items: center;
+    margin-top: 5px;
+}
+
+.product-avatar, .post-avatar {
+    width: 25px;
+    height: 25px;
+    border-radius: 12.5px;
+    margin-right: 5px;
+}
+
+.product-nick, .post-nick {
+    font-size: 12px;
+}
+
+.post-content {
+    color: #333;
+    margin: 5px 0;
+}
+
+.post-favorite{
+    margin-left: 20rpx;
+}
+
+.post-likes {
+    display: flex;
+    margin-left: 40rpx;
+    align-items: center;
+}
+
+/* 底部操作栏样式 */
+.manage-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: #f8f8f8;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.unfavorite-btn{
+    margin-right: 10rpx;
+}
+
+.no-data{
+    margin-top: 10rpx;
+    text-align: center;
+}

@@ -1,0 +1,9 @@
+/* pages/personalDetail/personalDetail.wxss */
+
+.intro-title{
+    min-width: 100rpx;
+}
+
+.intro-text{
+    margin-left: auto;
+} 

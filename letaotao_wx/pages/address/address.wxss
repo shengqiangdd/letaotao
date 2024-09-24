@@ -1,0 +1,125 @@
+/* pages/address/address.wxss */
+.address-list {
+    padding: 10px;
+}
+
+.address-card {
+    background-color: #fff;
+    margin-bottom: 10px;
+    padding: 15px;
+    border-radius: 10px;
+}
+
+.card-content {
+    display: flex;
+    align-items: center;
+}
+
+.external-class-content {
+    color: #d54941;
+    font-weight: bold;
+    font-size: 30rpx;
+    background-color: #ffd8d2;
+}
+
+.card-left,
+.card-body{
+    margin-right: 15px;
+}
+
+.card-right{
+    margin-left: 6rpx;
+}
+
+.card-body {
+    flex-grow: 1;
+}
+
+.address-line1 {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.address-line1 .contact-name{
+    font-weight: bold;
+}
+
+.address-line2{
+    color: #777777;
+}
+
+.contact-name,
+.contact-phone {
+    margin-right: 10px;
+}
+
+.default-address {
+    padding: 0px 3px;
+    font-size: 22rpx;
+    border: 1px solid #000;
+    border-radius: 4px;
+}
+
+.card-right {
+    display: flex;
+    align-items: center;
+}
+
+.card-manage-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 15px;
+    padding-top: 10px;
+    border-top: 1px solid #eee;
+}
+
+.default-radio {
+    flex-grow: 1;
+}
+
+.delete-option {
+    flex-basis: 90px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.bottom-actions {
+    display: flex;
+    width: 100%;
+    position: fixed;
+    left: 0;
+    bottom: 10px;
+    box-sizing: border-box;
+    justify-content: space-between;
+    padding: 10px;
+}
+
+.manage-button,
+.complete-button,
+.add-button {
+    flex-grow: 1;
+    margin: 0 5px;
+    text-align: center;
+    padding: 10px;
+    border-radius: 20px;
+}
+
+.manage-button,
+.complete-button {
+    background-color: #ccc;
+}
+
+.add-button {
+    flex-grow: 2;
+    background-color: #FFA500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.add-button t-icon {
+    margin-right: 5px;
+}

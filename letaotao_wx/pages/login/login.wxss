@@ -1,0 +1,51 @@
+/* pages/login/login.wxss */
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    padding: 20rpx;
+    background-color: #F5F5F5;
+}
+
+.login-btn {
+    width: 80%;
+    height: 80rpx;
+    line-height: 80rpx;
+    background-color: #1AAD19;
+    color: white;
+    border-radius: 4rpx;
+    font-size: 16px;
+    text-align: center;
+}
+
+/* 对话框内容区域的样式 */
+.content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.avatar-section {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+}
+
+.avatar-button{
+    background-color: #fff;
+}
+
+.avatar-button::after{
+    border: none;
+}
+
+.nickname-section,
+.nickname-input {
+    width: 100%;
+}

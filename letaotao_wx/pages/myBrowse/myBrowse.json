@@ -1,0 +1,5 @@
+{
+  "usingComponents": {
+    "t-message": "tdesign-miniprogram/message/message"
+  }
+}

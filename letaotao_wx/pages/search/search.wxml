@@ -1,0 +1,18 @@
+<!--pages/search/search.wxml-->
+<view class="search-page">
+    <!-- 搜索组件 -->
+    <t-search 
+        placeholder="请输入要搜索的内容"
+        bind:submit="onSearch"
+    ></t-search>
+
+    <!-- 历史搜索记录盒子 -->
+    <view class="history-box">
+        <view wx:for="{{historyList}}" wx:key="index" class="history-item">
+            <text bindtap="goToShowListPage" data-item="{{item}}">{{item}}</text>
+            <t-icon name="close" size="18" bind:click="onDeleteTap" />
+        </view>
+    </view>
+</view>
+
+<t-message id="t-message" />

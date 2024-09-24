@@ -1,0 +1,21 @@
+<!--pages/follow-list/follow-list.wxml-->
+<scroll-view scroll-y class="scroll-view">
+    <view wx:for="{{userList}}" wx:key="id" class="user-item">
+        <image class="avatar" src="{{item.avatar}}" mode="aspectFill"  bind:tap="goToFollowList" data-id="{{item.id}}" />
+        <view class="user-info">
+            <view class="nickname">{{item.nickName}}</view>
+            <view class="follow-count">粉丝数：{{item.followerCount}}</view>
+        </view>
+        <view wx:if="{{userId === currentUserId}}">
+            <view class="follow-btn" wx:if="{{item.isFollowed != 1}}" bind:tap="followUser" data-id="{{item.id}}">
+                <t-icon name="jia" size="30rpx" prefix="icon" data-name="jia" data-type="prefix" />
+                <text>关注</text>
+            </view>
+            <view class="followed-text" wx:else bind:tap="followUser" data-id="{{item.id}}">已关注</view>
+        </view>
+    </view>
+</scroll-view>
+<view class="no-follows" wx:if="{{followType === 'followers' && !hasMore}}">没有更多粉丝数据...</view>
+<view class="no-follows" wx:if="{{followType === 'following' && !hasMore}}">没有更多关注数据...</view>
+
+<t-message id="t-message" />

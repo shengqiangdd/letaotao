@@ -1,0 +1,159 @@
+/* pages/post-detail/post-detail.wxss */
+.post-detail {
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 10rpx;
+}
+
+.post-header {
+    position: fixed;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    top: 10rpx;
+    left: 2rpx;
+    box-sizing: border-box;
+    padding: 0 20rpx;
+    width: 100%;
+    z-index: 999;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+}
+
+.avatar {
+    width: 80rpx;
+    height: 80rpx;
+    border-radius: 50%;
+    margin-right: 16rpx;
+}
+
+.nickname {
+    font-size: 25rpx;
+    font-weight: bold;
+}
+
+.follow {
+    display: flex;
+    align-items: center;
+    padding: 10rpx 20rpx;
+    border-radius: 100rpx;
+    background-color: #f8f8f8;
+}
+
+.plus-icon {
+    margin-right: 8rpx;
+}
+
+/* 图片轮播样式 */
+.post-images-swiper {
+    height: 400rpx;
+    overflow: hidden;
+    margin-top: 100rpx;
+}
+
+.swiper-image {
+    width: 100%;
+    height: 100%;
+}
+
+/* 帖子内容样式 */
+.post-content {
+    padding: 15rpx;
+    max-height: 400rpx;
+}
+
+.post-title {
+    font-size: 24rpx;
+    font-weight: bold;
+    margin-bottom: 16rpx;
+}
+
+.post-text {
+    font-size: 24rpx;
+    min-height: 100rpx;
+    max-height: 200rpx;
+    line-height: 1.8;
+    margin-bottom: 10rpx;
+}
+
+.post-time {
+    font-size: 18rpx;
+    color: #999999;
+}
+
+.comments-section {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 100rpx;
+    box-sizing: border-box;
+}
+
+.comment-count{
+    text-align: center;
+}
+
+.scroll-view{
+    margin-top: 5rpx;
+    margin-left: 5rpx;
+}
+
+/* 底部固定操作区样式 */
+.bottom-fixed-operate {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20rpx 30rpx;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: #ffffff;
+    z-index: 100;
+}
+
+.input-box {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    background-color: #f5f5f5;
+    border-radius: 30rpx;
+    padding: 15rpx 30rpx;
+    margin-right: 30rpx;
+}
+
+.pencil-icon {
+    margin-right: 15rpx;
+}
+
+input {
+    flex: 1;
+    border: none;
+    outline: none;
+    font-size: 18rpx;
+    background-color: transparent;
+}
+
+.actions {
+    display: flex;
+}
+
+.action {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-left: 30rpx;
+}
+
+.action-icon {
+    margin-bottom: 8rpx;
+}
+
+.popup-input-container {
+    box-sizing: border-box;
+    padding: 10rpx;
+    background-color: white;
+}

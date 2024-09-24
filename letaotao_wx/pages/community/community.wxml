@@ -1,0 +1,72 @@
+<!--pages/community/community.wxml-->
+<view class="top-bar">
+    <!-- 发帖操作 -->
+    <view class="add-post" bindtap="goToCreatePost">
+        <t-icon name="jia" size="45rpx" prefix="icon" data-name="jia" data-type="prefix" />
+    </view>
+
+    <!-- Tabs选项卡 -->
+    <view class="tabs">
+        <view class="tab {{index == tab ? 'active' : ''}}" wx:for="{{tabList}}" wx:key="index" bindtap="switchTab" data-index="{{index}}">{{item}}</view>
+    </view>
+
+    <!-- 搜索跳转 -->
+    <view class="search" bindtap="goToSearchPage">
+        <t-icon name="sousuo" size="45rpx" prefix="icon" data-name="sousuo" data-type="prefix" />
+    </view>
+</view>
+
+<!-- 帖子列表 -->
+<scroll-view class="post-list">
+    <view wx:for="{{posts}}" wx:key="id" class="post">
+        <!-- 帖子上部：用户信息和关注 -->
+        <view class="post-header">
+            <view class="user-info">
+                <image class="avatar" src="{{item.avatar}}" />
+                <view class="user-info-text">
+                    <text class="nickname">{{item.nickName}}</text>
+                    <text class="following">{{item.followerCount || 0}}粉丝</text>
+                </view>
+            </view>
+            <view class="follow-action">
+                <view wx:if="{{item.isFollowed != 1}}" class="follow" bindtap="followUser" data-item="{{item}}">
+                    <t-icon name="jia" size="30rpx" prefix="icon" data-name="jia" data-type="prefix" />
+                    <text>关注</text>
+                </view>
+                <text wx:else class="follow" bindtap="followUser" data-item="{{item}}">已关注</text>
+            </view>
+        </view>
+
+        <!-- 帖子内容 -->
+        <view class="post-content" data-id="{{item.id}}" bind:tap="goToPostDetail">
+            <view class="title-text">{{item.title}}</view>
+            <view class="content-text">{{item.content}}</view>
+            <!-- 图片列表 -->
+            <view class="img-list">
+                <image wx:for="{{item.images}}" wx:for-item="image" wx:key="index" src="{{image.url}}" mode="aspectFill" data-images="{{item.images}}" data-index="{{index}}" catch:tap="onImageClick" />
+            </view>
+        </view>
+
+        <!-- 帖子底部：互动区 -->
+        <view class="post-footer">
+            <view class="interactions">
+                <view class="interaction" bindtap="goToPostDetail" data-id="{{item.id}}">
+                    <t-icon name="pinglun" size="40rpx" prefix="icon" data-name="pinglun" data-type="prefix" />
+                    <text>{{item.commentCount}}</text>
+                </view>
+                <view class="interaction" bindtap="likePost" data-postid="{{item.id}}">
+                    <t-icon wx:if="{{item.isLiked === 1}}" name="like-fill" color="#e851b3" size="45rpx" prefix="icon" data-type="prefix" class="action-icon" />
+                    <t-icon wx:else name="dianzan_2" size="45rpx" prefix="icon" data-type="prefix" class="action-icon" />
+                    <text>{{item.likeCount}}</text>
+                </view>
+            </view>
+        </view>
+    </view>
+    <view wx:if="{{posts.length <= 0}}" class="no-data">暂无更多数据...</view>
+</scroll-view>
+
+<t-image-viewer visible="{{viewerVisible}}" showIndex="{{showViewerIndex}}" images="{{viewerImages}}" initial-index="{{viewerInitialIndex}}" bind:close="onViewerClose"></t-image-viewer>
+
+<t-message id="t-message" />
+
+<!-- <custom-tab-bar /> -->

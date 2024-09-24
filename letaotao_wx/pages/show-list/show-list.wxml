@@ -1,0 +1,91 @@
+<!--pages/show-list/show-list.wxml-->
+<!-- Tabs选项卡 -->
+<view class="search">
+    <t-search model:value="{{searchValue}}" placeholder="搜点什么..." bind:change="onSearchChange" bind:submit="onSearchSubmit" bindclear="onSearchValueClear" />
+</view>
+<t-tabs defaultValue="{{tab}}" bind:change="changeTab" t-class="custom-tabs" t-class-content="custom-panel">
+    <t-tab-panel label="商品" value="0">
+        <!-- 条件筛选 -->
+        <t-dropdown-menu class="drop-menu">
+            <t-dropdown-item options="{{product.options}}" value="{{product.value}}" bindchange="onChangeProduct" />
+            <t-dropdown-item options="{{sorter.options}}" value="{{sorter.value}}" bindchange="onChangeSorter" />
+            <t-dropdown-item options="{{condition.options}}" value="{{condition.value}}" bindchange="onChangeCondition" />
+        </t-dropdown-menu>
+        <!-- 商品列表 -->
+        <scroll-view scroll-y class="scroll-view">
+            <view class="products">
+                <view wx:for="{{datas}}" wx:key="id" class="product" bindtap="goToProductDetail" data-id="{{item.id}}">
+                    <!-- 商品图片 -->
+                    <view class="image-wrapper">
+                        <image class="image" src="{{item.images[0].url}}" mode="aspectFill" />
+                    </view>
+                    <!-- 商品信息 -->
+                    <view class="info">
+                        <!-- 商品标题 -->
+                        <text class="title">{{item.name}}</text>
+                        <!-- 价格 -->
+                        <view class="price-condition">
+                            <text class="price-symbol">¥</text>
+                            <text class="product-price">{{item.price}}</text>
+                            <!-- 成色 -->
+                            <text class="condition">{{item.condition}}</text>
+                        </view>
+                        <!-- 卖家信息 -->
+                        <view class="creater-info">
+                            <image class="creater-avatar" src="{{item.avatar}}" />
+                            <text class="creater-nickname">{{item.nickName}}</text>
+                        </view>
+                    </view>
+                </view>
+            </view>
+            <view wx:if="{{userId > 0 && !hasMore && datas.length <= 0}}" class="no-more-data">该用户没有发布商品...</view>
+            <view class="no-more-data" wx:if="{{userId <= 0 && !hasMore}}">没有更多数据...</view>
+        </scroll-view>
+    </t-tab-panel>
+    <t-tab-panel label="社区" value="1">
+        <!-- 社区帖子列表 -->
+        <scroll-view scroll-y class="scroll-view">
+            <view class="posts">
+                <view wx:for="{{datas}}" wx:key="id" class="post" bindtap="goToPostDetail" data-id="{{item.id}}">
+                    <!-- 帖子图片 -->
+                    <t-image width="192" height="192" src="{{item.images[0].url}}" mode="scaleToFill" />
+                    <!-- 帖子信息 -->
+                    <view class="info">
+                        <!-- 帖子标题 -->
+                        <text class="title">{{item.title}}</text>
+                        <!-- 发布者信息 -->
+                        <view class="creater-info">
+                            <image class="creater-avatar" src="{{item.avatar}}" />
+                            <text class="creater-nickname">{{item.nickName}}</text>
+                        </view>
+                    </view>
+                </view>
+            </view>
+            <view wx:if="{{userId > 0 && !hasMore && datas.length <= 0}}" class="no-more-data">该用户没有发布帖子...</view>
+            <view class="no-more-data" wx:if="{{userId <= 0 && !hasMore}}">没有更多数据...</view>
+        </scroll-view>
+    </t-tab-panel>
+    <t-tab-panel wx:if="{{userId == 0}}" label="用户" value="2">
+        <!-- 用户列表 -->
+        <scroll-view scroll-y class="scroll-view">
+            <view wx:for="{{datas}}" wx:key="id" class="user-item" bindtap="gotoPersonalHomePage" data-id="{{item.id}}">
+                <image class="avatar" src="{{item.avatar}}" mode="aspectFill" />
+                <view class="user-info">
+                    <view class="nickname">{{item.nickName}}</view>
+                    <view class="follow-count" catch:tap="goToFollowList" data-id="{{item.id}}">粉丝数：{{item.followerCount}}</view>
+                </view>
+                <view class="follow-btn" wx:if="{{item.isFollowed != 1}}" catch:tap="followUser" data-id="{{item.id}}">
+                    <t-icon name="jia" size="30rpx" prefix="icon" data-name="jia" data-type="prefix" />
+                    <text>关注</text>
+                </view>
+                <view class="followed-text" wx:else catch:tap="followUser" data-id="{{item.id}}">已关注</view>
+            </view>
+            <view class="no-more-data" wx:if="{{!hasMore}}">没有更多数据...</view>
+        </scroll-view>
+    </t-tab-panel>
+</t-tabs>
+
+<!-- 返回顶部 -->
+<t-back-top bind:click="goToTop"></t-back-top>
+
+<t-message id="t-message" />

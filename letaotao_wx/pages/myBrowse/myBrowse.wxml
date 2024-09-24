@@ -1,0 +1,25 @@
+<!--pages/myBrowse/myBrowse.wxml-->
+<view class="browse-container">
+    <view class="top-bar">
+        <view class="clear-history" bindtap="onClearHistory">清空</view>
+    </view>
+
+    <view class="browse-content">
+        <block wx:for="{{browsingData}}" wx:key="index">
+            <view class="date-title">{{item.date}}</view>
+            <view class="item-list">
+                <block wx:for="{{item.items}}" wx:key="index">
+                    <view class="browse-item" bindtap="goToProductDetail" data-id="{{item.id}}">
+                        <image class="item-image" src="{{item.img.url}}" />
+                        <view class="item-price">￥{{item.price}}</view>
+                    </view>
+                </block>
+            </view>
+        </block>
+    </view>
+
+    <view class="no-data" wx:if="{{browsingData.length <= 0}}">没有更多浏览数据...</view>
+
+</view>
+
+<t-message id="t-message" />

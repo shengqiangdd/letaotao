@@ -1,0 +1,91 @@
+/* pages/myPost/myPost.wxss */
+.posts-page {
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.tab-container {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 10px;
+}
+
+.tab.active {
+    border-bottom: 2px solid orange;
+}
+
+.posts-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.post-card {
+    width: 49%;
+    background-color: #f5f5f5;
+    margin-bottom: 10px;
+    border-radius: 10px;
+}
+
+.post-info-box {
+    padding: 15px;
+}
+
+.post-title {
+    text-align: center;
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+}
+
+.post-content {
+    text-align: left;
+    font-size: 14px;
+    color: #666;
+    margin-top: 5px;
+}
+
+.post-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 15px;
+    font-size: 12px;
+    color: #999;
+}
+
+.post-actions {
+    display: flex;
+    align-items: center;
+}
+
+.action-icon {
+    width: 24px;
+    height: 24px;
+    margin-left: 10px;
+}
+
+.like-icon {
+    margin-left: 5px;
+}
+
+.like-count {
+    margin-left: 5px;
+}
+
+.floating-button {
+    position: fixed;
+    right: 25px;
+    bottom: 25px;
+    width: 50px;
+    height: 50px;
+    background-color: #FFA500;
+    border-radius: 50%;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 30px;
+    color: white;
+    z-index: 10;
+}

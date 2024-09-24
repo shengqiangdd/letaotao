@@ -1,0 +1,41 @@
+// 格式化地区属性
+var formatRegion = function (region) {
+    if (!region || typeof region !== 'string') {
+        return '';
+    }
+    return region.split('-').join(' ');
+}
+
+var formatChild = function (comment) {
+    return comment.child ? comment.child.slice(0, 1) : [];
+}
+
+var formatOrderStatus = function (status) {
+    var statusStr = '';
+    switch (status) {
+        case 1:
+            statusStr = '待付款';
+            break;
+        case 2:
+            statusStr = '待发货';
+            break;
+        case 3:
+            statusStr = '待收货';
+            break;
+        case 4:
+            statusStr = '已完成';
+            break;
+        case 5:
+            statusStr = '已取消';
+            break;
+        default:
+            break;
+    }
+    return statusStr;
+}
+
+module.exports = {
+    formatRegion: formatRegion,
+    formatChild: formatChild,
+    formatOrderStatus: formatOrderStatus
+}

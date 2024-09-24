@@ -1,0 +1,18 @@
+<!--pages/personalDetail/personalDetail.wxml-->
+<view class="personal-detail-container">
+    <!-- 用户设置信息卡片 -->
+    <t-cell-group theme="card">
+        <!-- 昵称 -->
+        <t-cell title="昵称">
+            <text slot="note">{{userInfo.nickName}}</text>
+        </t-cell>
+        <!-- 简介 -->
+        <t-cell title="简介" t-class="intro" t-class-title="intro-title" t-class-note="intro-text">
+            <text slot="note">{{userInfo.introduction ? userInfo.introduction : '这个人很懒，暂时没有简介'}}</text>
+        </t-cell>
+        <!-- 性别 -->
+        <t-cell title="性别" note="{{userInfo.gender === 1 ? '女' : '男'}}" />
+        <!-- 生日 -->
+        <t-cell title="生日" note="{{userInfo.birthday}}" data-mode="date" />
+    </t-cell-group>
+</view>

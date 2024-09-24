@@ -1,0 +1,14 @@
+<!-- custom-tab-bar/index.wxml -->
+<view class="custom-tab-bar">
+  <block wx:for="{{tabs}}" wx:for-item="tab" wx:for-index="index" wx:key="index">
+    <view class="tab-item" data-index="{{index}}" bindtap="changeTab">
+      <block wx:if="{{!tab.isSpecial}}">
+        <t-icon name="{{index === currentTab ? tab.selectedIcon : tab.icon}}" color="{{index === currentTab ? '#FD7E14' : '#6C757D'}}" size="48rpx" prefix="icon" data-type="prefix" class="tab-icon" />
+        <text class="tab-text">{{tab.text}}</text>
+      </block>
+      <block wx:if="{{tab.isSpecial}}">
+        <view class="tab-special">发布</view>
+      </block>
+    </view>
+  </block>
+</view>

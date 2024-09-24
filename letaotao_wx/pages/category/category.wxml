@@ -1,0 +1,13 @@
+<!--pages/category/category.wxml-->
+<view class="side-bar-wrapper">
+    <t-side-bar value="{{sideBarIndex}}" bind:change="onSideBarChange">
+        <t-side-bar-item wx:for="{{categories}}" wx:key="index" value="{{item.value || index}}" label="{{item.label}}" icon="{{item.icon}}" data-category="{{item.children}}" bind:tap="onSideBarItemClick" />
+    </t-side-bar>
+    <scroll-view class="content" scroll-y scroll-with-animation scroll-top="{{scrollTop}}">
+        <view wx:for="{{currentCategory}}" wx:key="index" class="section">
+            <view class="title" data-item="{{item}}" bind:tap="goToShowList">{{item.title || item.label}}</view>
+        </view>
+    </scroll-view>
+</view>
+
+<t-message id="t-message" />

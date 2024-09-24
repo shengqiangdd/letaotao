@@ -1,0 +1,86 @@
+<!--pages/myOrder/myOrder.wxml-->
+<wxs src="../../utils/format.wxs" module="format" />
+<!-- 头部搜索栏 -->
+<view class="header">
+    <t-search placeholder="{{placeholder}}" model:value="{{searchValue}}" bindsubmit="search" />
+    <view class="filter" bindtap="showPopup">
+        <text>筛选</text>
+        <t-icon name="filter" />
+    </view>
+</view>
+
+<!-- 筛选弹出层 -->
+<t-popup visible="{{popupVisible}}" bind:visible-change="onVisibleChange" placement="bottom">
+    <view class="filter-content">
+        <view class="filter-time">
+            <text>按时间:</text>
+            <view class="time-options">
+                <button bindtap="selectTimeRange" data-months="1">1个月内</button>
+                <button bindtap="selectTimeRange" data-months="3">3个月内</button>
+                <button bindtap="selectTimeRange" data-months="6">6个月内</button>
+            </view>
+        </view>
+        <view class="filter-dates">
+            <picker mode="date" value="{{startDate}}" bindchange="bindStartDateChange">
+                <view class="picker">
+                    {{startDate || '起始时间'}}
+                </view>
+            </picker>
+            <text class="filter-symbol">-</text>
+            <picker mode="date" value="{{endDate}}" bindchange="bindEndDateChange">
+                <view class="picker">
+                    {{endDate || '终止时间'}}
+                </view>
+            </picker>
+        </view>
+        <view class="filter-buttons">
+            <button bindtap="resetFilter">重置</button>
+            <button bindtap="applyFilter">确定</button>
+        </view>
+    </view>
+</t-popup>
+
+<!-- 选项卡 -->
+<view class="tabs">
+    <view class="tab {{status == 0 ? 'active' : ''}}" bindtap="changeTab" data-status="0">全部</view>
+    <view class="tab {{status == 1 ? 'active' : ''}}" bindtap="changeTab" data-status="1">待付款</view>
+    <view class="tab {{status == 2 ? 'active' : ''}}" bindtap="changeTab" data-status="2">待发货</view>
+    <view class="tab {{status == 3 ? 'active' : ''}}" bindtap="changeTab" data-status="3">待收货</view>
+    <view class="tab {{status == 8 ? 'active' : ''}}" bindtap="changeTab" data-status="8">待评价</view>
+</view>
+
+<!-- 订单列表 -->
+<view class="order-list" wx:if="{{orders.length > 0}}">
+    <view class="order-item" wx:for="{{orders}}" wx:key="id" bind:tap="goToOrderDetail" data-orderid="{{item.id}}">
+        <view class="order-item-header">
+            <view class="user-info">
+                <image class="user-avatar" src="{{isBuy ? item.seller.avatar : item.buyer.avatar}}" />
+                <text class="user-nickname">{{isBuy ? item.seller.nickName : item.buyer.nickName}}</text>
+            </view>
+            <text class="order-status">{{format.formatOrderStatus(item.status)}}</text>
+        </view>
+        <view class="order-item-content">
+            <image class="product-image" src="{{item.product.image.url}}" mode="aspectFill" />
+            <view class="product-name">
+                <text>{{item.productName}}</text>
+            </view>
+            <text class="product-price">￥{{item.product.price}}</text>
+        </view>
+        <view class="order-item-footer">
+            <view class="contact">
+                <button class="contact-person" catch:tap="contactSellerOrBuyer" data-order="{{item}}">{{item.buyerId == userId ? '联系卖家' : '联系买家'}}</button>
+            </view>
+            <view class="actions">
+                <button class="pay-order" wx:if="{{userId === item.buyerId && item.status === 1}}" catch:tap="toPay" data-item="{{item}}">去支付</button>
+                <button class="view-review" wx:if="{{item.isEvaluate}}" catch:tap="goToEvaluatePage" data-orderid="{{item.id}}">查看评价</button>
+                <button wx:if="{{item.status === 4}}" class="delete-order" catch:tap="showDeleteModal" data-orderid="{{item.id}}">删除订单</button>
+            </view>
+        </view>
+    </view>
+</view>
+
+<view class="empty-orders" wx:if="{{orders.length == 0}}">
+    <text>没有{{currentStatusName}}的订单</text>
+</view>
+
+<t-message id="t-message" />

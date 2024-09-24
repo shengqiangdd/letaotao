@@ -1,0 +1,97 @@
+/* pages/profile/profile.wxss */
+.profile-container {
+    display: flex;
+    flex-direction: column;
+    background-color: #F5F5F5;
+}
+
+.profile-setting {
+    display: flex;
+    justify-content: flex-end;
+    padding: 20rpx;
+}
+
+.profile-setting text {
+    margin-left: 15rpx;
+}
+
+.profile-header {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    background-color: #ffffff;
+    padding: 20rpx;
+    position: relative;
+}
+
+.profile-avatar {
+    position: relative;
+    margin-left: 20rpx;
+}
+
+.avatar-image {
+    width: 115rpx;
+    height: 115rpx;
+    border-radius: 50%;
+}
+
+.profile-info {
+    margin-left: 25rpx;
+}
+
+.nickname {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.follow-info {
+    display: flex;
+    margin-top: 20rpx;
+}
+
+.followers,
+.following {
+    font-size: 14px;
+}
+
+.following {
+    margin-left: 20rpx;
+}
+
+.profile-right {
+    position: absolute;
+    right: 70rpx;
+}
+
+.grid-section {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-top: 45rpx;
+    background-color: #ffffff;
+    padding: 20rpx;
+}
+
+.grid-title{
+    margin-left: 15rpx;
+    margin-bottom: 30rpx;
+    font-size: 33rpx;
+    font-weight: bold;
+}
+
+.grid-content{
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-start;
+}
+
+.grid-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 10rpx;
+}
+
+.grid-item text {
+    margin-top: 10rpx;
+}

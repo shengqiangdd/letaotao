@@ -1,0 +1,96 @@
+<!--pages/personalHome/personalHome.wxml-->
+<view class="personal-page">
+
+    <!-- 个人资料 -->
+    <view class="profile-info">
+        <view class="profile-background">
+            <image src="../../images/background.png" mode="aspectFill" class="background-image"></image>
+        </view>
+        <view class="avatar-nickname-container">
+            <view class="avatar-container">
+                <image class="avatar" src="{{userInfo.avatar}}" />
+            </view>
+            <text class="nickname">{{userInfo.nickName}}</text>
+        </view>
+        <view class="user-details">
+            <text class="intro">{{userInfo.introduction ? userInfo.introduction : '这个人很懒，暂时没有简介'}}</text>
+            <text bindtap="goToPersonalDetail">更多</text>
+        </view>
+        <view class="follow-edit-container">
+            <view class="follow-info">
+                <text class="following-count" bind:tap="goToFollowList" data-type="following">{{userInfo.followingCount}} 关注</text>
+                <text class="follower-count" bind:tap="goToFollowList" data-type="followers">{{userInfo.followerCount}} 粉丝</text>
+            </view>
+            <view class="edit-profile" wx:if="{{userId === currentUserId}}" bindtap="goToEditProfile">编辑资料</view>
+        </view>
+    </view>
+
+    <!-- 选项卡和搜索图标 -->
+    <view class="tabs-container">
+        <view class="tab {{currentTab == 'goods' ? 'active' : ''}}" data-tab="goods" bindtap="switchTab">商品</view>
+        <view class="tab {{currentTab == 'posts' ? 'active' : ''}}" data-tab="posts" bindtap="switchTab">帖子</view>
+        <view class="tab {{currentTab == 'reviews' ? 'active' : ''}}" data-tab="reviews" bindtap="switchTab">评价</view>
+        <t-icon class="search-icon" name="search" bind:click="navigateToSearch" />
+    </view>
+
+    <!-- 数据列表 -->
+    <block wx:if="{{currentTab === 'goods'}}">
+        <view class="goods-list">
+            <view class="goods-item" wx:for="{{goodsList}}" wx:key="id" bindtap="navigateToGoodsDetail" data-id="{{item.id}}">
+                <image class="goods-img" src="{{item.images[0].url}}" />
+                <view class="goods-info">
+                    <text class="goods-name">{{item.name}}</text>
+                    <text class="goods-price">{{item.price}}</text>
+                </view>
+            </view>
+        </view>
+    </block>
+
+    <block wx:if="{{currentTab === 'posts'}}">
+        <view class="posts-list">
+            <view class="post-item" wx:for="{{postsList}}" wx:key="id" bindtap="navigateToPostDetail" data-id="{{item.id}}">
+                <view class="post-content">
+                    <text class="post-title">{{item.title}}</text>
+                    <text class="post-text">{{item.content}}</text>
+                </view>
+                <view class="post-meta">
+                    <view class="post-user">
+                        <image class="poster-avatar" src="{{item.avatar}}" />
+                        <text class="poster-nickname">{{item.nickName}}</text>
+                    </view>
+                    <view class="like-info" bindtap="likePost">
+                        <t-icon wx:if="{{item.isLiked === 1}}" name="like-fill" color="#e851b3" size="35rpx" prefix="icon" data-type="prefix" class="like-icon" catchtap="toggleLikePost" data-id="{{item.id}}" />
+                        <t-icon wx:else name="dianzan_2" size="35rpx" prefix="icon" data-type="prefix" class="like-icon" catchtap="toggleLikePost" data-id="{{item.id}}" />
+                        <text wx:if="{{item.likeCount > 0}}" class="like-count">{{item.likeCount}}</text>
+                    </view>
+                </view>
+            </view>
+        </view>
+    </block>
+
+    <block wx:if="{{currentTab === 'reviews'}}">
+        <view class="reviews-list">
+            <view class="review-item" wx:for="{{reviewsList}}" wx:key="id" bindtap="navigateToReviewDetail" data-id="{{item.orderId}}">
+                <view class="reviewer-info">
+                    <image class="reviewer-avatar" src="{{item.avatar}}" mode="aspectFill" />
+                    <view class="reviewer-user">
+                        <text class="reviewer-nickname">{{item.nickName}}</text>
+                        <text class="reviewer-tag">{{item.tag}}</text>
+                    </view>
+                    <text class="review-rating {{item.isFavor === 1 ? 'good' : 'bad'}}">{{item.isFavor === 1 ? '好评' : '差评'}}</text>
+                </view>
+                <text class="review-text">{{item.content}}</text>
+                <text class="review-date">{{item.createTime}}</text>
+            </view>
+        </view>
+    </block>
+
+    <!-- 底部悬浮发布按钮 -->
+    <view class="floating-button" bindtap="navigateToCreate" wx:if="{{currentTab === 'goods' || currentTab === 'posts'}}">
+        <text class="plus-icon">+</text>
+        <text>发布</text>
+    </view>
+
+</view>
+
+<t-message id="t-message" />

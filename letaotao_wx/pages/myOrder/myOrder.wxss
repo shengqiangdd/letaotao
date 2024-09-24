@@ -1,0 +1,109 @@
+/* pages/myOrder/myOrder.wxss */
+.header {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+}
+
+.filter {
+    display: flex;
+    align-items: center;
+}
+
+.icon {
+    margin-left: 5px;
+}
+
+.tabs {
+    display: flex;
+    border-bottom: 1px solid #eaeaea;
+}
+
+.tab {
+    flex: 1;
+    text-align: center;
+    padding: 10px 0;
+}
+
+.tab.active {
+    border-bottom: 2px solid orange;
+}
+
+.order-list {
+    padding: 10px;
+}
+
+.user-avatar{
+    width: 60rpx;
+    height: 60rpx;
+    border-radius: 50%;
+}
+
+.product-image{
+    width: 100rpx;
+    height: 100rpx;
+}
+
+.order-item-header,
+.order-item-content,
+.order-item-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+}
+
+.user-info{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.user-nickname{
+    margin-left: 10rpx;
+}
+
+.product-name{
+    flex: 1;
+    margin-left: 15rpx;
+    align-items: flex-start;
+}
+
+.empty-orders {
+    text-align: center;
+    padding: 20px;
+}
+
+.filter-content{
+    height: 400rpx;
+    padding: 15rpx;
+}
+
+.filter-dates{
+    height: 150rpx;
+    align-items: center;
+    justify-content: center;
+    margin-top: 15rpx;
+}
+
+.picker {
+    padding: 10px;
+    color: #a6a6a6;
+    border-radius: 5px;
+    border: 1px solid #eaeaea;
+}
+
+.filter-symbol{
+    margin-left: 10rpx;
+    margin-right: 10rpx;
+}
+
+.time-options,.filter-dates,.filter-buttons{
+    display: flex;
+}
+
+.actions{
+    flex: 1;
+    display: flex;
+    justify-content: space-between;
+}

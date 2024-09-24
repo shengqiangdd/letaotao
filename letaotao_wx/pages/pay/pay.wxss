@@ -1,0 +1,18 @@
+/* pages/pay/pay.wxss */
+.pay-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.price-row, .remaining-time-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.action-buttons {
+    display: flex;
+    justify-content: space-around;
+    padding-top: 20px;
+}

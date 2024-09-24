@@ -1,0 +1,58 @@
+<!--pages/editAddress/editAddress.wxml-->
+<view class="address-form">
+    <!-- 选择微信地址和清空/删除 -->
+    <view class="nav">
+        <view class="nav-left" wx:if="{{isNew}}">
+            <text bindtap="chooseAddress">选择微信地址</text>
+        </view>
+        <view class="nav-right">
+            <view wx:if="{{isNew}}" bindtap="clearForm" class="clear-action">
+                <text>清空</text>
+            </view>
+            <view wx:if="{{!isNew}}" bindtap="deleteAddress" data-id="{{address.id}}" class="delete-action">
+                <text>删除</text>
+            </view>
+        </view>
+    </view>
+
+    <!-- 地址信息和默认收货地址 -->
+    <view class="section header">
+        <view class="section__title info-title">地址信息</view>
+        <radio-group class="default-address-toggle" bindtap="toggleDefaultAddress">
+            <label class="radio-label">
+                <radio value="1" checked="{{address.isDefault}}"></radio>
+                <text>默认收货地址</text>
+            </label>
+        </radio-group>
+    </view>
+
+    <view class="section">
+        <t-input label="联系人" placeholder="请输入联系人姓名" value="{{address.contactPerson}}" data-field="contactPerson" bind:blur="onInputChange"></t-input>
+    </view>
+
+    <view class="section">
+        <t-input label="手机号" placeholder="请输入手机号码" value="{{address.phone}}" data-field="phone" bind:blur="onInputChange"></t-input>
+    </view>
+
+    <!-- 所在地区和选择器 -->
+    <view class="section inline-section">
+        <view class="section__title inline-title">所在地区</view>
+        <picker mode="region" level="sub-district" bindchange="bindRegionChange" value="{{address.region}}">
+            <view class="picker">
+                {{address.region[0]}} {{address.region[1]}} {{address.region[2]}}
+                {{address.region[3]}}
+            </view>
+        </picker>
+    </view>
+
+    <!-- 详细地址 -->
+    <view class="section textarea-section">
+        <t-textarea label="详细地址" t-class="external-class" placeholder="请输入详细地址" value="{{address.detailAddress}}" disableDefaultPadding="{{true}}" data-field="detailAddress" bind:blur="onInputChange"></t-textarea>
+    </view>
+
+    <view class="save-button-wrapper">
+        <button class="save-button" bindtap="saveAddress">保存收货地址</button>
+    </view>
+</view>
+
+<t-message id="t-message" />

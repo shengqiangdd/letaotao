@@ -1,0 +1,39 @@
+<!--pages/myProduct/myProduct.wxml-->
+<view class="my-products-page">
+    <view class="tab-container">
+        <view class="tab {{currentStatus == 1 ? 'active' : ''}}" data-status="1" bindtap="onTabChange">在卖</view>
+        <view class="tab {{currentStatus == 0 ? 'active' : ''}}" data-status="0" bindtap="onTabChange">草稿</view>
+        <view class="tab {{currentStatus == 2 ? 'active' : ''}}" data-status="2" bindtap="onTabChange">已下架</view>
+    </view>
+    <view class="product-list">
+        <block wx:for="{{products}}" wx:key="id">
+            <view class="product-item">
+                <view class="product-info" bind:tap="goToProductDetail" data-id="{{item.id}}">
+                    <image class="product-image" src="{{item.images[0].url}}" mode="aspectFit" />
+                    <view class="product-info1">
+                        <text class="product-title">{{item.name}}</text>
+                        <text class="product-description">{{item.description}}</text>
+                        <text class="product-price">¥{{item.price}}</text>
+                    </view>
+                </view>
+                <view class="product-actions">
+                    <view wx:if="{{currentStatus == 1}}">
+                        <button class="action-btn" bindtap="onAskWithdraw" data-item="{{item}}">下架</button>
+                        <button class="action-btn" bindtap="editProduct" data-item="{{item}}">编辑</button>
+                    </view>
+                    <view wx:if="{{currentStatus == 0}}">
+                        <button class="action-btn" bindtap="onAskDelete" data-item="{{item}}">删除</button>
+                        <button class="action-btn" bindtap="editProduct" data-item="{{item}}">编辑</button>
+                    </view>
+                    <view wx:if="{{currentStatus == 2}}">
+                        <button class="action-btn" bindtap="onAskDelete" data-item="{{item}}">删除</button>
+                        <button class="action-btn" bindtap="onAskRelist" data-item="{{item}}">重新上架</button>
+                    </view>
+                </view>
+            </view>
+        </block>
+        <view wx:if="{{products.length <= 0}}" class="no-more-data">没有更多数据...</view>
+    </view>
+</view>
+
+<t-message id="t-message" />

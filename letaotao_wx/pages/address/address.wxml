@@ -1,0 +1,64 @@
+<!--pages/address/address.wxml-->
+<!-- 在模板中引入 wxs 文件 -->
+<wxs src="../../utils/format.wxs" module="format" />
+<view class="address-list">
+    <view class="address-card" wx:for="{{addressList}}" wx:key="id">
+        <!-- 上层展示地址信息的容器 -->
+        <view class="card-content" bindtap="selectAddress" data-address="{{item}}">
+            <!-- 左侧字符头像 -->
+            <view class="card-left">
+                <t-avatar t-class-content="external-class-content">
+                    <text>{{ item.contactPerson[0] }}</text>
+                </t-avatar>
+            </view>
+            <!-- 中间地址信息 -->
+            <view class="card-body">
+                <!-- 地址行 1 -->
+                <view class="address-line1">
+                    <text class="contact-name">{{item.contactPerson}}</text>
+                    <text class="contact-phone">{{item.phone}}</text>
+                    <!-- 默认地址标示 -->
+                    <text wx:if="{{item.isDefault}}" class="default-address">默认</text>
+                </view>
+                <!-- 地址行 2 -->
+                <view class="address-line2">
+                    <!-- 使用格式化方法 -->
+                    <text>{{ format.formatRegion(item.region) }} {{ item.detailAddress }}</text>
+                </view>
+            </view>
+            <!-- 右侧编辑图标 -->
+            <view class="card-right">
+                <t-icon name="edit-2" size="24" color="#777777" bindtap="goToEditAddress" data-address="{{item}}"></t-icon>
+            </view>
+        </view>
+
+        <!-- 管理选项 -->
+        <view wx:if="{{isManaging}}" class="card-manage-options">
+            <radio-group class="default-address-group" data-item="{{item}}" bindtap="setDefaultAddress">
+                <label class="radio-label">
+                    <radio value="1" checked="{{item.isDefault}}"></radio>
+                    <text>默认收货地址</text>
+                </label>
+            </radio-group>
+            <view class="delete-option" bindtap="confirmDeleteAddress" data-id="{{item.id}}">
+                <t-icon name="delete" size="20"></t-icon>
+                删除
+            </view>
+        </view>
+    </view>
+
+    <!-- 底部操作按钮 -->
+    <view class="bottom-actions">
+        <view wx:if="{{!isManaging}}" class="manage-button" bindtap="toggleManage">管理</view>
+        <view wx:if="{{isManaging}}" class="complete-button" bindtap="toggleManage">完成</view>
+        <view class="add-button" bindtap="addAddress">
+            <t-icon name="add" size="20"></t-icon>
+            添加收货地址
+        </view>
+    </view>
+</view>
+
+<t-message id="t-message" />
+
+<!-- 弹出删除确认对话框 -->
+<t-dialog title="删除地址" visible="{{showDeleteDialog}}" content="您确定要删除该地址吗？" confirm-btn="确定" cancel-btn="取消" bind:confirm="deleteAddress" bind:cancel="cancelDelete" />

@@ -1,0 +1,54 @@
+/* pages/post-publish/post-publish.wxss */
+page {
+    background-color: #f0f0f0;
+}
+
+.top-bar {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    padding: 10px;
+    z-index: 999;
+    background-color: #ffffff;
+    border-bottom: 1px solid #dcdcdc;
+}
+
+.publish-btn {
+    display: flex;
+    flex-direction: row;
+}
+
+.save-btn {
+    margin-right: 20px;
+    padding: 10px 20px;
+    border-radius: 20px;
+    background-color: #e3e3e3;
+    color: #333;
+    font-weight: bold;
+}
+
+.publish-btn {
+    padding: 10px 20px;
+    border-radius: 20px;
+    background-color: #000000;
+    color: #fff;
+    text-align: center;
+    font-weight: bold;
+}
+
+.post-container {
+    width: 100%;
+    padding-top: 60px;
+    /* 确保顶部按钮栏不被遮挡 */
+}
+
+.post-content {
+    border-radius: 10px;
+    background-color: #ffffff;
+    margin: 10px;
+    padding: 10px;
+}

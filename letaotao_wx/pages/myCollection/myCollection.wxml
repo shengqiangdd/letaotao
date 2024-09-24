@@ -1,0 +1,80 @@
+<!--pages/myCollection/myCollection.wxml-->
+<view class="header">
+    <view class="header-left">
+        <t-icon wx:if="{{!showSearch}}" name="search" bindtap="toggleSearch" t-class="header-icon" />
+        <!-- 搜索框 -->
+        <t-search wx:if="{{showSearch}}" value="{{searchValue}}" placeholder="输入商品名称或帖子标题" bind:change="onSearchChange" bind:submit="onSearchConfirm" />
+    </view>
+    <text class="header-right" bindtap="toggleEdit">{{isEditMode ? '完成' : '管理'}}</text>
+</view>
+
+<!-- 选项卡 -->
+<t-tabs value="{{tab}}" bind:change="onTabChange">
+    <t-tab-panel label="商品" value="product">
+        <!-- 商品列表 -->
+        <scroll-view scroll-y class="scroll-view">
+            <view wx:for="{{collections}}" wx:key="id" class="product-item">
+                <radio wx:if="{{isEditMode}}" value="{{item.id}}" checked="{{item.check}}" bindtap="onSelectItem" data-id="{{item.id}}" />
+                <image class="product-image" src="{{item.product.images[0].url}}" mode="aspectFill" />
+                <!-- 商品信息 -->
+                <view class="product-info" bind:tap="goToProductDetail" data-id="{{item.product.id}}">
+                    <!-- 商品标题 -->
+                    <text class="product-title">{{item.product.name}}</text>
+                    <!-- 价格 -->
+                    <text class="product-price">¥{{item.product.price}}</text>
+                    <!-- 卖家信息 -->
+                    <view class="product-bottom-info">
+                        <image class="product-avatar" src="{{item.product.avatar}}" />
+                        <text class="product-nick">{{item.product.nickName}}</text>
+                    </view>
+                </view>
+            </view>
+        </scroll-view>
+        <view class="no-data" wx:if="{{collections.length <= 0}}">没有更多数据...</view>
+    </t-tab-panel>
+    <t-tab-panel label="帖子" value="post">
+        <!-- 帖子列表 -->
+        <scroll-view scroll-y class="scroll-view">
+            <view wx:for="{{collections}}" wx:key="id" class="post-item">
+                <radio wx:if="{{isEditMode}}" value="{{item.id}}" checked="{{item.check}}" bindtap="onSelectItem" data-id="{{item.id}}" />
+                <!-- 帖子图片 -->
+                <image class="post-image" src="{{item.post.images[0].url}}" mode="aspectFill" />
+                <!-- 帖子信息 -->
+                <view class="post-info" bind:tap="goToPostDetail" data-id="{{item.post.id}}">
+                    <!-- 帖子标题 -->
+                    <text class="post-title">{{item.post.title}}</text>
+                    <!-- 帖子内容 -->
+                    <text class="post-content">{{item.post.content}}</text>
+                    <!-- 发布者信息及操作 -->
+                    <view class="post-footer">
+                        <image class="post-avatar" src="{{item.post.avatar}}" />
+                        <text class="post-nick">{{item.post.nickName}}</text>
+                        <view class="post-favorite">
+                            <t-icon wx:if="{{item.post.isFavorite == 0}}" name="star" prefix="icon" data-type="prefix" />
+                            <t-icon wx:else name="star-fill" color="#f5ba18" prefix="icon" data-type="prefix" />
+                        </view>
+                        <view class="post-likes">
+                            <t-icon wx:if="{{item.post.isLiked == 0}}" name="dianzan_2" prefix="icon" data-type="prefix" />
+                            <t-icon wx:else name="like-fill" color="#e851b3" prefix="icon" data-type="prefix" />
+                            <text>{{item.post.likeCount}}</text>
+                        </view>
+                    </view>
+                </view>
+            </view>
+        </scroll-view>
+        <view class="no-data" wx:if="{{collections.length <= 0}}">没有更多数据...</view>
+    </t-tab-panel>
+</t-tabs>
+
+<!-- 底部操作栏，管理模式下显示 -->
+<view wx:if="{{isEditMode}}" class="manage-bar">
+    <checkbox-group class="selectAll" bindchange="onSelectAll">
+        <label class="select-all-label">
+            <checkbox value="all" checked="{{isAllSelected}}" disabled="{{collections.length <= 0}}" />
+            <text>全选</text>
+        </label>
+    </checkbox-group>
+    <button class="unfavorite-btn" bindtap="unfavoriteItems" disabled="{{collections.length <= 0}}">取消收藏</button>
+</view>
+
+<t-message id="t-message" />

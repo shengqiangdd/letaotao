@@ -1,0 +1,9 @@
+{
+  "usingComponents": {
+    "t-icon": "tdesign-miniprogram/icon/icon",
+    "t-popup": "tdesign-miniprogram/popup/popup",
+    "t-image-viewer": "tdesign-miniprogram/image-viewer/image-viewer",
+    "comment-list": "../../components/commentList/commentList",
+    "t-message": "tdesign-miniprogram/message/message"
+  }
+}

@@ -1,0 +1,75 @@
+/* pages/settings/settings.wxss */
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 20px;
+}
+
+.t-cell-group--card{
+    width: 100%;
+}
+
+.logout-wrapper {
+    width: 80%;
+    margin-top: 30px;
+}
+
+.logout-btn {
+    background-color: #FF0000;
+    color: #FFFFFF;
+    border-radius: 16px;
+}
+
+.avatar-container{
+    width: 65rpx;
+    height: 65rpx;
+}
+
+.avatar-btn{
+    display: inline-block;
+    margin: 0;
+    outline: none;
+    border: none;
+    padding: 0;
+    background-color: transparent;
+    font-size: inherit;
+    color: inherit;
+}
+
+.avatar-btn::after {
+    content: none; /* 去除伪元素 */
+}
+
+.avatar {
+    width: 65rpx;
+    height: 65rpx;
+    border-radius: 50%;
+}
+
+.popup {
+    height: 200px;
+}
+
+.popup-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.popup-header {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+}
+
+.popup-title {
+    font-size: 16px;
+    color: #333;
+}
+
+.popup-input {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 10px;
+    margin: 10px;
+}

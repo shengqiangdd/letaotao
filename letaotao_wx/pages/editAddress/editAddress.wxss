@@ -1,0 +1,111 @@
+/* pages/editAddress/editAddress.wxss */
+.address-form {
+    padding: 15px;
+    font-size: 14px;
+    position: relative;
+}
+
+.nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.nav-left {
+    font-size: 30rpx;
+    margin-left: 29rpx;
+    color: #fa9550;
+}
+
+.nav-right {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    flex-grow: 1;
+}
+
+.clear-action,
+.delete-action {
+    font-size: 30rpx;
+    color: #fa9550;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.info-title {
+    font-size: 32rpx;
+    font-weight: bold;
+}
+
+.default-address-toggle {
+    display: flex;
+    align-items: center;
+}
+
+.radio-label {
+    display: flex;
+    align-items: center;
+    margin-left: 10px;
+}
+
+.section {
+    margin-bottom: 10px;
+}
+
+.section__title {
+    margin-left: 30rpx;
+}
+
+.inline-section {
+    display: flex;
+    align-items: center;
+}
+
+.inline-title {
+    flex: none;
+    font-size: 30rpx;
+    margin-right: 40rpx;
+}
+
+.picker {
+    flex-grow: 1;
+    padding: 5px 10px;
+    font-size: 16px;
+    border-radius: 4px;
+}
+
+.save-button-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-top: 10rpx;
+}
+
+.save-button {
+    width: 80%;
+    background-color: #ffa500;
+    color: #fff;
+    border-radius: 22px;
+}
+
+@media (max-width: 400px) {
+
+    .header,
+    .inline-section {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .actions {
+        padding-top: 10px;
+    }
+
+    .picker {
+        justify-content: flex-start;
+    }
+}

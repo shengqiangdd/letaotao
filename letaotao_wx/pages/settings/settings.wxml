@@ -1,0 +1,59 @@
+<!--pages/settings/settings.wxml-->
+<view class="container">
+    <!-- 用户设置信息卡片 -->
+    <t-cell-group theme="card">
+        <!-- 头像 -->
+        <t-cell title="头像" hover arrow>
+            <!-- <image class="avatar" src="{{user.avatar}}" slot="note" bind:tap="changeAvatar" /> -->
+            <view class="avatar-container" slot="note">
+                <button class="avatar-btn" open-type="chooseAvatar" bind:chooseavatar="onChooseAvatar">
+                <image class="avatar" src="{{user.avatar}}"></image>
+            </button>
+            </view>
+        </t-cell>
+        <!-- 昵称 -->
+        <t-cell title="昵称" hover arrow bind:click="onNicknameClick">
+            <text slot="note">{{user.nickName}}</text>
+        </t-cell>
+        <!-- 简介 -->
+        <t-cell title="简介" hover arrow bind:click="onIntroClick">
+            <text slot="note">{{user.introduction}}</text>
+        </t-cell>
+        <!-- 性别 -->
+        <t-cell title="性别" arrow hover note="{{genderText}}" bind:click="onGenderPicker" />
+        <!-- 生日 -->
+        <t-cell title="生日" hover note="{{dateText}}" arrow data-mode="date" bindtap="showDatePicker" />
+        <!-- 收货地址 -->
+        <t-cell title="收货地址" hover arrow bind:click="onAddressClick">
+            <text slot="note">{{user.address}}</text>
+        </t-cell>
+    </t-cell-group>
+
+    <!-- 退出登录按钮 -->
+    <view class="logout-wrapper">
+        <button class="logout-btn" bindtap="onLogout">退出登录</button>
+    </view>
+
+    <!-- Popup 设置弹出层 -->
+    <t-popup visible="{{popupVisible}}" bind:visible-change="onPopupVisibleChange" placement="bottom" custom-class="popup">
+        <view class="popup-content">
+            <view class="popup-header">
+                <view class="btn-cancel" bindtap="hidePopup">取消</view>
+                <view class="popup-title">{{currentSetting.title}}</view>
+                <view class="btn-confirm" bindtap="onConfirmPopup">确定</view>
+            </view>
+            <!-- popup的具体内容 -->
+            <input class="popup-input" type="text" placeholder="请输入内容" value="{{currentValue}}" bindinput="onPopupInputChange" />
+        </view>
+    </t-popup>
+
+    <t-picker visible="{{genderVisible}}" value="{{[genderValue]}}" title="选择性别" cancelBtn="取消" confirmBtn="确认" bindchange="onGenderPickerChange" bindcancel="onGenderPickerCancel">
+        <t-picker-item options="{{genders}}" />
+    </t-picker>
+
+    <!-- 年月日 -->
+    <t-date-time-picker title="选择日期" visible="{{dateVisible}}" mode="date" defaultValue="{{date}}" format="YYYY-MM-DD" bindchange="onDateConfirm" bindcancel="hideDatePicker" start="{{start}}" />
+
+</view>
+
+<t-message id="t-message" />
