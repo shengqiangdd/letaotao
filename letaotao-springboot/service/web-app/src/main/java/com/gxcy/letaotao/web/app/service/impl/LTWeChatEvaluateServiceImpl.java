@@ -1,7 +1,6 @@
 package com.gxcy.letaotao.web.app.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.toolkit.ObjectUtils;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.gxcy.letaotao.common.config.redis.CacheKeyConstants;
 import com.gxcy.letaotao.common.entity.LTOrder;
@@ -13,6 +12,7 @@ import com.gxcy.letaotao.web.app.service.LTWeChatEvaluateService;
 import com.gxcy.letaotao.web.app.vo.LTWechatEvaluateVo;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.Cacheable;
@@ -20,7 +20,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * 评价表 服务实现类
@@ -50,22 +53,24 @@ public class LTWeChatEvaluateServiceImpl extends ServiceImpl<LTEvaluateMapper, L
         orderQueryWrapper.and(o -> o.eq(LTOrder::getStatus, LTOrderStatus.STATUS_COMPLETED)
                 .notIn(LTOrder::getStatus, LTOrderStatus.STATUS_CANCELLED, LTOrderStatus.STATUS_PENDING_PAYMENT));
         List<LTOrder> ltOrders = ltOrderMapper.selectList(orderQueryWrapper);
-        // 订单列表卖家ID
-        List<Long> sellerOrders = ltOrders.stream().map(LTOrder::getSellerId).toList();
-        // 订单列表买家ID
-        List<Long> buyerOrders = ltOrders.stream().map(LTOrder::getBuyerId).toList();
-
-//        ArrayList<Integer> orderIds = ltOrders
-//                .stream().map(LTOrder::getId).collect(Collectors.toCollection(ArrayList::new));
 
         queryWrapper.in(LTEvaluate::getOrderId, ltOrders.stream().map(LTOrder::getId).toList());
         List<LTWechatEvaluateVo> evaluateList = getEvaluateList(queryWrapper);
+
+        // 订单Id到订单的映射
+        Map<Integer, LTOrder> orderIdToOrder = ltOrders.stream()
+                .collect(Collectors.toMap(LTOrder::getId, Function.identity()));
+
         // 遍历评价列表 根据用户ID设置卖家或买家
         evaluateList.forEach(e -> {
-            if (sellerOrders.contains(e.getUserId())) {
-                e.setTag("卖家");
-            } else if (buyerOrders.contains(e.getUserId())) {
-                e.setTag("买家");
+            LTOrder order = orderIdToOrder.get(e.getOrderId());
+
+            if (ObjectUtils.isNotEmpty(order)) {
+                if (e.getUserId().equals(order.getSellerId())) {
+                    e.setTag("卖家");
+                } else if (e.getUserId().equals(order.getBuyerId())) {
+                    e.setTag("买家");
+                }
             }
         });
         return evaluateList;
