@@ -28,6 +28,7 @@ Maven3.9.8  JDK17  MySQL8  node18+
 
 #### 后端项目结构：
 
+```
 ├─common
 │  └─src
 │      └─main
@@ -93,4 +94,7 @@ Maven3.9.8  JDK17  MySQL8  node18+
             │  │                      └─vo
             │  └─resources
             │      └─mapper
+
+
+```
 
