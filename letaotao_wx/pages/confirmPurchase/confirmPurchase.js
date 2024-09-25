@@ -30,7 +30,7 @@ Page({
                 buyerId,
                 product
             } = JSON.parse(decodeURIComponent(info));
-            console.log(JSON.parse(decodeURIComponent(info)));
+
             this.setData({
                 product,
                 buyerId,
@@ -44,7 +44,6 @@ Page({
     onShow() {
         console.log('onShow');
         var selectedAddress = getApp().getSelectedAddress();
-        console.log('onShow');
         if (selectedAddress) {
             // 更新页面数据
             this.setData({
@@ -118,7 +117,6 @@ Page({
         }
     },
     _createNewSocketConnection(socketUrl, relationId) {
-        console.log(`${socketUrl}?chatId=${relationId}`);
         this.data.socketTask = wx.connectSocket({
             url: `${socketUrl}?chatId=${relationId}`,
             header: {

@@ -30,7 +30,9 @@ Page({
     },
     getAddressList() {
         let userId = wx.getStorageSync('userId');
-        addressApi.list({userId}).then(res => {
+        addressApi.list({
+            userId
+        }).then(res => {
             if (res.success) {
                 this.setData({
                     addressList: res.data
@@ -39,17 +41,24 @@ Page({
         }).catch(() => {});
     },
     formatRegion(region) {
-        console.log(region);
         return region ? region.split('-').join(' ') : '';
     },
     selectAddress: function (e) {
         if (this.data.isSelectingAddress) {
             var selectedAddress = e.currentTarget.dataset.address;
+            let pages = getCurrentPages();
+            let prevPage = pages[pages.length - 2]; // 获取上一个页面实例对象
             // 调用全局方法存储地址
-            getApp().setAddress(selectedAddress);
+            // getApp().setAddress(selectedAddress);
             // 返回到上一个页面
             wx.navigateBack({
-                delta: 1 // 返回的页面数，如果是1将返回上一个页面
+                delta: 1, // 返回的页面数，如果是1将返回上一个页面
+                success: () => {
+                    // 修改上一页的属性值
+                    prevPage.setData({
+                        address: selectedAddress
+                    })
+                }
             });
         }
     },
@@ -80,9 +89,9 @@ Page({
         // 判断如果当前已经是选中状态（即值为1），则反选（设置为0），否则设置为1
         const newStatus = item.isDefault === 1 ? 0 : 1;
         item.isDefault = newStatus;
-        if(newStatus === 1) {
+        if (newStatus === 1) {
             let d = this.data.addressList.filter(a => a.isDefault === 1 && a.id !== item.id);
-            if(d.length > 0) {
+            if (d.length > 0) {
                 d.forEach(async d => {
                     d.isDefault = 0;
                     await addressApi.update(d);
