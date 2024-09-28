@@ -3,6 +3,7 @@ package com.gxcy.letaotao.web.app.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.gxcy.letaotao.common.annotations.MethodExporter;
 import com.gxcy.letaotao.common.utils.Result;
 import com.gxcy.letaotao.web.app.dto.LTWeChatPostDTO;
 import com.gxcy.letaotao.web.app.service.LTWeChatPostService;
@@ -30,6 +31,7 @@ public class LTWeChatPostController {
      */
     @GetMapping("/list/page")
     @Operation(summary = "分页查询帖子列表")
+    @MethodExporter
     public Result<?> getPostList(LTWechatPostQueryVo postVO) {
         // 创建分页对象
         IPage<LTWechatPostVo> page = new Page<>(postVO.getPageNo(), postVO.getPageSize());
@@ -41,6 +43,7 @@ public class LTWeChatPostController {
 
     @GetMapping("/list/{user}/page")
     @Operation(summary = "分页查询用户的帖子列表")
+    @MethodExporter
     public Result<?> getPostListByUserId(@PathVariable String user, LTWechatPostQueryVo postVO) {
         // 创建分页对象
         IPage<LTWechatPostVo> page = new Page<>(postVO.getPageNo(), postVO.getPageSize());
@@ -68,6 +71,7 @@ public class LTWeChatPostController {
 
     @GetMapping("/{id}")
     @Operation(summary = "获取帖子详情")
+    @MethodExporter
     public Result<?> get(@PathVariable Long id, @RequestParam(required = false) Long userId) {
         LTWechatPostVo ltWechatPostVo = ltPostService.findRelation(id, userId);
         return ltWechatPostVo == null ? Result.error() : Result.ok(ltWechatPostVo);
@@ -75,6 +79,7 @@ public class LTWeChatPostController {
 
     @PutMapping("")
     @Operation(summary = "更新帖子")
+    @MethodExporter
     public Result<?> update(@Validated @RequestBody LTWeChatPostDTO postDTO) {
         boolean update = ltPostService.update(postDTO);
         return update ? Result.ok().message("修改成功") : Result.error().message("修改失败");

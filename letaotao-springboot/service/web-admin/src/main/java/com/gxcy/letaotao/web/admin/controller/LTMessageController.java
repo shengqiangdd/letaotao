@@ -2,6 +2,7 @@ package com.gxcy.letaotao.web.admin.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.gxcy.letaotao.common.annotations.MethodExporter;
 import com.gxcy.letaotao.common.utils.Result;
 import com.gxcy.letaotao.web.admin.service.LTMessageService;
 import com.gxcy.letaotao.web.admin.vo.LTMessageQueryVo;
@@ -28,6 +29,7 @@ public class LTMessageController {
      */
     @GetMapping("/list/page")
     @Operation(summary = "分页查询通知/消息列表")
+    @MethodExporter
     public Result<?> getMessageList(LTMessageQueryVo messageQueryVo) {
         // 创建分页对象
         IPage<LTMessageVo> page = new Page<>(messageQueryVo.getPageNo(), messageQueryVo.getPageSize());

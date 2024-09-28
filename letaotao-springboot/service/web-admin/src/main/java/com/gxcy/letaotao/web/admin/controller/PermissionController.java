@@ -1,6 +1,7 @@
 package com.gxcy.letaotao.web.admin.controller;
 
 
+import com.gxcy.letaotao.common.annotations.MethodExporter;
 import com.gxcy.letaotao.common.utils.Result;
 import com.gxcy.letaotao.web.admin.service.PermissionService;
 import com.gxcy.letaotao.web.admin.vo.PermissionQueryVo;
@@ -28,6 +29,7 @@ public class PermissionController {
      */
     @GetMapping("/list")
     @Operation(description = "查询菜单列表")
+    @MethodExporter
     public Result<?> getMenuList(PermissionQueryVo permissionQueryVo) {
         // 查询菜单列表
         List<PermissionVo> permissionList = permissionService.findPermissionList(permissionQueryVo);

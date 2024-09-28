@@ -3,6 +3,7 @@ package com.gxcy.letaotao.web.app.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.gxcy.letaotao.common.annotations.MethodExporter;
 import com.gxcy.letaotao.common.utils.Result;
 import com.gxcy.letaotao.web.app.service.LTWeChatOrderService;
 import com.gxcy.letaotao.web.app.vo.LTWeChatOrderVo;
@@ -30,6 +31,7 @@ public class LTWeChatOrderController {
      */
     @GetMapping("/list/page")
     @Operation(summary = "分页查询订单列表")
+    @MethodExporter
     public Result<?> getOrderList(LTWechatOrderQueryVo ltOrderQueryVo) {
         // 创建分页对象
         IPage<LTWeChatOrderVo> page = new Page<>(ltOrderQueryVo.getPageNo(), ltOrderQueryVo.getPageSize());
@@ -41,6 +43,7 @@ public class LTWeChatOrderController {
 
     @GetMapping("/{id}")
     @Operation(summary = "查询订单详情")
+    @MethodExporter
     public Result<?> getOrderById(@PathVariable Integer id, @RequestParam(required = false) Long currentUserId) {
         LTWeChatOrderVo orderVo = ltWeChatOrderService.getOrderRelation(id, currentUserId);
         return Result.ok(orderVo);

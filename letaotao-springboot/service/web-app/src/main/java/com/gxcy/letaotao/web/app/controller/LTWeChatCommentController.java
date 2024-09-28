@@ -1,6 +1,7 @@
 package com.gxcy.letaotao.web.app.controller;
 
 
+import com.gxcy.letaotao.common.annotations.MethodExporter;
 import com.gxcy.letaotao.common.utils.Result;
 import com.gxcy.letaotao.web.app.service.LTWeChatCommentService;
 import com.gxcy.letaotao.web.app.vo.LTWechatCommentQueryVo;
@@ -28,6 +29,7 @@ public class LTWeChatCommentController {
      */
     @GetMapping("/list")
     @Operation(summary = "查询留言/评论列表树列表")
+    @MethodExporter
     public Result<?> getCommentTreeList(LTWechatCommentQueryVo commentVO) {
         // 调用查询评论列表树列表方法
         List<LTWechatCommentVo> commentTrees = commentService.getCommentTree(commentVO);

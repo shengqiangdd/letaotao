@@ -2,6 +2,7 @@ package com.gxcy.letaotao.web.admin.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.gxcy.letaotao.common.annotations.MethodExporter;
 import com.gxcy.letaotao.common.utils.Result;
 import com.gxcy.letaotao.web.admin.service.LTCommentService;
 import com.gxcy.letaotao.web.admin.vo.LTCommentQueryVo;
@@ -28,6 +29,7 @@ public class LTCommentController {
      */
     @GetMapping("/list/page")
     @Operation(summary = "分页查询留言/评论列表")
+    @MethodExporter
     public Result<?> getCommentList(LTCommentQueryVo commentQueryVo) {
         // 创建分页对象
         IPage<LTCommentVo> page = new Page<>(commentQueryVo.getPageNo(), commentQueryVo.getPageSize());

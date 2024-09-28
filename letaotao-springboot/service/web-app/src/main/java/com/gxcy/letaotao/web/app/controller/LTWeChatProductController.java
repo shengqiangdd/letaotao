@@ -3,6 +3,7 @@ package com.gxcy.letaotao.web.app.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.gxcy.letaotao.common.annotations.MethodExporter;
 import com.gxcy.letaotao.common.utils.Result;
 import com.gxcy.letaotao.web.app.dto.LTWeChatProductDTO;
 import com.gxcy.letaotao.web.app.service.LTWeChatProductService;
@@ -30,6 +31,7 @@ public class LTWeChatProductController {
      */
     @GetMapping("/list/page")
     @Operation(summary = "分页查询商品列表")
+    @MethodExporter
     public Result<?> getProductPageList(LTWechatProductQueryVo productQueryVo) {
         // 创建分页对象
         IPage<LTWechatProductVo> page = new Page<>(productQueryVo.getPageNo(), productQueryVo.getPageSize());
@@ -41,6 +43,7 @@ public class LTWeChatProductController {
 
     @GetMapping("/list/{user}/page")
     @Operation(summary = "分页查询用户的商品列表")
+    @MethodExporter
     public Result<?> getProductListByUserId(@PathVariable String user, LTWechatProductQueryVo productQueryVo) {
         // 创建分页对象
         IPage<LTWechatProductVo> page = new Page<>(productQueryVo.getPageNo(), productQueryVo.getPageSize());
@@ -68,6 +71,7 @@ public class LTWeChatProductController {
 
     @GetMapping("/{id}")
     @Operation(summary = "获取商品详情")
+    @MethodExporter
     public Result<?> get(@PathVariable Integer id, @RequestParam(required = false) Long userId) {
         // 调用获取商品详情方法
         LTWechatProductVo product = ltProductService.getProductRelationsById(id, userId);
@@ -76,6 +80,7 @@ public class LTWeChatProductController {
 
     @PutMapping("")
     @Operation(summary = "更新商品")
+    @MethodExporter
     public Result<?> update(@Validated @RequestBody LTWeChatProductDTO productDTO) {
         boolean update = ltProductService.update(productDTO);
         return update ? Result.ok().message("修改成功") : Result.error().message("修改失败");

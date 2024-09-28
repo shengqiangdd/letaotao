@@ -2,6 +2,7 @@ package com.gxcy.letaotao.web.admin.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.gxcy.letaotao.common.annotations.MethodExporter;
 import com.gxcy.letaotao.common.utils.Result;
 import com.gxcy.letaotao.web.admin.service.LTPostService;
 import com.gxcy.letaotao.web.admin.vo.LTPostQueryVo;
@@ -30,6 +31,7 @@ public class LTPostController {
      */
     @GetMapping("/list/page")
     @Operation(summary = "分页查询帖子列表")
+    @MethodExporter
     public Result<?> getPostList(LTPostQueryVo postQueryVo) {
         // 创建分页对象
         IPage<LTPostVo> page = new Page<>(postQueryVo.getPageNo(), postQueryVo.getPageSize());

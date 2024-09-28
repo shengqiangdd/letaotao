@@ -2,6 +2,7 @@ package com.gxcy.letaotao.web.admin.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.gxcy.letaotao.common.annotations.MethodExporter;
 import com.gxcy.letaotao.common.utils.Result;
 import com.gxcy.letaotao.web.admin.service.LTCategoryService;
 import com.gxcy.letaotao.web.admin.vo.LTCategoryQueryVo;
@@ -31,6 +32,7 @@ public class LTCategoryController {
      */
     @GetMapping("/list/page")
     @Operation(summary = "分页查询分类列表")
+    @MethodExporter
     public Result<?> getCategoryPageList(LTCategoryQueryVo categoryQueryVo) {
         // 创建分页对象
         IPage<LTCategoryVo> page = new Page<>(categoryQueryVo.getPageNo(), categoryQueryVo.getPageSize());

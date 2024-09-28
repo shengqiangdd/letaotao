@@ -3,12 +3,8 @@ package com.gxcy.letaotao.web.admin.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.gxcy.letaotao.common.config.redis.RedisService;
-import com.gxcy.letaotao.common.utils.JwtUtils;
+import com.gxcy.letaotao.common.annotations.MethodExporter;
 import com.gxcy.letaotao.common.utils.Result;
-import com.gxcy.letaotao.web.admin.config.security.handler.LoginFailureHandler;
-import com.gxcy.letaotao.web.admin.config.security.handler.LoginSuccessHandler;
-import com.gxcy.letaotao.web.admin.config.security.service.CustomerUserDetailService;
 import com.gxcy.letaotao.web.admin.dto.UserRoleDTO;
 import com.gxcy.letaotao.web.admin.entity.Role;
 import com.gxcy.letaotao.web.admin.entity.UserInfo;
@@ -22,7 +18,6 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,18 +32,6 @@ public class UserController {
     @Resource
     private UserService userService;
     @Resource
-    private CustomerUserDetailService userDetailService;
-    @Resource
-    private LoginSuccessHandler loginSuccessHandler;
-    @Resource
-    private LoginFailureHandler loginFailureHandler;
-    @Resource
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
-    @Resource
-    private JwtUtils jwtUtils;
-    @Resource
-    private RedisService redisService;
-    @Resource
     private RoleService roleService;
 
     /**
@@ -59,6 +42,7 @@ public class UserController {
      */
     @GetMapping("/list/page")
     @Operation(summary = "分页查询用户列表")
+    @MethodExporter
     public Result<?> list(UserQueryVo userQueryVo) {
         // 创建分页对象
         IPage<UserVo> page = new Page<>(userQueryVo.getPageNo(), userQueryVo.getPageSize());
@@ -141,6 +125,7 @@ public class UserController {
      */
     @Operation(summary = "获取菜单路由数据", description = "获取菜单路由数据")
     @GetMapping("/menu")
+    @MethodExporter
     public Result<?> getMenuList() {
         List<RouterVo> routerList = userService.getMenuList();
         // 返回数据
@@ -203,6 +188,7 @@ public class UserController {
     @GetMapping("/list/assign/role")
     @Operation(summary = "获取角色列表")
     @PreAuthorize("hasAuthority('sys:user:assign')")
+    @MethodExporter
     public Result<?> getRoleListForAssign(RoleQueryVo roleQueryVo) {
         // 创建分页对象
         IPage<Role> page = new Page<>(roleQueryVo.getPageNo(), roleQueryVo.getPageSize());

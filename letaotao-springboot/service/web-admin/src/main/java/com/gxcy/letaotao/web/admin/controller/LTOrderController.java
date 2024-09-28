@@ -2,6 +2,7 @@ package com.gxcy.letaotao.web.admin.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.gxcy.letaotao.common.annotations.MethodExporter;
 import com.gxcy.letaotao.common.utils.Result;
 import com.gxcy.letaotao.web.admin.service.LTOrderService;
 import com.gxcy.letaotao.web.admin.vo.LTOrderQueryVo;
@@ -28,6 +29,7 @@ public class LTOrderController {
      */
     @GetMapping("/list/page")
     @Operation(summary = "分页查询订单列表")
+    @MethodExporter
     public Result<?> getOrderList(LTOrderQueryVo orderQueryVo) {
         // 创建分页对象
         IPage<LTOrderVo> page = new Page<>(orderQueryVo.getPageNo(), orderQueryVo.getPageSize());

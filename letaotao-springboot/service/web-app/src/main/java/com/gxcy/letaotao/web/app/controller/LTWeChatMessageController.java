@@ -1,5 +1,6 @@
 package com.gxcy.letaotao.web.app.controller;
 
+import com.gxcy.letaotao.common.annotations.MethodExporter;
 import com.gxcy.letaotao.common.utils.Result;
 import com.gxcy.letaotao.web.app.service.LTWeChatMessageService;
 import com.gxcy.letaotao.web.app.vo.LTChatRelationVo;
@@ -27,6 +28,7 @@ public class LTWeChatMessageController {
      */
     @GetMapping("/list")
     @Operation(summary = "获取聊天列表")
+    @MethodExporter
     public Result<?> getChatMessages() {
         List<LTChatRelationVo> messageList = ltMessageService.getChatMessageList();
         return Result.ok(messageList);

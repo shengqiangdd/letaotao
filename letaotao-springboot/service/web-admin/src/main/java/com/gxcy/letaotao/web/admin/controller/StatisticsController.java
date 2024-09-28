@@ -1,5 +1,6 @@
 package com.gxcy.letaotao.web.admin.controller;
 
+import com.gxcy.letaotao.common.annotations.MethodExporter;
 import com.gxcy.letaotao.common.utils.Result;
 import com.gxcy.letaotao.web.admin.service.StatisticsService;
 import com.gxcy.letaotao.web.admin.vo.StatisticsOverviewVo;
@@ -20,6 +21,7 @@ public class StatisticsController {
 
     // 获取年统计数据
     @GetMapping("/overview/{year}/{month}")
+    @MethodExporter
     public Result<?> getYearlyStatistics(@PathVariable Integer year, @PathVariable Integer month) {
         // 创建一个响应对象来包含所有统计数据
         StatisticsOverviewVo overview = new StatisticsOverviewVo();
