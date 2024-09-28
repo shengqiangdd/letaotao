@@ -642,8 +642,8 @@ CREATE TABLE `lt_user`  (
 -- ----------------------------
 -- Records of lt_user
 -- ----------------------------
-INSERT INTO `lt_user` VALUES (7, 'o7vvC4p2KtLlp3iYcFrYyFmq6vKM', '$2a$10$lajCGSDoLqmbZLwPo7dcQukn79bxCBPOQo7vD7J8KhJ2jyyNYDFeW', NULL, '春夏秋冬', 0, NULL, NULL, 'https://xxsq-lean.oss-cn-shenzhen.aliyuncs.com/letao-user-images/2024/05/03/02d5682ed68d4151a02fb3ecfe24a82c.jpeg', '1', '2001-02-16', 'o7vvC4p2KtLlp3iYcFrYyFmq6vKM', '2024-03-06 20:00:24', '2024-09-22 22:55:18', 0);
-INSERT INTO `lt_user` VALUES (8, 'o7vvC4upE7LLyh96qslOYES27OyM', '$2a$10$Jtxp4akheEK0mvwrD3mfR.jVQ0gULePAaUHalsAEIXtt7fwF.rSEO', NULL, '夜半歌声', 0, NULL, NULL, 'https://xxsq-lean.oss-cn-shenzhen.aliyuncs.com/letao-user-images/2024/09/24/109e65bed81146e7bbb6e19370db9e31.jpg', NULL, '2001-07-17', 'o7vvC4upE7LLyh96qslOYES27OyM', '2024-04-01 15:42:36', '2024-09-24 18:44:31', 0);
+INSERT INTO `lt_user` VALUES (7, 'o7vvC4p2KtL', '$2a$10$lajCGSDoLqmbZLwPo7dcQukn79bxCBPOQo7vD7J8KhJ2jyyNYDFeW', NULL, '春夏秋冬', 0, NULL, NULL, 'https://xxsq-lean.oss-cn-shenzhen.aliyuncs.com/letao-user-images/2024/05/03/02d5682ed68d4151a02fb3ecfe24a82c.jpeg', '1', '2001-02-16', 'o7vvC4p2KtLlp3iYcFrYyFmq6vKM', '2024-03-06 20:00:24', '2024-09-22 22:55:18', 0);
+INSERT INTO `lt_user` VALUES (8, 'o7vvC4upE', '$2a$10$Jtxp4akheEK0mvwrD3mfR.jVQ0gULePAaUHalsAEIXtt7fwF.rSEO', NULL, '夜半歌声', 0, NULL, NULL, 'https://xxsq-lean.oss-cn-shenzhen.aliyuncs.com/letao-user-images/2024/09/24/109e65bed81146e7bbb6e19370db9e31.jpg', NULL, '2001-07-17', 'o7vvC4upE7LLyh96qslOYES27OyM', '2024-04-01 15:42:36', '2024-09-24 18:44:31', 0);
 
 -- ----------------------------
 -- Table structure for lt_user_follow
