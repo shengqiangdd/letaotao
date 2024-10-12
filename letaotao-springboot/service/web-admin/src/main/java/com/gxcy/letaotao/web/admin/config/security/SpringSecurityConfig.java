@@ -49,7 +49,7 @@ public class SpringSecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         String[] paths = { // 放行路径
-                "/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**",
+                "/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**", "/actuator/health",
                 "/doc.html", "/ws/**", "/webjars/**", "/api/sysUser/login"
         };
         // 登录前进行过滤
