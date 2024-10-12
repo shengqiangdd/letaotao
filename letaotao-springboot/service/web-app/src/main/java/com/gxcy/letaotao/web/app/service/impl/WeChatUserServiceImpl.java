@@ -156,6 +156,10 @@ public class WeChatUserServiceImpl extends BaseServiceImpl<LTUserMapper, LTUser>
             // 解析响应为WeChatSessionResponse对象
             WeChatSessionResponse sessionResponse = JSON.parseObject(response, WeChatSessionResponse.class);
 
+            if (sessionResponse == null || sessionResponse.getOpenid() == null) {
+                throw new WeChatApiException("从微信获取 openid 失败，请检查appId和appSecret是否配置正确");
+            }
+
             log.debug("微信认证：{}", response);
             // 解析响应
             return sessionResponse.getOpenid();

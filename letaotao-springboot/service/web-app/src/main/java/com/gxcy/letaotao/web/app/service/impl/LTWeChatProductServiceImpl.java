@@ -331,7 +331,6 @@ public class LTWeChatProductServiceImpl extends BaseServiceImpl<LTProductMapper,
             boolean update = this.update(productVo);
             log.info("商品编号：{} 更新商品状态为：{}", productVo.getStatus(), productVo.getId());
             Objects.requireNonNull(cacheManager.getCache(CacheKeyConstants.PRODUCT)).evict(productVo.getId());
-            ;
             return update;
         }
         return false;
