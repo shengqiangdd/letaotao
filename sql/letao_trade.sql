@@ -16,6 +16,8 @@
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
+CREATE DATABASE IF NOT EXISTS letao_trade CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE letao_trade;
 
 -- ----------------------------
 -- Table structure for data_dictionary
