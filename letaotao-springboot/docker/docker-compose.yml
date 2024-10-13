@@ -1,0 +1,71 @@
+services:
+  mysql:
+    container_name: mysql
+    build:
+      context: ./image/mysql
+      dockerfile: ./Dockerfile
+    image: letao/mysql:8.0.31
+    restart: always
+    env_file:
+      - ./env/mysql.env
+    ports:
+      - "3306:3306"
+    volumes:
+      - /opt/letao/mysql/conf:/etc/mysql/conf.d
+      - /opt/letao/mysql/data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "sh", "-c", "echo ${MYSQL_PASSWORD} | mysqladmin -h localhost -unacos -p ping"]
+      interval: 5s
+      timeout: 10s
+      retries: 10
+      
+  redis:
+    image: redis:7
+    container_name: redis
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - /opt/letao/redis/conf:/usr/local/etc/redis
+      - /opt/letao/redis/data:/data
+      
+  nacos:
+    image: nacos/nacos-server:${NACOS_VERSION}
+    container_name: nacos-standalone
+    restart: always
+    env_file:
+      - ./env/nacos-standalone.env
+    ports:
+      - "8848:8848"
+      - "9848:9848"
+    volumes:
+      - /opt/letao/nacos/standalone-logs/:/home/nacos/logs
+      - ./conf/nacos/application.properties:/home/nacos/conf/application.properties
+    depends_on:
+      mysql:
+        condition: service_healthy
+    
+  letao-admin:
+    container_name: letao-admin
+    build:
+      context: ./image/letao-admin
+      dockerfile: ./Dockerfile
+    image: letao-admin:latest
+    restart: always
+    ports:
+      - "9999:9999"
+    depends_on:
+      - nacos
+      
+  letao-app:
+    container_name: letao-app
+    build:
+      context: ./image/letao-app
+      dockerfile: ./Dockerfile
+    image: letao-app:latest
+    restart: always
+    ports:
+      - "9998:9998"
+    depends_on:
+      - nacos
+
