@@ -53,7 +53,8 @@ public class CheckTokenFilter extends OncePerRequestFilter {
             //获取当前请求的url地址
             String url = request.getRequestURI();
             String[] paths = { // 放行路径
-                    "/doc.html", loginUrl, "/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**", "/webjars/**", "/actuator/health"
+                    "/doc.html", loginUrl, "/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**",
+                    "/webjars/**", "/actuator/health", "/actuator/prometheus"
             };
 
             for (String pattern : paths) {
