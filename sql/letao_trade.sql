@@ -34,7 +34,7 @@ CREATE TABLE `data_dictionary`  (
   `num_value` tinyint NULL DEFAULT NULL COMMENT '数值类型的值',
   `dict_code` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '编码',
   PRIMARY KEY (`id`) USING BTREE,
-  INDEX `idx_data_dictionary`(`id` ASC, `is_deleted` ASC, `name` ASC, `dict_code` ASC, `create_time` ASC, `update_time` ASC, `parent_id` ASC, `str_value` ASC, `num_value` ASC) USING BTREE
+  INDEX `idx_data_dictionary`(`id` ASC, `name` ASC, `dict_code` ASC, `create_time` ASC, `update_time` ASC, `parent_id` ASC, `str_value` ASC, `num_value` ASC) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 26 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -76,7 +76,7 @@ CREATE TABLE `lt_address`  (
   `detail_address` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '详细地址',
   `is_default` tinyint(1) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
-  INDEX `idx_address`(`id` ASC, `user_id` ASC, `is_default` ASC, `contact_person` ASC, `phone` ASC, `region` ASC, `detail_address` ASC) USING BTREE,
+  INDEX `idx_address`(`id` ASC, `user_id` ASC, `contact_person` ASC, `phone` ASC, `region` ASC, `detail_address` ASC) USING BTREE,
   INDEX `lt_address_ibfk_1`(`user_id` ASC) USING BTREE,
   CONSTRAINT `lt_address_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `lt_user` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '收货地址表' ROW_FORMAT = Dynamic;
@@ -102,7 +102,7 @@ CREATE TABLE `lt_category`  (
   `is_delete` tinyint NULL DEFAULT 0,
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `parent_id`(`parent_id` ASC) USING BTREE,
-  INDEX `idx_category`(`id` ASC, `name` ASC, `parent_id` ASC, `is_delete` ASC, `image_url` ASC) USING BTREE
+  INDEX `idx_category`(`id` ASC, `name` ASC, `parent_id` ASC, `image_url` ASC) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 33 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '商品分类表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -177,8 +177,7 @@ CREATE TABLE `lt_collection`  (
   `is_active` tinyint(1) NOT NULL DEFAULT 1 COMMENT '收藏状态',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `user_id`(`user_id` ASC, `target_id` ASC, `target_type` ASC) USING BTREE,
-  INDEX `user_id_2`(`user_id` ASC, `target_id` ASC, `target_type` ASC) USING BTREE,
-  INDEX `idx_collection`(`target_id` ASC, `target_type` ASC, `user_id` ASC, `is_active` ASC, `id` ASC, `create_time` ASC) USING BTREE,
+  INDEX `idx_collection`(`target_id` ASC, `target_type` ASC, `user_id` ASC, `id` ASC, `create_time` ASC) USING BTREE,
   CONSTRAINT `lt_collection_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `lt_user` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE = InnoDB AUTO_INCREMENT = 14 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '收藏表' ROW_FORMAT = Dynamic;
 
@@ -212,7 +211,7 @@ CREATE TABLE `lt_comment`  (
   `is_delete` tinyint(1) NULL DEFAULT 0,
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `user_id`(`user_id` ASC, `reference_id` ASC, `type` ASC) USING BTREE,
-  INDEX `idx_comment`(`reference_id` ASC, `type` ASC, `id` ASC, `user_id` ASC, `parent_id` ASC, `content`(400) ASC, `comment_time` ASC, `is_delete` ASC) USING BTREE,
+  INDEX `idx_comment`(`reference_id` ASC, `type` ASC, `id` ASC, `user_id` ASC, `parent_id` ASC, `content`(30) ASC, `comment_time` ASC) USING BTREE,
   CONSTRAINT `lt_comment_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `lt_user` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE = InnoDB AUTO_INCREMENT = 80 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '留言/评论表' ROW_FORMAT = Dynamic;
 
@@ -378,7 +377,6 @@ CREATE TABLE `lt_like`  (
   `create_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '点赞时间',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `user_id_2`(`user_id` ASC, `target_id` ASC, `target_type` ASC) USING BTREE,
-  INDEX `user_id`(`user_id` ASC, `target_id` ASC, `target_type` ASC) USING BTREE,
   CONSTRAINT `lt_like_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `lt_user` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE = InnoDB AUTO_INCREMENT = 18 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
@@ -421,7 +419,7 @@ CREATE TABLE `lt_message`  (
   `is_delete` tinyint(1) NULL DEFAULT 0,
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `relation_id`(`relation_id` ASC) USING BTREE,
-  INDEX `idx_message`(`id` ASC, `title` ASC, `content`(400) ASC, `message_type` ASC, `sender_id` ASC, `receiver_id` ASC, `is_delete` ASC, `send_time` ASC, `relation_id` ASC, `is_image` ASC, `is_read` ASC, `is_order` ASC, `order_id` ASC) USING BTREE,
+  INDEX `idx_message`(`id` ASC, `title` ASC, `content`(15) ASC, `message_type` ASC, `sender_id` ASC, `receiver_id` ASC, `send_time` ASC, `relation_id` ASC, `order_id` ASC) USING BTREE,
   INDEX `lt_message_ibfk_1`(`sender_id` ASC) USING BTREE,
   INDEX `lt_message_ibfk_2`(`receiver_id` ASC) USING BTREE,
   CONSTRAINT `lt_message_ibfk_1` FOREIGN KEY (`sender_id`) REFERENCES `lt_user` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
@@ -513,7 +511,7 @@ CREATE TABLE `lt_order`  (
   UNIQUE INDEX `order_num`(`order_num` ASC) USING BTREE,
   INDEX `product_id`(`product_id` ASC) USING BTREE,
   INDEX `address_id`(`address_id` ASC) USING BTREE,
-  INDEX `idx_order`(`status` ASC, `order_num` ASC, `buyer_id` ASC, `seller_id` ASC, `product_id` ASC, `is_delete` ASC, `id` ASC, `price` ASC, `address_id` ASC, `create_time` ASC, `pay_time` ASC, `ship_time` ASC, `finish_time` ASC, `transaction_num` ASC) USING BTREE,
+  INDEX `idx_order`(`status` ASC, `order_num` ASC, `buyer_id` ASC, `seller_id` ASC, `product_id` ASC, `id` ASC, `price` ASC, `address_id` ASC, `create_time` ASC, `pay_time` ASC, `ship_time` ASC, `finish_time` ASC, `transaction_num` ASC) USING BTREE,
   INDEX `lt_order_ibfk_1`(`buyer_id` ASC) USING BTREE,
   INDEX `lt_order_ibfk_2`(`seller_id` ASC) USING BTREE,
   CONSTRAINT `lt_order_ibfk_1` FOREIGN KEY (`buyer_id`) REFERENCES `lt_user` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
@@ -553,7 +551,7 @@ CREATE TABLE `lt_post`  (
   `comment_count` int NULL DEFAULT 0 COMMENT '评论数量',
   `collect_count` int NULL DEFAULT 0 COMMENT '收藏数量',
   PRIMARY KEY (`id`) USING BTREE,
-  INDEX `idx_post`(`status` ASC, `post_time` DESC, `user_id` ASC, `content`(400) ASC, `id` ASC, `image_url` ASC, `update_time` ASC, `like_count` ASC, `comment_count` ASC, `collect_count` ASC) USING BTREE,
+  INDEX `idx_post`(`status` ASC, `post_time` DESC, `user_id` ASC, `content`(30) ASC, `id` ASC, `image_url` ASC, `update_time` ASC, `like_count` ASC, `comment_count` ASC, `collect_count` ASC) USING BTREE,
   INDEX `lt_post_ibfk_1`(`user_id` ASC) USING BTREE,
   CONSTRAINT `lt_post_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `lt_user` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE = InnoDB AUTO_INCREMENT = 40 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '帖子表' ROW_FORMAT = Dynamic;
@@ -592,7 +590,7 @@ CREATE TABLE `lt_product`  (
   `lock_by` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `category_id`(`category_id` ASC) USING BTREE,
-  INDEX `idx_product`(`status` ASC, `is_lock` ASC, `is_recommended` DESC, `publish_time` DESC, `price` DESC, `id` ASC, `publisher_id` ASC, `name` ASC, `category_id` ASC, `description`(400) ASC, `condition` ASC, `update_time` ASC) USING BTREE,
+  INDEX `idx_product`(`status` ASC, `is_lock` ASC, `publish_time` DESC, `price` DESC, `id` ASC, `publisher_id` ASC, `name` ASC, `category_id` ASC, `description`(30) ASC, `condition` ASC, `update_time` ASC) USING BTREE,
   INDEX `lt_product_ibfk_1`(`publisher_id` ASC) USING BTREE,
   CONSTRAINT `lt_product_ibfk_1` FOREIGN KEY (`publisher_id`) REFERENCES `lt_user` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `lt_product_ibfk_2` FOREIGN KEY (`category_id`) REFERENCES `lt_category` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
@@ -637,8 +635,8 @@ CREATE TABLE `lt_user`  (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `open_id`(`open_id` ASC) USING BTREE,
   INDEX `sys_user_idx1`(`username` ASC, `real_name` ASC, `nick_name` ASC) USING BTREE,
-  INDEX `sys_user_idx2`(`gender` ASC, `phone` ASC) USING BTREE,
-  INDEX `idx_lt_user`(`id` ASC, `username` ASC, `real_name` ASC, `nick_name` ASC, `gender` ASC, `phone` ASC, `email` ASC, `avatar` ASC, `introduction`(200) ASC, `birthday` ASC, `open_id` ASC, `create_time` ASC, `update_time` ASC, `is_delete` ASC) USING BTREE
+  INDEX `sys_user_idx2`(`phone` ASC) USING BTREE,
+  INDEX `idx_lt_user`(`id` ASC, `username` ASC, `real_name` ASC, `nick_name` ASC, `phone` ASC, `email` ASC, `avatar` ASC, `introduction`(15) ASC, `birthday` ASC, `open_id` ASC, `create_time` ASC, `update_time` ASC) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
@@ -957,7 +955,7 @@ CREATE TABLE `sys_user`  (
   `is_delete` tinyint NULL DEFAULT 0 COMMENT '是否删除(0-未删除，1-已删除)',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `sys_user_idx1`(`username` ASC, `real_name` ASC, `nick_name` ASC) USING BTREE,
-  INDEX `sys_user_idx2`(`gender` ASC, `phone` ASC) USING BTREE
+  INDEX `sys_user_idx2`(`phone` ASC) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 12 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
