@@ -21,89 +21,15 @@ Maven3.9.8  JDK17  MySQL8  node18+
 使用Knife4j生成详细的接口文档，方便前后端联调和后续维护，并提供直观的API文档展示。文档地址：ip地址:9999/doc.html
 使用微信小程序官方API进行前端开发，使用T-design快速构建用户界面。
 
-#### 功能介绍：
+#### 主要功能：
 
 ##### 后台管理系统：
 
 系统管理：用户管理、角色管理、菜单管理。
 
-乐淘淘管理：商品管理、帖子管理、用户管理。
+乐淘淘管理：商品管理、帖子管理、用户管理、数据统计。
 
 ##### 微信小程序：
 
 闲置物品发布与管理、商品搜索与浏览、社区互动、交流下单。
-
-
-
-#### 后端项目结构：
-
-```
-├─common
-│  └─src
-│      └─main
-│          ├─java
-│          │  └─com
-│          │      └─gxcy
-│          │          └─letaotao
-│          │              └─common
-│          │                  ├─config
-│          │                  │  ├─oss
-│          │                  │  └─redis
-│          │                  ├─entity
-│          │                  ├─enums
-│          │                  ├─exception
-│          │                  └─utils
-└─service
-    ├─web-admin
-    │  └─src
-    │      ├─main
-    │      │  ├─java
-    │      │  │  └─com
-    │      │  │      └─gxcy
-    │      │  │          └─letaotao
-    │      │  │              └─web
-    │      │  │                  └─admin
-    │      │  │                      ├─config
-    │      │  │                      │  ├─filter
-    │      │  │                      │  ├─listener
-    │      │  │                      │  ├─security
-    │      │  │                      │  │  ├─handler
-    │      │  │                      │  │  └─service
-    │      │  │                      │  └─validator
-    │      │  │                      ├─controller
-    │      │  │                      ├─dto
-    │      │  │                      ├─entity
-    │      │  │                      ├─exception
-    │      │  │                      ├─mapper
-    │      │  │                      ├─service
-    │      │  │                      │  └─impl
-    │      │  │                      └─vo
-    │      │  └─resources
-    │      │      └─mapper
-    └─web-app
-        └─src
-            ├─main
-            │  ├─java
-            │  │  └─com
-            │  │      └─gxcy
-            │  │          └─letaotao
-            │  │              └─web
-            │  │                  └─app
-            │  │                      ├─config
-            │  │                      │  ├─handler
-            │  │                      │  ├─interceptor
-            │  │                      │  └─validator
-            │  │                      ├─controller
-            │  │                      ├─dto
-            │  │                      ├─entity
-            │  │                      ├─mapper
-            │  │                      ├─service
-            │  │                      │  └─impl
-            │  │                      ├─utils
-            │  │                      └─vo
-            │  └─resources
-            │      └─mapper
-
-
-```
 
