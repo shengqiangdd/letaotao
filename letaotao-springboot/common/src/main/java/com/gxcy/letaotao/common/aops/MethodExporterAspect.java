@@ -53,7 +53,7 @@ public class MethodExporterAspect {
             String[] parameterNames = discoverer.getParameterNames(method);
             for (int i = 0; i < args.length; i++) {
                 params.append(Objects.requireNonNull(parameterNames)[i])
-                        .append("\t").append(args[i].toString()).append(";");
+                        .append("\t").append(args[i]).append(";");
             }
             // 将返回结果retValue序列化
             String jsonResult = null;
