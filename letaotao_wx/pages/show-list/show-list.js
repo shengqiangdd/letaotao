@@ -77,7 +77,7 @@ Page({
             label: label ? label : '',
             searchValue: label
         });
-        if(this.label !== undefined || this.label !== '') {
+        if(this.label != null || this.label !== '') {
             this.refreshDatas();
         }
     },
@@ -134,7 +134,7 @@ Page({
         if (this.data.loading || !this.data.hasMore) {
             return;
         }
-        if (this.data.label === undefine || this.data.label === '') {
+        if (this.data.label == null || this.data.label === '') {
             return toast.show('请输入搜索内容');
         }
         this.setData({
